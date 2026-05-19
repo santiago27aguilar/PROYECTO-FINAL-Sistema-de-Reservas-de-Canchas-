@@ -23,6 +23,19 @@
     </nav>
 
     <div class="container">
+
+        <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'eliminado'): ?>
+            <div class="alerta alerta-exito">Cancha eliminada correctamente</div>
+        <?php endif; ?>
+        <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'registrado'): ?>
+            <div class="alerta alerta-exito">¡Cancha registrada con éxito!</div>
+        <?php endif; ?>
+        <?php if (isset($_GET['error']) && $_GET['error'] === 'sin_permisos'): ?>
+            <div class="alerta alerta-error">No tienes permisos para realizar esta acción</div>
+        <?php endif; ?>
+        <?php if (isset($_GET['error']) && $_GET['error'] === 'tiene_reservas'): ?>
+            <div class="alerta alerta-error">Error: La cancha tiene reservas activas</div>
+        <?php endif; ?>
         
         <div class="card-blanca">
             
@@ -48,9 +61,15 @@
                             <label>Tipo de CANCHA:</label>
                             <select name="tipo_cancha" required>
                                 <option value="">> Elije una cancha <</option>
-                                <option value="Futbol 5">Futbol 5</option>
-                                <option value="Futbol 7">Futbol 7</option>
-                                <option value="Padel">Padel</option>
+                                <option value="Futbol 5 - Cancha 1">Futbol 5 - Cancha 1</option>
+                                <option value="Futbol 5 - Cancha 2">Futbol 5 - Cancha 2</option>
+                                <option value="Futbol 5 - Cancha 3">Futbol 5 - Cancha 3</option>
+                                <option value="Futbol 7 - Cancha 1">Futbol 7 - Cancha 1</option>
+                                <option value="Futbol 7 - Cancha 2">Futbol 7 - Cancha 2</option>
+                                <option value="Futbol 7 - Cancha 3">Futbol 7 - Cancha 3</option>
+                                <option value="Padel - Cancha 1">Padel - Cancha 1</option>
+                                <option value="Padel - Cancha 2">Padel - Cancha 2</option>
+                                <option value="Padel - Cancha 3">Padel - Cancha 3</option>
                             </select>
                         </div>
 
@@ -73,7 +92,7 @@
                 <table class="tabla-moderna">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <!--<th>ID</th>-->
                             <th>Tipo de CANCHA</th>
                             <th>Precio por HORA</th>
                             <th>Acciones</th>
@@ -85,7 +104,7 @@
                             $consulta = $conexion->query("SELECT * FROM cancha");
                             while($fila = $consulta->fetch(PDO::FETCH_ASSOC)){ ?>
                                 <tr>
-                                    <td>#<?php echo $fila['idcancha']; ?></td>
+                                    <!--<td>#<?php echo $fila['idcancha']; ?></td>-->
                                     <td><strong><?php echo $fila['tipo_cancha']; ?></strong></td>
                                     <td>$<?php echo number_format($fila['precio_hora'], 2); ?></td>
                                     <td>
@@ -104,5 +123,8 @@
             </div>
         </div>
     </div>
+
+    <script src="../js/alerta_cliente.js"></script>
+
 </body>
 </html>
