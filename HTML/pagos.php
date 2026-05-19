@@ -32,14 +32,21 @@
                 <img src="../img/flujo-de-efectivo.png" alt="Foto Pagos" class="img-cuadro-pagos">
             </div>
             
-            <?php
-                if(isset($_GET['exito'])){
-                    echo "<div class='alerta-exito'> ✔ Pago registrado y cancha liberada con éxito! </div>";
-                }
-                if(isset($_GET['error']) && $_GET['error'] == 'monto_invalido'){
-                    echo "<div class='alerta-error'> Error: el monto debe ser mayor a cero. </div>";
-                }
-            ?>
+            <?php if(isset($_GET['exito'])): ?>
+                <div class='alerta alerta-exito'>Pago registrado y cancha liberada con éxito!</div>
+            <?php endif; ?>
+
+            <?php if(isset($_GET['mensaje']) && $_GET['mensaje'] === 'eliminado'): ?>
+                <div class="alerta alerta-exito">Pago eliminado correctamente</div>
+            <?php endif; ?>
+
+            <?php if(isset($_GET['error']) && $_GET['error'] == 'monto_invalido'): ?>
+                <div class='alerta alerta-error'>Error: el monto debe ser mayor a cero</div>
+            <?php endif; ?> 
+
+            <?php if(isset($_GET['error']) && $_GET['error'] == 'sin_permisos'): ?>
+                <div class="alerta alerta-error">No tienes permisos para realizar esta acción</div>
+            <?php endif; ?>
 
             <form id="formPago" action="../php/registrar_pagos.php" method="POST" class="reserva-form">
                 
@@ -52,10 +59,16 @@
                                 <option value="">> Elije una RESERVA <</option>
                                 <?php
                                     include '../php/conexion.php';
-                                    $query = $conexion->query("SELECT r.idreservas, c.nombre, c.apellido, can.precio_hora, r.hora_inicio, r.hora_fin, TIMESTAMPDIFF(HOUR, r.hora_inicio, r.hora_fin) AS total_horas FROM reservas r JOIN clientes c ON r.clientes_idclientes = c.idclientes JOIN cancha can ON r.cancha_idcancha = can.idcancha WHERE r.estado = 'Confirmado'");
+                                    
+                                    // Filtramos por r.estado = 'Reservado' para capturar los turnos nuevos pendientes de pago
+                                    $query = $conexion->query("SELECT r.idreservas, c.nombre, c.apellido, can.precio_hora, r.hora_inicio, r.hora_fin, TIMESTAMPDIFF(HOUR, r.hora_inicio, r.hora_fin) AS total_horas 
+                                                               FROM reservas r 
+                                                               JOIN clientes c ON r.clientes_idclientes = c.idclientes 
+                                                               JOIN cancha can ON r.cancha_idcancha = can.idcancha 
+                                                               WHERE r.estado = 'Reservado'");
 
                                     while($reg = $query->fetch(PDO::FETCH_ASSOC)){
-                                        echo "<option value='".$reg['idreservas']."' data-precio= '".$reg['precio_hora']."' data-horas='".$reg['total_horas']."' data-inicio='".$reg['hora_inicio']."' data-fin= '".$reg['hora_fin']."'>#".$reg['idreservas']." - ".$reg['nombre']." ".$reg['apellido']. "</option>";
+                                        echo "<option value='".$reg['idreservas']."' data-precio= '".$reg['precio_hora']."' data-horas='".$reg['total_horas']."' data-inicio='".$reg['hora_inicio']."' data-fin= '".$reg['hora_fin']."'>".$reg['nombre']." ".$reg['apellido']."</option>";
                                     }
                                 ?>
                             </select>
@@ -117,7 +130,6 @@
                 <table class="tabla-moderna">
                     <thead>
                         <tr>
-                            <th>Pago</th>
                             <th>Monto</th>
                             <th>Método</th>
                             <th>Cliente</th>
@@ -127,12 +139,16 @@
                     </thead> 
                     <tbody>
                         <?php
-                            $sql = "SELECT pagos.idpagos, pagos.monto, pagos.metodo_pago, clientes.nombre, clientes.apellido, cancha.tipo_cancha FROM pagos JOIN reservas ON pagos.reservas_idreservas = reservas.idreservas JOIN clientes ON reservas.clientes_idclientes = clientes.idclientes JOIN cancha ON reservas.cancha_idcancha = cancha.idcancha ORDER BY pagos.idpagos DESC";
+                            $sql = "SELECT pagos.idpagos, pagos.monto, pagos.metodo_pago, clientes.nombre, clientes.apellido, cancha.tipo_cancha 
+                                    FROM pagos 
+                                    JOIN reservas ON pagos.reservas_idreservas = reservas.idreservas 
+                                    JOIN clientes ON reservas.clientes_idclientes = clientes.idclientes 
+                                    JOIN cancha ON reservas.cancha_idcancha = cancha.idcancha 
+                                    ORDER BY pagos.idpagos DESC";
                             
                             $resPagos = $conexion->query($sql);
                             while($f = $resPagos->fetch(PDO::FETCH_ASSOC)) { ?>
                             <tr>
-                                <td>#<?php echo $f['idpagos']; ?></td>
                                 <td>$<?php echo number_format($f['monto'], 2); ?></td>
                                 <td><?php echo ucfirst($f['metodo_pago']); ?></td>
                                 <td><?php echo $f['nombre'] . " " . $f['apellido']; ?></td>
@@ -142,7 +158,7 @@
                                         <?php if (isset($_SESSION['usuario_rol']) && (strtolower($_SESSION['usuario_rol']) === 'admin' || strtolower($_SESSION['usuario_rol']) === 'administrador')): ?>
                                             <a href="../php/eliminar_pagos.php?id=<?php echo $f['idpagos']; ?>" class="btn-eliminar" onclick="return confirm('¿Deseas eliminar este pago?')">Eliminar</a>
                                         <?php else: ?>
-                                            <span class="sin-permisos">Protegido</span>
+                                            <span class="sin-permisos">Sin Permisos</span>
                                         <?php endif; ?>
                                     </div>
                                 </td>
@@ -155,5 +171,7 @@
     </div>
 
     <script src="../js/calculos_pagos.js?v=1"></script>
+    <script src="../js/alerta_cliente.js"></script>
+
 </body>
 </html>
