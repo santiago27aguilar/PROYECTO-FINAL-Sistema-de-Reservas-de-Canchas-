@@ -1,51 +1,56 @@
 <?php
-    session_start();
-    include 'conexion.php';
+session_start();
 
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $id_reserva = $_POST["id_reserva"];
-        $monto = $_POST["monto"];
-        $metodo = $_POST["metodo_pago"];
+if (!isset($_SESSION['id_usuario'])) {
+    header("Location: ../html/login.php");
+    exit();
+}
 
-        // Validación del monto
-        if(empty($monto) || $monto <= 0){
-            header("Location: ../html/pagos.php?error=monto_invalido");
-            exit();
-        }
+include 'conexion.php';
 
-        // Limpieza de tarjeta (por si en el futuro la volvés a activar)
-        if($metodo == "TARJETA" && isset($_POST['tipo_tarjeta']) && !empty($_POST['tipo_tarjeta'])){
-            $metodo = "Tarjeta: ". $_POST['tipo_tarjeta'];
-        }
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $id_reserva = $_POST["id_reserva"];
+    $monto = $_POST["monto"];
+    $metodo = $_POST["metodo_pago"];
 
-        $id_usuario = $_SESSION['id_usuario'];
-
-        try {
-            // 1. Insertamos el pago en la tabla
-            $sql = "INSERT INTO pagos (monto, metodo_pago, fecha_pago, usuario_idusuario, reservas_idreservas) VALUES (:monto, :metodo, NOW(), :user, :reserva)";
-            $stmt = $conexion->prepare($sql);
-            
-            // Usamos un array directo en el execute (es más limpio que poner 4 bindParam)
-            if($stmt->execute([':monto' => $monto, ':metodo' => $metodo, ':user' => $id_usuario, ':reserva' => $id_reserva])){
-                
-                // 2. Cambiamos la reserva a 'Pagado' (CON 'O')
-                $sql_update = "UPDATE reservas SET estado = 'Pagado' WHERE idreservas = :reserva";
-                $stmt_update = $conexion->prepare($sql_update);
-                
-                if($stmt_update->execute([':reserva' => $id_reserva])){
-                    
-                    // 3. Liberamos la cancha dejándola en 'Libre' 
-                    $sql_cancha = "UPDATE cancha SET estado = 'Libre' WHERE idcancha = (SELECT cancha_idcancha FROM reservas WHERE idreservas = :reserva)";
-                    $stmt_can = $conexion->prepare($sql_cancha);
-                    $stmt_can->execute([':reserva' => $id_reserva]);
-
-                    // Todo salió perfecto, volvemos a la pantalla
-                    header("Location: ../html/pagos.php?exito=1");
-                    exit();
-                }
-            }
-        } catch(PDOException $e){
-            echo "Error: ". $e->getMessage();
-        }
+    if (empty($monto) || $monto <= 0) {
+        header("Location: ../html/pagos.php?error=monto_invalido");
+        exit();
     }
+
+    if ($metodo == "TARJETA" && isset($_POST['tipo_tarjeta']) && !empty($_POST['tipo_tarjeta'])) {
+        $metodo = "Tarjeta: " . $_POST['tipo_tarjeta'];
+    }
+
+    $id_usuario = $_SESSION['id_usuario'];
+
+    try {
+        $sql = "INSERT INTO pagos (monto, metodo_pago, fecha_pago, usuario_idusuario, reservas_idreservas) VALUES (:monto, :metodo, NOW(), :user, :reserva)";
+        $stmt = $conexion->prepare($sql);
+        
+        if ($stmt->execute([':monto' => $monto, ':metodo' => $metodo, ':user' => $id_usuario, ':reserva' => $id_reserva])) {
+            
+            $sql_update = "UPDATE reservas SET estado = 'Pagado' WHERE idreservas = :reserva";
+            $stmt_update = $conexion->prepare($sql_update);
+            
+            if ($stmt_update->execute([':reserva' => $id_reserva])) {
+
+                $sql_cancha = "UPDATE cancha SET estado = 'Libre' WHERE idcancha = (SELECT cancha_idcancha FROM reservas WHERE idreservas = :reserva)";
+                $stmt_can = $conexion->prepare($sql_cancha);
+                $stmt_can->execute([':reserva' => $id_reserva]);
+
+                header("Location: ../html/pagos.php?exito=1");
+                exit();
+            }
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+} 
+
+else {
+    header("Location: ../html/pagos.php");
+    exit();
+}
+
 ?>
