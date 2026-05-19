@@ -21,12 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $hora_fin_db      = date('Y-m-d H:i:s', $fin_timestamp);
 
     try {
-        // --- VALIDACIÓN DE DISPONIBILIDAD ---
-        // Buscamos si hay algún turno 'Reservado' que se superponga
+        // --- VALIDACIÓN DE DISPONIBILIDAD CORREGIDA ---
+        // Buscamos si hay algún turno activo (no cancelado) que se superponga en esa misma cancha
         $sql_dispo = "SELECT COUNT(*) as ocupado 
                       FROM reservas 
                       WHERE cancha_idcancha = :id_can 
-                      AND estado = 'Reservado' 
+                      AND estado != 'Cancelado' 
                       AND (
                           (hora_inicio < :fin AND hora_fin > :inicio)
                       )";
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt_upd->execute([':nom' => $nombre, ':ape' => $apellido, ':correo' => $correo, ':tel' => $telefono, ':id' => $id_cliente]);
         } else {
             $sql_ins_cli = "INSERT INTO clientes (nombre, apellido, dni, telefono, correo) 
-                            VALUES (:nom, :ape, :dni, :tel, :mail)";
+                             VALUES (:nom, :ape, :dni, :tel, :mail)";
             $stmt_ins_cli = $conexion->prepare($sql_ins_cli);
             $stmt_ins_cli->execute([':nom' => $nombre, ':ape' => $apellido, ':dni' => $dni, ':tel' => $telefono, ':mail' => $correo]);
             $id_cliente = $conexion->lastInsertId();
@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt_res->execute([':inicio' => $hora_inicio_db, ':fin' => $hora_fin_db, ':id_can' => $id_cancha, ':id_cli' => $id_cliente]);
 
         $conexion->commit();
-        // CORRECCIÓN: Agregamos &nom= antes del nombre
+        
         header("Location: ../html/cliente.php?reserva=ok&nom=" . urlencode($nombre) . "&ape=" . urlencode($apellido));
         exit();
 
@@ -86,3 +86,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die("Error: " . $e->getMessage());
     }
 }
+?>
