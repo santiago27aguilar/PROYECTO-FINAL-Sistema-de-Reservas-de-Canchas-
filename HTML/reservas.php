@@ -28,6 +28,19 @@
  
     <div class="container">
         
+        <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'eliminado'): ?>
+            <div class="alerta alerta-exito">Reserva eliminada correctamente</div>
+        <?php endif; ?>
+        <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] === 'registrado'): ?>
+            <div class="alerta alerta-exito">¡Reserva registrada con éxito!</div>
+        <?php endif; ?>
+        <?php if (isset($_GET['error']) && $_GET['error'] === 'sin_permisos'): ?>
+            <div class="alerta alerta-error">No tienes permisos para realizar esta acción</div>
+        <?php endif; ?>
+        <?php if (isset($_GET['error']) && $_GET['error'] === 'horario_ocupado'): ?>
+            <div class="alerta alerta-error">Error: Ese horario ya está ocupado para la cancha seleccionada</div>
+        <?php endif; ?>
+
         <div class="card-blanca"> 
 
             <div class="header-reserva">
@@ -57,7 +70,7 @@
 
                     <div class="form-group">
                         <label>Hora de Inicio</label>
-                        <input type="datetime-local" name="hora_inicio" required>
+                        <input type="time" name="hora_inicio" required>
                     </div>
                     <div class="form-group">
                         <label>Seleccionar Cancha</label>
@@ -74,7 +87,7 @@
 
                     <div class="form-group">
                         <label>Hora de Finalizacion</label>
-                        <input type="datetime-local" name="hora_fin" required>
+                        <input type="time" name="hora_fin" required>
                     </div>
                     <button type="submit" class="btn-guardar btn-full" style="align-self: end;">GUARDAR RESERVA</button>
                     
@@ -83,7 +96,6 @@
         </div>
 
         <div class="seccion-tablas">
-            <!-- Contenedor flex para alinear título a la izq y botones a la der -->
             <div class="header-lista-reservas">
                 <h2 class="titulo-izquierdo">LISTAS DE LAS RESERVAS</h2>
                 <div class="botones-exportar">
@@ -144,5 +156,8 @@
             </div>
         </div>
     </div>
+    
+    <script src="../js/alerta_cliente.js"></script>
+
 </body>
 </html>
