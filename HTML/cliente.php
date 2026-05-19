@@ -27,6 +27,13 @@
         </div>
     <?php endif; ?>
 
+    <?php if (isset($_GET['error']) && $_GET['error'] == 'ocupado'): ?>
+        <div class="mensaje-error">
+            <h3>¡Horario Ocupado!</h3>
+            <p>El horario ya se encuentra reservado. Por favor, Elije otra hora u otra cancha.</p>
+        </div>
+    <?php endif; ?>
+
     <h2>RESERVA TU TURNO</h2>
     <img src="../img/icono-turno.png" alt="Icono" class="icono-usuario">
 
@@ -92,7 +99,6 @@
                     </div>
                 </div>
                 
-                <!-- Cartel de Precio (Alineado con Correo) -->
                 <div class="form-group">
                     <label style="visibility: hidden;">Precio Oculto</label>
                     <div id="cuadro_precio" class="precio-banner invisible">
@@ -105,7 +111,6 @@
             </div>
         </div>
 
-        <!-- Footer del Formulario (Tu diseño original) -->
         <div class="footer-formulario">
             <div class="gestion-container">
                 <a href="../html/mis_reservas.php" class="link-gestion">VER RESERVA - CANCELAR RESERVA</a>
