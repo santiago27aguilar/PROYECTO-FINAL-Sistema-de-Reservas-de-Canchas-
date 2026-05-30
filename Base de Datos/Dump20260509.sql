@@ -20,7 +20,7 @@
 --
 
 DROP TABLE IF EXISTS `cancha`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET @saved_cs_client      = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cancha` (
   `idcancha` int NOT NULL AUTO_INCREMENT,
@@ -46,7 +46,7 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `clientes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET @saved_cs_client      = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `clientes` (
   `idclientes` int NOT NULL AUTO_INCREMENT,
@@ -74,7 +74,7 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `pagos`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET @saved_cs_client      = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pagos` (
   `idpagos` int NOT NULL AUTO_INCREMENT,
@@ -103,7 +103,7 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `reservas`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET @saved_cs_client      = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reservas` (
   `idreservas` int NOT NULL AUTO_INCREMENT,
@@ -137,15 +137,15 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `usuario`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET @saved_cs_client      = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuario` (
   `idusuario` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) DEFAULT NULL,
-  `password` varchar(45) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
   `rol` enum('Administrador','Recepcionista') DEFAULT NULL,
   PRIMARY KEY (`idusuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,7 +154,7 @@ CREATE TABLE `usuario` (
 
 LOCK TABLES `usuario` WRITE;
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'Admin Sistema','1234',''),(7,'admin','1234','Administrador'),(8,'admin','1234','Administrador'),(9,'recep','4321','Recepcionista'),(10,'recep','4321','Recepcionista'),(11,'recep','4321','Recepcionista');
+INSERT INTO `usuario` VALUES (1,'admin','1234','Administrador'),(2,'recep','4321','Recepcionista');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -167,5 +167,3 @@ UNLOCK TABLES;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2026-05-09 17:44:11 // SCRIPT LIMPIO: SISTEMA DE GESTION DE RESERVAS DE CANCHAS
