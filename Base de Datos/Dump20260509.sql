@@ -20,8 +20,6 @@
 --
 
 DROP TABLE IF EXISTS `cancha`;
-/*!40101 SET @saved_cs_client      = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cancha` (
   `idcancha` int NOT NULL AUTO_INCREMENT,
   `tipo_cancha` varchar(50) DEFAULT NULL,
@@ -29,16 +27,9 @@ CREATE TABLE `cancha` (
   `estado` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idcancha`)
 ) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cancha`
---
 
 LOCK TABLES `cancha` WRITE;
-/*!40000 ALTER TABLE `cancha` DISABLE KEYS */;
 INSERT INTO `cancha` VALUES (81,'Futbol 5',5000,'Libre'),(82,'Futbol 7',5000,NULL),(83,'Padel',5000,NULL);
-/*!40000 ALTER TABLE `cancha` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -46,8 +37,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `clientes`;
-/*!40101 SET @saved_cs_client      = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `clientes` (
   `idclientes` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) DEFAULT NULL,
@@ -58,15 +47,8 @@ CREATE TABLE `clientes` (
   `password` varchar(255) NOT NULL, 
   PRIMARY KEY (`idclientes`)
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `clientes`
---
 
 LOCK TABLES `clientes` WRITE;
-/*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
-/*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -74,8 +56,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `pagos`;
-/*!40101 SET @saved_cs_client      = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `pagos` (
   `idpagos` int NOT NULL AUTO_INCREMENT,
   `monto` decimal(10,2) DEFAULT NULL,
@@ -87,15 +67,8 @@ CREATE TABLE `pagos` (
   KEY `fk_pagos_reservas1_idx` (`reservas_idreservas`),
   CONSTRAINT `fk_pagos_reservas1` FOREIGN KEY (`reservas_idreservas`) REFERENCES `reservas` (`idreservas`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `pagos`
---
 
 LOCK TABLES `pagos` WRITE;
-/*!40000 ALTER TABLE `pagos` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pagos` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -103,8 +76,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `reservas`;
-/*!40101 SET @saved_cs_client      = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reservas` (
   `idreservas` int NOT NULL AUTO_INCREMENT,
   `hora_inicio` datetime DEFAULT NULL,
@@ -121,15 +92,8 @@ CREATE TABLE `reservas` (
   CONSTRAINT `fk_reservas_clientes1` FOREIGN KEY (`clientes_idclientes`) REFERENCES `clientes` (`idclientes`),
   CONSTRAINT `fk_reservas_usuario1` FOREIGN KEY (`usuario_idusuario`) REFERENCES `usuario` (`idusuario`)
 ) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `reservas`
---
 
 LOCK TABLES `reservas` WRITE;
-/*!40000 ALTER TABLE `reservas` DISABLE KEYS */;
-/*!40000 ALTER TABLE `reservas` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -137,29 +101,19 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `usuario`;
-/*!40101 SET @saved_cs_client      = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuario` (
   `idusuario` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
-  `rol` enum('Administrador','Recepcionista') DEFAULT NULL,
+  `rol` enum('Administrador','Recepcionista','Duenio') DEFAULT NULL,
   PRIMARY KEY (`idusuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `usuario`
---
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
 
 LOCK TABLES `usuario` WRITE;
-/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'admin','1234','Administrador'),(2,'recep','4321','Recepcionista');
-/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
+INSERT INTO `usuario` VALUES (1,'admin','1234','Administrador'),(2,'recep','4321','Recepcionista'),(3,'duenio','1122','Duenio');
 UNLOCK TABLES;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
