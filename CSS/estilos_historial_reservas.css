@@ -1,0 +1,106 @@
+/* Reset y configuraciones base heredadas */
+* {
+    box-sizing: border-box; 
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #d9d9d9;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; 
+}
+
+/* Tarjeta principal (Adaptada para el historial) */
+.reserva-card {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    padding: 35px 50px;
+    border-radius: 8px;
+}
+
+.reserva-card h2 {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.reserva-card p {
+    text-align: center; 
+    margin-bottom: 25px;
+    color: #333;
+}
+
+/* Estilos de la tabla */
+.tabla-reservas { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-top: 10px; 
+    background-color: white; 
+    border-radius: 8px; 
+    overflow: hidden; 
+}
+
+.tabla-reservas th, .tabla-reservas td { 
+    padding: 12px 15px; 
+    text-align: left; 
+    border-bottom: 1px solid #ddd; 
+}
+
+.tabla-reservas th { 
+    background-color: #2c3e50; 
+    color: white; 
+    font-weight: bold; 
+}
+
+.tabla-reservas tr:hover { 
+    background-color: #f5f5f5; 
+}
+
+/* Etiquetas de estado */
+.estado-pendiente { color: #f39c12; font-weight: bold; }
+.estado-confirmado { color: #27ae60; font-weight: bold; }
+.estado-cancelado { color: #c0392b; font-weight: bold; }
+
+/* Botón Volver con el estilo del sistema */
+.contenedor-boton {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.btn-volver { 
+    display: inline-block; 
+    padding: 12px 25px; 
+    background-color: #34495e; 
+    color: white; 
+    text-decoration: none; 
+    border-radius: 8px; 
+    font-weight: bold;
+    font-size: 16px;
+    transition: all 0.5s ease;
+}
+
+.btn-volver:hover { 
+    background-color: #1a252f; 
+    box-shadow: 0 6px 15px rgba(44, 62, 80, 0.4);
+}
+
+@media (max-width: 850px) {
+    .reserva-card { padding: 25px 30px; }
+}
+
+@media (max-width: 600px) {
+    .btn-volver {
+        width: 100%;
+        display: block;
+    }
+}
