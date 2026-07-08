@@ -8,17 +8,10 @@ if (!isset($_SESSION['usuario_nombre'])) {
     exit();
 }
 
-// 3. VERIFICAR si es ADMIN (El Recepcionista no puede borrar)
-//if ($_SESSION['usuario_rol'] !== 'admin') {
-    // Si no es admin, lo mandamos de vuelta con un aviso de error
-    //header("Location: ../html/inicio.php?error=sin_permisos");
-    //exit();
-//}
-
 $rol_actual = isset($_SESSION['usuario_rol']) ? strtolower(trim($_SESSION['usuario_rol'])) : '';
 
-// 3. Modificamos el IF para que acepte "admin" o "administrador"
-if ($rol_actual !== 'admin' && $rol_actual !== 'administrador') {
+// 3. VERIFICAR PERMISOS (Corregido para incluir al dueño)
+if (!in_array($rol_actual, ['admin', 'administrador', 'duenio', 'dueño'])) {
     header("Location: ../html/inicio.php?error=sin_permisos");
     exit();
 }
@@ -30,20 +23,22 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
     try {
-        $sql = "DELETE FROM clientes WHERE idclientes = :id";
+        // --- PUNTO 6: BORRADO LÓGICO ---
+        // Hacemos un UPDATE para cambiar el estado en vez de borrar el registro
+        $sql = "UPDATE clientes SET estado = 'Inactivo' WHERE idclientes = :id";
         $stmt = $conexion->prepare($sql);
         $stmt->execute([':id' => $id]);
 
-        // Redirigir con mensaje de éxito
+        // Redirigimos con el mismo mensaje de éxito para aprovechar tus alertas verdes
         header("Location: ../html/inicio.php?mensaje=eliminado");
         exit(); 
     } 
     catch (PDOException $e) {
-        // En producción es mejor no mostrar el mensaje de error real ($e)
-        die("Error crítico: No se pudo eliminar el registro.");
+        // Si hay un error de conexión o sintaxis
+        die("Error crítico: No se pudo cambiar el estado del registro. " . $e->getMessage());
     }
 } else {
-    // Si no hay ID, simplemente volvemos al inicio
+    // Si no hay ID, volvemos al inicio
     header("Location: ../html/inicio.php");
     exit();
 }
