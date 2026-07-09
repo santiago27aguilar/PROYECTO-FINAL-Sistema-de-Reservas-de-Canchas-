@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es"> 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +17,7 @@
 
     <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] == 'cancelado'): ?>
         <div class="alerta-exito">
-            ✅ Tu turno ha sido cancelado correctamente ✅
+            Tu turno ha sido cancelado correctamente
         </div>
     <?php endif; ?>
     
@@ -26,7 +26,7 @@
         <div class="form-row-2">
             <div class="form-group">
                 <label>Documento (DNI)</label>
-                <input type="text" name="dni" placeholder="Sin puntos" required>
+                <input type="text" name="dni" placeholder="Sin puntos..." required>
             </div>
 
             <div class="form-group">
@@ -40,6 +40,10 @@
 
     <div class="link-gestion">
         <a href="cliente.php">VOLVER AL FORMULARIO DE RESERVA</a>
+    </div>
+
+    <div class="link-gestion margen-top">
+        <a href="historial_reservas.php" class="link-destacado">VER MI HISTORIAL COMPLETO DE TURNOS</a>
     </div>
 
 </div>
