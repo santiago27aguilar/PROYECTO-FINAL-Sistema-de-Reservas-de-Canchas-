@@ -11,16 +11,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Canchas</title>
-    <link rel="stylesheet" href="../css/estilos_canchas.css?v=2">
+    <title>Gestión de Canchas - Pampa Fútbol</title>
+    <link rel="stylesheet" href="../css/estilos_canchas.css?v=3">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <nav class="navbar">
-        <a href="inicio.php">INICIO (CLIENTES)</a>
-        <a href="reservas.php">RESERVAS</a>
-        <a href="pagos.php">PAGOS</a>
-        <a href="../php/cerrar_sesion.php" class="btn-salir">CERRAR SESION</a>
-    </nav>
+    
+    <div class="navbar">
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <div class="nav-links" id="nav-links">
+
+            <!-- 👑 COSAS QUE ***SOLO*** VE EL DUEÑO -->
+            <?php if(isset($_SESSION['usuario_rol']) && in_array(strtolower($_SESSION['usuario_rol']), ['duenio', 'dueño'])): ?>
+                <a href="dashboard.php">Tablero</a>
+                <a href="personal.php">Personal</a>
+                <a href="calendario.php">Calendario</a> 
+            <?php endif; ?>
+
+            <!-- 👥 COSAS QUE VEN TODOS (Dueño, Admin y Empleados) -->
+            <a href="inicio.php">Clientes</a>
+            <a href="reservas.php">Reservas</a>
+            <a href="canchas.php" class="link-activo">Canchas</a> <!-- Acá está el link activo en verde -->
+            <a href="pagos.php">Pagos</a>
+            
+            <?php if(isset($_SESSION['usuario_nombre']) && isset($_SESSION['usuario_rol'])): ?>
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i> 
+                    <strong><?= htmlspecialchars($_SESSION['usuario_nombre']) ?></strong> 
+                    <span class="user-rol">(<?= htmlspecialchars($_SESSION['usuario_rol']) ?>)</span>
+                </div>
+            <?php endif; ?>
+
+            <a href="../php/cerrar_sesion.php" class="btn-salir">Cerrar Sesion</a>
+        </div>
+    </div>
 
     <div class="container">
 
@@ -58,7 +85,7 @@
 
                     <div class="seccion-form">
                         <div class="form-group">
-                            <label>Tipo de CANCHA:</label>
+                            <label>Tipo de CANCHA: <span class="asterisco">*</span></label>
                             <select name="tipo_cancha" required>
                                 <option value="">> Elije una cancha <</option>
                                 <option value="Futbol 5 - Cancha 1">Futbol 5 - Cancha 1</option>
@@ -74,11 +101,11 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Precio por HORA:</label>
+                            <label>Precio por HORA: <span class="asterisco">*</span></label>
                             <input type="number" name="precio_hora" onkeydown="return event.keyCode !== 69" placeholder="Ej: 5000" autocomplete="off" required>
                         </div>
 
-                        <button type="submit" class="btn-guardar btn-full" style="margin-top: 15px;">GUARDAR CANCHA</button>
+                        <button type="submit" class="btn-guardar btn-full btn-margen">GUARDAR CANCHA</button>
                     </div>
                     
                 </div>
@@ -92,7 +119,6 @@
                 <table class="tabla-moderna">
                     <thead>
                         <tr>
-                            <!--<th>ID</th>-->
                             <th>Tipo de CANCHA</th>
                             <th>Precio por HORA</th>
                             <th>Acciones</th>
@@ -104,16 +130,17 @@
                             $consulta = $conexion->query("SELECT * FROM cancha");
                             while($fila = $consulta->fetch(PDO::FETCH_ASSOC)){ ?>
                                 <tr>
-                                    <!--<td>#<?php echo $fila['idcancha']; ?></td>-->
                                     <td><strong><?php echo $fila['tipo_cancha']; ?></strong></td>
                                     <td>$<?php echo number_format($fila['precio_hora'], 2); ?></td>
                                     <td>
                                         <div class="acciones-flex">
-                                            <?php if (strtolower($_SESSION['usuario_rol']) === 'admin' || strtolower($_SESSION['usuario_rol']) === 'administrador'): ?>
+                                            
+                                            <?php if (in_array(strtolower($_SESSION['usuario_rol']), ['admin', 'administrador', 'duenio', 'dueño'])): ?>
                                                 <a href="../php/eliminar_cancha.php?id=<?php echo $fila['idcancha']; ?>" class="btn-eliminar" onclick="return confirm('¿Deseas eliminar esta cancha?')">Eliminar</a>
                                             <?php else: ?>
                                                 <span class="sin-permisos">Sin Permisos</span>
                                             <?php endif; ?>
+                                            
                                         </div>
                                     </td>
                                 </tr>
@@ -124,6 +151,7 @@
         </div>
     </div>
 
+    <script src="../js/menu_desplegable.js"></script>
     <script src="../js/alerta_cliente.js"></script>
 
 </body>
