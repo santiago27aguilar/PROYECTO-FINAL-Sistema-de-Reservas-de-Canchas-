@@ -3,7 +3,6 @@
     if(!isset($_SESSION['usuario_nombre'])){ header("Location: login.php"); exit(); }
     include '../php/conexion.php';
 
-    // Verificamos que venga un ID por la URL
     if (!isset($_GET['id'])) { header("Location: inicio.php"); exit(); }
 
     $id = $_GET['id'];
@@ -36,33 +35,33 @@
                 <div class="grid-editar-top">
                     
                     <div class="form-group izq">
-                        <label>NOMBRE</label>
+                        <label>NOMBRE <span class="asterisco">*</span></label>
                         <input type="text" name="nombre" value="<?php echo $cliente['nombre']; ?>" required>
                     </div>
                     <div class="form-group der">
-                        <label>DOCUMENTO</label>
+                        <label>DOCUMENTO <span class="asterisco">*</span></label>
                         <input type="number" name="dni" value="<?php echo $cliente['dni']; ?>" required>
                     </div>
 
                     <div class="form-group izq">
-                        <label>APELLIDO</label>
+                        <label>APELLIDO <span class="asterisco">*</span></label>
                         <input type="text" name="apellido" value="<?php echo $cliente['apellido']; ?>" required>
                     </div>
                     <div class="form-group der">
-                        <label>TELEFONO</label>
+                        <label>TELEFONO <span class="asterisco">*</span></label>
                         <input type="text" name="telefono" value="<?php echo $cliente['telefono']; ?>">
                     </div>
 
                 </div>
 
                 <div class="form-group centro correo-container">
-                    <label>CORREO ELECTRONICO</label>
+                    <label>CORREO ELECTRONICO <span class="asterisco">*</span></label>
                     <input type="email" name="correo" value="<?php echo $cliente['correo']; ?>">
                 </div>
 
                 <div class="acciones-container">
                     <button type="submit" class="btn-actualizar">ACTUALIZAR CAMBIOS</button>
-                    <a href="inicio.php" class="link-volver">VOLVER ATRAS &larr;</a>
+                    <a href="inicio.php" class="link-volver">VOLVER ATRAS</a>
                 </div>
                 
             </form>
