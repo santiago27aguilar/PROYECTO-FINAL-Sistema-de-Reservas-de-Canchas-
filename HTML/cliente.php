@@ -1,3 +1,15 @@
+<?php
+session_start();
+if (!isset($_SESSION['id_cliente'])) {
+    header("Location: login_cliente.php");
+    exit();
+}
+
+include '../php/conexion.php';
+
+$nombre_cliente = $_SESSION['cliente_nombre'];
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,12 +22,10 @@
  
 <div class="reserva-card">
 
-    <!-- Mensaje de Éxito -->
     <?php if (isset($_GET['reserva']) && $_GET['reserva'] == 'ok'): ?>
         <?php 
             $num = "5493814152422"; 
-            $nom = isset($_GET['nom']) ? $_GET['nom'] : 'Cliente';
-            $texto = rawurlencode("¡Hola! Soy $nom. Solicité un turno en Pampa Fútbol y quiero confirmar el pago.");
+            $texto = rawurlencode("¡Hola! Soy $nombre_cliente. Solicité un turno en Pampa Fútbol y quiero confirmar el pago.");
         ?>
         <div class="mensaje-exito">
             <h3>¡Turno Reservado con Éxito!</h3>
@@ -27,93 +37,84 @@
         </div>
     <?php endif; ?>
 
-    <?php if (isset($_GET['error']) && $_GET['error'] == 'ocupado'): ?>
+    <?php if (isset($_GET['error'])): ?>
         <div class="mensaje-error">
-            <h3>¡Horario Ocupado!</h3>
-            <p>El horario ya se encuentra reservado. Por favor, Elije otra hora u otra cancha.</p>
+            <?php if ($_GET['error'] == 'ocupado'): ?>
+                <h3>¡Horario Ocupado!</h3>
+                <p>El horario ya se encuentra reservado. Por favor, elige otra hora u otra cancha.</p>
+            <?php elseif ($_GET['error'] == 'fecha_pasada'): ?>
+                <h3>¡Fecha Inválida!</h3>
+                <p>No podés reservar un turno en una fecha que ya pasó. Elegí el día de hoy o una fecha futura.</p>
+            <?php elseif ($_GET['error'] == 'fuera_horario'): ?>
+                <h3>¡Fuera de Horario!</h3>
+                <p>El horario seleccionado está fuera de nuestro rango de atención (15:00 a 00:00 hs).</p>
+            <?php elseif ($_GET['error'] == 'duracion_invalida'): ?>
+                <h3>¡Duración Incorrecta!</h3>
+                <p>Los turnos solo pueden ser en bloques de 1 hora o 2 horas. Por favor, ajustá la duración.</p>
+            <?php else: ?>
+                <h3>¡Error Inesperado!</h3>
+                <p>Ocurrió un problema al intentar procesar tu reserva. Volvé a intentarlo.</p>
+            <?php endif; ?>
         </div>
     <?php endif; ?>
+    
 
     <h2>RESERVA TU TURNO</h2>
     <img src="../img/icono-turno.png" alt="Icono" class="icono-usuario">
 
     <form action="../php/procesar_reserva.php" method="POST">
         
-        <!-- Grilla Principal -->
-        <div class="form-main-grid">
+        <div class="form-main-grid" style="display: block;"> 
             
-            <!-- Columna Izquierda -->
-            <div class="columna-izq">
-                <div class="form-row-2">
-                    <div class="form-group">
-                        <label>Nombre</label><input type="text" name="nombre" required placeholder="Ej: Juan">
-                    </div>
-                    <div class="form-group">
-                        <label>Documento</label><input type="text" name="dni" placeholder="Sin puntos" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                    </div>
-                </div>
-                <div class="form-row-2">
-                    <div class="form-group">
-                        <label>Apellido</label><input type="text" name="apellido" required placeholder="Ej: Perez">
-                    </div>
-                    <div class="form-group">
-                        <label>WhatsApp</label><input type="tel" name="telefono" required placeholder="381......." oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                    </div>
+            <div class="form-row-2">
+                <div class="form-group">
+                    <label>CANCHA<span class="asterisco">*</span></label>
+                    <select name="idcancha" id="id_cancha" required>
+                        <option value="">Seleccionar...</option>
+                        <?php
+                            $q = $conexion->query("SELECT idcancha, tipo_cancha, precio_hora FROM cancha");
+                            while($r = $q->fetch(PDO::FETCH_ASSOC)) {
+                                echo "<option value='".$r['idcancha']."' data-precio='".$r['precio_hora']."'>".$r['tipo_cancha']."</option>";
+                            }
+                        ?>
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label>Correo Electrónico</label><input type="email" name="correo" required placeholder="ejemplo@gmail.com">
+                    <label>FECHA<span class="asterisco">*</span></label>
+                    <input type="date" name="fecha_reserva" id="fecha_reserva" required>
                 </div>
             </div>
 
-            <!-- Columna Derecha -->
-            <div class="columna-der">
-                <div class="form-row-2">
-                    <div class="form-group">
-                        <label>Cancha</label>
-                        <select name="idcancha" id="id_cancha" required>
-                            <option value="">Seleccionar</option>
-                            <?php
-                                include '../php/conexion.php';
-                                $q = $conexion->query("SELECT idcancha, tipo_cancha, precio_hora FROM cancha");
-                                while($r = $q->fetch(PDO::FETCH_ASSOC)) {
-                                    echo "<option value='".$r['idcancha']."' data-precio='".$r['precio_hora']."'>".$r['tipo_cancha']."</option>";
-                                }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="form-group"><label>Fecha</label><input type="date" name="fecha_reserva" id="fecha_reserva" required></div>
-                </div>
-                <div class="form-row-2">
-                    <div class="form-group">
-                        <label>Duración</label>
-                        <select name="duracion" id="duracion_turno">
-                            <option value="1">1 Hora</option>
-                            <option value="2">2 Horas</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Hora Inicio</label>
-                        <select name="hora_inicio" id="hora_reserva" required>
-                            <option value="">Elegir Horario...</option>
-                        </select>
-                    </div>
-                </div>
-                
+            <div class="form-row-2">
                 <div class="form-group">
-                    <label style="visibility: hidden;">Precio Oculto</label>
-                    <div id="cuadro_precio" class="precio-banner invisible">
-                        <p>
-                            <span id="texto_duracion">Total:</span> 
-                            <strong id="precio_final">$0</strong>
-                        </p>
-                    </div>
+                    <label>DURACION<span class="asterisco">*</span></label>
+                    <select name="duracion" id="duracion_turno" required>
+                        <option value="1">1 Hora</option>
+                        <option value="2">2 Horas</option>
+                    </select>
+                </div>
+                <div class="form-group"> 
+                    <label>HORA de INICIO<span class="asterisco">*</span></label>
+                    <select name="hora_inicio" id="hora_reserva" required>
+                        <option value="">Elegir Horario...</option>
+                    </select>
                 </div>
             </div>
+            
+            <div class="form-group">
+                <div id="cuadro_precio" class="precio-banner invisible">
+                    <p>
+                        <span id="texto_duracion">Total:</span> 
+                        <strong id="precio_final">$0</strong>
+                    </p>
+                </div>
+            </div>
+
         </div>
 
         <div class="footer-formulario">
             <div class="gestion-container">
-                <a href="../html/mis_reservas.php" class="link-gestion">VER RESERVA - CANCELAR RESERVA</a>
+                <a href="../html/mis_reservas.php" class="link-gestion">VER MIS RESERVAS</a>
             </div>
             <button type="submit" class="btn-enviar">CONFIRMAR TURNO</button>
         </div>
@@ -122,5 +123,6 @@
 </div>
 
 <script src="../js/logica_reserva.js"></script>
+
 </body>
 </html>
