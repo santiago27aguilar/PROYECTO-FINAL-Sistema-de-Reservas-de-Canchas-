@@ -1,6 +1,3 @@
-/* =========================================
-   RESETEO Y BASE
-   ========================================= */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -23,7 +20,6 @@ body {
     max-width: 720px;
     padding: 50px 60px;
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 h2 {
@@ -34,9 +30,7 @@ h2 {
     text-transform: uppercase;
 }
 
-/* =========================================
-   TARJETAS DE DETALLE (CENTRADO DINÁMICO)
-   ========================================= */
+
 .contenedor-detalle {
     display: flex;
     flex-direction: column;
@@ -77,7 +71,7 @@ h2 {
     align-items: center; 
     justify-content: center;
     padding: 0 15px;
-    margin-right: 100px; /* Centrado real compensando el cuadro-img */
+    margin-right: 100px; 
 }
 
 .label {
@@ -93,9 +87,7 @@ h2 {
     color: #000;
 }
 
-/* =========================================
-   ACCIONES (BOTÓN LARGO Y MENSAJES)
-   ========================================= */
+
 .footer-acciones {
     display: flex;
     flex-direction: column;
@@ -126,8 +118,8 @@ h2 {
 }
 
 .btn-cancelar:hover {
-    background-color: #6f0e0e; /* Se pone un rojo más oscuro (bordó) */
-    box-shadow: 0 6px 15px rgba(101, 5, 5, 0.4); /* Le pone la sombra color rojo */
+    background-color: #6f0e0e; 
+    box-shadow: 0 6px 15px rgba(101, 5, 5, 0.4); 
 }
 
 .link-volver {
@@ -152,7 +144,7 @@ h2 {
 }*/
 
 .cuadro-img-error {
-    background-color: #cc0000; /* Gris para mantener la estética de tus placeholders */
+    background-color: #cc0000; 
     width: 100px;
     height: 100%;
     display: flex;
@@ -171,21 +163,21 @@ h2 {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;    /* Centra horizontalmente */
-    justify-content: center;  /* Centra verticalmente */
+    align-items: center;    
+    justify-content: center;  
     padding: 0 15px;
-    margin-right: 100px;    /* Compensa el cuadro rojo para centrado total */
+    margin-right: 100px;    
 }
 
-/* Estilo del texto de error dentro de la franja */
+
 .dato-error {
     font-size: 18px;
     font-weight: bold;
-    color: #cc0000; /* Rojo para resaltar el error */
+    color: #cc0000; 
     text-align: center;
 }
 
-/* El texto pequeño de ayuda debajo de la franja */
+
 .error-msg-sub {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -196,35 +188,83 @@ h2 {
     max-width: 450px;
 }
 
-/* =========================================
-   MEDIA QUERIES (RESPONSIVO)
-   ========================================= */
+
 @media (max-width: 768px) {
-    .reserva-card { padding: 30px 25px; }
-    .info-texto { margin-right: 80px; }
-    .info-texto-error { margin-right: 80px;}
-    /**/
-    .cuadro-img { width: 80px; }
-    .cuadro-img-error {width: 80px;}
-    /**/
-    .dato { font-size: 20px; }
-    .dato-error { font-size: 20px;}
+    .reserva-card { 
+        padding: 30px 25px; 
+    }
+
+    .info-texto { 
+        margin-right: 80px; 
+    }
+
+    .info-texto-error { 
+        margin-right: 80px;
+    }
+
+    .cuadro-img { 
+        width: 80px; 
+    }
+
+    .cuadro-img-error {
+        width: 80px;
+    }
+
+    .dato { 
+        font-size: 20px; 
+    }
+
+    .dato-error { 
+        font-size: 20px;
+    }
 }
 
 @media (max-width: 480px) {
-    .tarjeta-fila { height: 85px; }
-    .cuadro-img { width: 65px; }
-    .cuadro-img img { width: 35px; }
-    /**/
-    .cuadro-img-error {width: 65px; }
-    .cuadro-img-error img {width: 65px;}
-    /**/
-    .info-texto-error { margin-right: 65px; padding: 0 10px;}
-    .info-texto { margin-right: 65px; padding: 0 10px; }
-    .label { font-size: 12px; }
-    /**/
-    .dato { font-size: 17px; }
-    .dato-error {font-size: 17px;}
-    /**/
-    .btn-cancelar { height: 55px; font-size: 16px; }
+    .tarjeta-fila { 
+        height: 85px; 
+    }
+
+    .cuadro-img { 
+        width: 65px; 
+    }
+
+    .cuadro-img img { 
+        width: 35px; 
+    }
+
+    .cuadro-img-error {
+        width: 65px; 
+    }
+
+    .cuadro-img-error img { 
+        width: 65px;
+    }
+
+    .info-texto-error { 
+        margin-right: 65px; 
+        padding: 0 10px;
+    }
+
+    .info-texto { 
+        margin-right: 65px; 
+        padding: 0 10px; 
+    }
+
+    .label { 
+        font-size: 12px; 
+    }
+
+    .dato { 
+        font-size: 17px; 
+    }
+
+    .dato-error {
+        font-size: 17px;
+    }
+
+    .btn-cancelar { 
+        height: 55px; 
+        font-size: 16px; 
+    }
+
 }
