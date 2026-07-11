@@ -1,0 +1,304 @@
+* {
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #d8d8d8;
+    color: #000;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.navbar {
+    background-color: #000;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    position: relative; 
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+}
+
+.nav-links a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: all 0.5s ease;
+}
+
+.nav-links a:hover { 
+    color: #00ff3c; 
+}
+
+.link-activo {
+    color: #00ff3c !important;
+}
+
+.nav-links .btn-salir {
+    background-color: #e32626;
+    padding: 8px 15px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.nav-links .btn-salir:hover { 
+    background-color: #9b1b1b; 
+    color: #fff; 
+}
+
+.menu-toggle {
+    display: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.user-info {
+    color: #fff;
+    font-size: 14px;
+    margin-left: 10px; 
+    border-left: 2px solid #555;
+    padding-left: 30px; 
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.user-rol {
+    color: #11ac35;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.titulo-calendario {
+    color: #333;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.contenedor-calendario { 
+    background: white; 
+    padding: 20px; 
+    border-radius: 8px; 
+    margin-top: 20px; 
+}
+
+.control-fecha { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    gap: 15px; 
+    margin-bottom: 20px; 
+}
+
+.control-fecha input[type="date"] { 
+    padding: 10px; 
+    border-radius: 5px; 
+    border: 1px solid #ccc; 
+    font-size: 16px; 
+}
+
+.grilla-calendario {
+    display: grid;
+    gap: 5px;
+    background-color: #ecf0f1;
+    padding: 10px;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+.canchas-1 { 
+    grid-template-columns: 80px 1fr; 
+}
+
+.canchas-2 { 
+    grid-template-columns: 80px repeat(2, 1fr); 
+}
+
+.canchas-3 { 
+    grid-template-columns: 80px repeat(3, minmax(150px, 1fr)); 
+}
+
+.canchas-4 { 
+    grid-template-columns: 80px repeat(4, minmax(150px, 1fr)); 
+}
+
+.canchas-5 { 
+    grid-template-columns: 80px repeat(5, minmax(150px, 1fr)); 
+}
+
+.canchas-6 { 
+    grid-template-columns: 80px repeat(6, minmax(150px, 1fr)); 
+}
+
+.celda-header { 
+    background-color: #2c3e50; 
+    color: white; 
+    padding: 12px; 
+    text-align: center; 
+    font-weight: bold; 
+    border-radius: 4px; 
+}
+
+.celda-hora { 
+    background-color: #34495e; 
+    color: white; 
+    padding: 15px 5px; 
+    text-align: center; 
+    font-weight: bold; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    border-radius: 4px; 
+}
+
+.celda-libre { 
+    background-color: #d4edda; 
+    border: 1px solid #c3e6cb; 
+    color: #155724; 
+    padding: 15px; 
+    text-align: center; 
+    border-radius: 4px; 
+    cursor: pointer; 
+    transition: all 0.5s ease; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-weight: bold; 
+}
+
+.celda-libre:hover { 
+    background-color: #c3e6cb; 
+    transform: scale(0.98); 
+}
+
+.celda-ocupado { 
+    background-color: #f8d7da; 
+    border: 1px solid #f5c6cb; 
+    color: #721c24; 
+    padding: 10px; 
+    text-align: center; 
+    border-radius: 4px; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    font-size: 0.9em; 
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.05); 
+}
+
+.celda-continuacion { 
+    background-color: #f8d7da; 
+    border-top: 2px dashed #f5c6cb; 
+    color: #721c24; 
+    opacity: 0.8; 
+}
+
+@media (max-width: 768px) {
+
+    .navbar {
+        justify-content: flex-start; 
+        padding: 15px 20px;
+    }
+    
+    .menu-toggle {
+        display: block; 
+    }
+
+    .nav-links {
+        display: flex; 
+        flex-direction: column;
+        position: absolute;
+        top: 100%; 
+        left: 0;
+        width: 100%;
+        background-color: #000;
+        gap: 15px;
+        z-index: 1000; 
+        box-shadow: 0px 4px 6px rgba(0,0,0,0.3);
+        max-height: 0;
+        padding: 0;
+        opacity: 0;
+        overflow: hidden; 
+        transition: all 0.4s ease-in-out; 
+    }
+
+    .nav-links.active {
+        max-height: 600px;
+        padding-top: 20px;
+        padding-bottom: 30px;
+        opacity: 1; 
+    }
+
+    .nav-links a {
+        padding: 10px 0;
+        width: 100%;
+        text-align: center; 
+    }
+
+    .user-info {
+        margin: 5px 0 10px 0;
+        padding: 15px 0;
+        border-left: none;
+        border-top: 1px solid #333;
+        border-bottom: 1px solid #333;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .nav-links .btn-salir {
+        width: 50%;
+        margin: 10px auto 0 auto; 
+    }
+
+    .contenedor-calendario {
+        padding: 10px;
+        margin-top: 10px;
+    }
+
+    .titulo-calendario {
+        font-size: 22px;
+        margin-bottom: 15px;
+    }
+
+    .control-fecha {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .control-fecha input[type="date"] {
+        width: 100%;
+        text-align: center;
+    }
+
+    .grilla-calendario {
+        padding: 5px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; 
+    }
+
+    .celda-header, .celda-hora, .celda-libre {
+        padding: 8px;
+        font-size: 13px;
+    }
+    
+    .celda-ocupado {
+        padding: 5px;
+        font-size: 0.8em;
+    }
+}
