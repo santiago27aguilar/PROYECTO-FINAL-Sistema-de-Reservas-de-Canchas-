@@ -1,4 +1,6 @@
-* { box-sizing: border-box; }
+* { 
+    box-sizing: border-box; 
+}
 
 body, html {
     height: 100%;
@@ -13,7 +15,7 @@ body, html {
 
 .login-container {
     width: 95%;
-    max-width: 900px; /* Más ancho para las dos columnas */
+    max-width: 900px; 
     padding: 20px;
 }
 
@@ -21,12 +23,11 @@ body, html {
     background: white;
     border-radius: 15px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-    display: flex; /* Activa las dos columnas */
-    overflow: hidden; /* Para que las imágenes no se salgan de los bordes redondeados */
+    display: flex; 
+    overflow: hidden; 
     min-height: 500px;
 }
 
-/* LADO IZQUIERDO: IMÁGENES */
 .left-side {
     flex: 1;
     display: flex;
@@ -51,7 +52,6 @@ body, html {
     height: auto;
 }
 
-/* LADO DERECHO: FORMULARIO */
 .right-side {
     flex: 1.2;
     padding: 50px 40px;
@@ -92,7 +92,7 @@ input {
     width: 100%;
     padding: 14px;
     border: none;
-    background-color: #e8e8e8; /* Gris claro para los inputs */
+    background-color: #e8e8e8; 
     border-radius: 5px;
     font-size: 14px;
 }
@@ -154,13 +154,12 @@ input:focus {
     color: #11ac35;
 }
 
-/* RESPONSIVE: PARA CELULARES */
 @media (max-width: 768px) {
     .login-card {
-        flex-direction: column; /* Una columna arriba de la otra */
+        flex-direction: column; 
     }
     .left-side {
-        display: none; /* Opcional: ocultar imágenes en celular para ahorrar espacio */
+        display: none; 
     }
     .right-side {
         padding: 40px 20px;
