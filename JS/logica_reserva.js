@@ -1,4 +1,3 @@
-// 1. Lógica para el Precio (con el espacio invisible)
 function actualizarPrecio() {
     const selectCancha = document.getElementById('id_cancha');
     const selectDuracion = document.getElementById('duracion_turno');
@@ -23,7 +22,6 @@ function actualizarPrecio() {
     }
 }
 
-// 2. Lógica para buscar los Horarios disponibles
 function actualizarHorarios() {
     const idCancha = document.getElementById('id_cancha').value;
     const fecha = document.getElementById('fecha_reserva').value;
@@ -48,11 +46,16 @@ function actualizarHorarios() {
     }
 }
 
-// 3. Conectores (Acá estaba el error, ahora están todos)
 document.getElementById('id_cancha').addEventListener('change', () => {
     actualizarPrecio();
-    actualizarHorarios(); // Llama a los horarios cuando cambiás la cancha
+    actualizarHorarios(); 
 });
 
-document.getElementById('fecha_reserva').addEventListener('change', actualizarHorarios); // Llama a los horarios cuando ponés la fecha
+document.getElementById('fecha_reserva').addEventListener('change', actualizarHorarios); 
 document.getElementById('duracion_turno').addEventListener('change', actualizarPrecio);
+
+if (window.history.replaceState) {
+    
+    window.history.replaceState(null, null, window.location.pathname);
+}
+
