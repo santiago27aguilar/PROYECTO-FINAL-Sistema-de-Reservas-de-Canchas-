@@ -1,6 +1,3 @@
-/* =========================================
-   RESETEO Y FONDOS
-   ========================================= */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -12,20 +9,16 @@ body {
     background-color: #d9d9d9;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Empieza desde arriba */
+    align-items: flex-start; 
     min-height: 100vh;
-    padding: 50px 20px; /* Espacio para que no se pegue al techo */
+    padding: 50px 20px; 
 }
 
-/* =========================================
-   TARJETA PRINCIPAL
-   ========================================= */
 .reserva-card {
     background-color: #ffffff;
     width: 100%;
     max-width: 600px;
     padding: 40px 50px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     border-radius: 8px;
 }
 
@@ -38,9 +31,6 @@ body {
     text-transform: uppercase;
 }
 
-/* =========================================
-   TEXTOS E ICONOS
-   ========================================= */
 .icono-usuario {
     width: 80px; 
     height: 80px;
@@ -57,9 +47,6 @@ body {
     font-size: 15px;
 }
 
-/* =========================================
-   CARTEL DE ÉXITO (Reemplaza el style en línea)
-   ========================================= */
 .alerta-exito {
     background-color: #d4edda;
     color: #155724;
@@ -71,9 +58,6 @@ body {
     border: 1px solid #c3e6cb;
 }
 
-/* =========================================
-   FORMULARIO Y GRILLA
-   ========================================= */
 .form-row-2 {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -107,9 +91,6 @@ input:focus {
     outline: 2px solid #28a745;
 }
 
-/* =========================================
-   BOTÓN Y LINKS
-   ========================================= */
 .btn-enviar {
     background-color: #28a745;
     color: #ffffff;
@@ -140,16 +121,27 @@ input:focus {
     font-weight: bold;
     transition: all 0.5s ease;
     text-decoration: none;
-
 }
 
 .link-gestion a:hover {
     color: #28a745;
 }
 
-/* =========================================
-   RESPONSIVO
-   ========================================= */
+.margen-top {
+    margin-top: 15px;
+}
+
+.link-gestion .link-destacado {
+    color: #2c3e50;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.link-gestion .link-destacado:hover {
+    color: #1a252f;
+    text-decoration: none; 
+}
+
 @media (max-width: 600px) {
     body {
         padding: 20px 10px;
