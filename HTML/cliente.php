@@ -25,15 +25,21 @@ $nombre_cliente = $_SESSION['cliente_nombre'];
     <?php if (isset($_GET['reserva']) && $_GET['reserva'] == 'ok'): ?>
         <?php 
             $num = "5493814152422"; 
-            $texto = rawurlencode("¡Hola! Soy $nombre_cliente. Solicité un turno en Pampa Fútbol y quiero confirmar el pago.");
+            $texto = rawurlencode("¡Hola! Soy $nombre_cliente. Acabo de solicitar un turno en la web. Te adjunto el comprobante de pago para confirmarlo.");
         ?>
         <div class="mensaje-exito">
-            <h3>¡Turno Reservado con Éxito!</h3>
+            <h3>¡Pre-Reservada realizada con Éxito!</h3>
             <p class="estado-pago">ESTADO: PAGO PENDIENTE</p>
             <div>
                 <a href="https://api.whatsapp.com/send?phone=<?php echo $num; ?>&text=<?php echo $texto; ?>" target="_blank" class="btn-whatsapp">Contactar por WhatsApp</a>
             </div>
-            <p>Si pagás por transferencia, Alias: <span class="alias-destacado">planeta.futbol.padel</span></p>
+            
+            <p class="info-sena">
+                Para <strong>confirmar tu turno definitivamente</strong>, transfiere el monto de la seña (50%) enviando el comprobante.<br>
+                <span class="texto-saldo">El monto restante lo podés abonar en efectivo o continuar pagando con transferencia en el complejo.</span>
+            </p>
+            
+            <p>Si realizas el pago por transferencia (Alias: <span class="alias-destacado">planeta.futbol.padel</span>)</p>
         </div>
     <?php endif; ?>
 
@@ -43,11 +49,11 @@ $nombre_cliente = $_SESSION['cliente_nombre'];
                 <h3>¡Horario Ocupado!</h3>
                 <p>El horario ya se encuentra reservado. Por favor, elige otra hora u otra cancha.</p>
             <?php elseif ($_GET['error'] == 'fecha_pasada'): ?>
-                <h3>¡Fecha Inválida!</h3>
-                <p>No podés reservar un turno en una fecha que ya pasó. Elegí el día de hoy o una fecha futura.</p>
+                <h3>¡Fecha Inválida! o ¡Fuera de Horario!</h3>
+                <p>No podés reservar un turno en una fecha u hora que ya pasó. Elige una fecha futura o cambia de horario.</p>
             <?php elseif ($_GET['error'] == 'fuera_horario'): ?>
                 <h3>¡Fuera de Horario!</h3>
-                <p>El horario seleccionado está fuera de nuestro rango de atención (15:00 a 00:00 hs).</p>
+                <p>El horario seleccionado está fuera de nuestro rango de atención (14:00 a 00:00 hs).</p>
             <?php elseif ($_GET['error'] == 'duracion_invalida'): ?>
                 <h3>¡Duración Incorrecta!</h3>
                 <p>Los turnos solo pueden ser en bloques de 1 hora o 2 horas. Por favor, ajustá la duración.</p>
@@ -64,7 +70,7 @@ $nombre_cliente = $_SESSION['cliente_nombre'];
 
     <form action="../php/procesar_reserva.php" method="POST">
         
-        <div class="form-main-grid" style="display: block;"> 
+        <div class="form-main-grid"> 
             
             <div class="form-row-2">
                 <div class="form-group">
@@ -81,7 +87,7 @@ $nombre_cliente = $_SESSION['cliente_nombre'];
                 </div>
                 <div class="form-group">
                     <label>FECHA<span class="asterisco">*</span></label>
-                    <input type="date" name="fecha_reserva" id="fecha_reserva" required>
+                    <input type="date" name="fecha_reserva" id="fecha_reserva" min="<?php echo date('Y-m-d'); ?>" required>
                 </div>
             </div>
 
