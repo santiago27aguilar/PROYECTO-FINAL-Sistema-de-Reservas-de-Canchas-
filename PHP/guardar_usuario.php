@@ -9,9 +9,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = trim($_POST['nombre']);
     $password = trim($_POST['password']);
     $rol = trim($_POST['rol']);
+    $correo = trim($_POST['correo']);
 
     // Validamos que no vengan vacíos
-    if (!empty($nombre) && !empty($password) && !empty($rol)) {
+    if (!empty($nombre) && !empty($password) && !empty($rol) && !empty($correo)) {
         
         try {
             // A. Primero verificamos que el usuario no exista ya en la base
@@ -29,11 +30,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $passwordEncriptada = password_hash($password, PASSWORD_DEFAULT);
 
             // C. Preparamos la consulta para insertar en tu tabla 'usuario'
-            $stmtInsert = $conexion->prepare("INSERT INTO usuario (nombre, password, rol) VALUES (:nombre, :password, :rol)");
+            $stmtInsert = $conexion->prepare("INSERT INTO usuario (nombre, password, rol, correo) VALUES (:nombre, :password, :rol, :correo)");
             
             $stmtInsert->bindParam(':nombre', $nombre);
             $stmtInsert->bindParam(':password', $passwordEncriptada);
             $stmtInsert->bindParam(':rol', $rol);
+            $stmtInsert->bindParam(':correo', $correo);
 
             // Ejecutamos y volvemos a la pantalla con mensaje de éxito
             if ($stmtInsert->execute()) {
