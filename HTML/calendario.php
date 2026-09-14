@@ -19,8 +19,7 @@
 
     $canchas_stmt = $conexion->query("SELECT idcancha, tipo_cancha FROM cancha");
     $canchas = $canchas_stmt->fetchAll(PDO::FETCH_ASSOC);
-    $cantidad_canchas = count($canchas); 
-
+    
     $sql_reservas = "SELECT r.*, c.nombre, c.apellido, c.telefono FROM reservas r LEFT JOIN clientes c ON r.clientes_idclientes = c.idclientes WHERE DATE(r.hora_inicio) = :fecha";
     
     $reservas_stmt = $conexion->prepare($sql_reservas);
@@ -33,15 +32,20 @@
         $hora_fin = (int)date('H', strtotime($reserva['hora_fin']));
         $duracion = $hora_fin - $hora_inicio; 
         
+        // Corrección por si el turno pasa la medianoche
+        if ($duracion < 0) $duracion += 24; 
+        
         $matriz_reservas[$reserva['cancha_idcancha']][$hora_inicio] = $reserva;
         
         if ($duracion == 2) {
-            $matriz_reservas[$reserva['cancha_idcancha']][$hora_inicio + 1] = 'bloque_continuacion';
+            $hora_sig = ($hora_inicio + 1) % 24;
+            $matriz_reservas[$reserva['cancha_idcancha']][$hora_sig] = 'bloque_continuacion';
         }
     }
 
-    $horario_apertura = 15; 
-    $horario_cierre = 22; 
+    // --- RANGO DE HORARIOS AJUSTADO ---
+    $horario_apertura = 14; 
+    $horario_cierre = 24; 
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +54,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendario de Reservas - Pampa Fútbol</title>
-    <link rel="stylesheet" href="../css/estilos_calendario.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="../css/estilos_calendario.css?v=<?php echo time() + 1; ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -90,48 +94,62 @@
                 <input type="date" name="fecha" value="<?php echo $fecha_seleccionada; ?>" onchange="this.form.submit()">
             </form>
 
-            <div class="grilla-calendario canchas-<?php echo $cantidad_canchas; ?>">
-                
-                <div class="celda-header"><i class="far fa-clock"></i> Hora</div>
-                <?php foreach ($canchas as $cancha): ?>
-                    <div class="celda-header"><?php echo htmlspecialchars($cancha['tipo_cancha']); ?></div>
-                <?php endforeach; ?>
+            <div class="table-responsive-wrapper">
+                <table class="tabla-moderna tabla-calendario">
+                    <thead>
+                        <tr>
+                            <th class="celda-header"><i class="far fa-clock"></i> Hora</th>
+                            <?php foreach ($canchas as $cancha): ?>
+                                <th class="celda-header"><?php echo htmlspecialchars($cancha['tipo_cancha']); ?></th>
+                            <?php endforeach; ?>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php for ($hora = $horario_apertura; $hora <= $horario_cierre; $hora++): ?>
+                            <?php 
+                                // Convertimos el 24 en 0 para la base de datos y la vista
+                                $hora_real = ($hora == 24) ? 0 : $hora;
+                                $texto_hora = str_pad($hora_real, 2, '0', STR_PAD_LEFT); 
+                            ?>
+                            <tr>
+                                <td class="celda-hora"><strong><?php echo $texto_hora; ?>:00</strong></td>
 
-                <?php for ($hora = $horario_apertura; $hora <= $horario_cierre; $hora++): ?>
-                    
-                    <div class="celda-hora"><?php echo str_pad($hora, 2, '0', STR_PAD_LEFT); ?>:00</div>
-
-                    <?php foreach ($canchas as $cancha): ?>
-                        <?php 
-                            $idcancha = $cancha['idcancha'];
-                            
-                            if (isset($matriz_reservas[$idcancha][$hora])) {
-                                $reserva = $matriz_reservas[$idcancha][$hora];
-                                
-                                if ($reserva === 'bloque_continuacion') {
-                                    echo "<div class='celda-ocupado celda-continuacion'><small>(Continuación)</small></div>";
-                                } else {
-                                    $nombre_cliente = htmlspecialchars($reserva['nombre'] . " " . $reserva['apellido']);
-                                    $telefono = htmlspecialchars($reserva['telefono'] != '' ? $reserva['telefono'] : 'No registrado');
-                                    
-                                    echo "<div class='celda-ocupado' style='cursor: pointer;' onclick=\"alert('DATOS DEL TURNO\\n\\nJugador: {$nombre_cliente}\\nTeléfono: {$telefono}')\" title='Clic para ver datos'>";
-                                    echo "<strong>{$nombre_cliente}</strong>";
-                                    echo "<br><small>Turno Confirmado</small>";
-                                    echo "</div>";
-                                }
-                            } else {
-                                $hora_exacta = str_pad($hora, 2, '0', STR_PAD_LEFT) . ':00';
-                                $enlace = "reservas.php?cancha_pre={$idcancha}&fecha_pre={$fecha_seleccionada}&hora_pre={$hora_exacta}";
-                                
-                                echo "<a href='{$enlace}' class='celda-libre' style='text-decoration: none;' title='Hacer reserva'>";
-                                echo "<i class='fas fa-plus-circle'></i> Libre";
-                                echo "</a>";
-                            }
-                        ?>
-                    <?php endforeach; ?>
-                <?php endfor; ?>
-                
+                                <?php foreach ($canchas as $cancha): ?>
+                                    <?php 
+                                        $idcancha = $cancha['idcancha'];
+                                        
+                                        if (isset($matriz_reservas[$idcancha][$hora_real])) {
+                                            $reserva = $matriz_reservas[$idcancha][$hora_real];
+                                            
+                                            if ($reserva === 'bloque_continuacion') {
+                                                echo "<td class='celda-ocupado celda-continuacion'><small>(Continuación)</small></td>";
+                                            } else {
+                                                $nombre_cliente = htmlspecialchars($reserva['nombre'] . " " . $reserva['apellido']);
+                                                $telefono = htmlspecialchars($reserva['telefono'] != '' ? $reserva['telefono'] : 'No registrado');
+                                                
+                                                echo "<td class='celda-ocupado' style='cursor: pointer;' onclick=\"alert('DATOS DEL TURNO\\n\\nJugador: {$nombre_cliente}\\nTeléfono: {$telefono}')\" title='Clic para ver datos'>";
+                                                echo "<strong>{$nombre_cliente}</strong><br>";
+                                                echo "<small>Confirmado</small>";
+                                                echo "</td>";
+                                            }
+                                        } else {
+                                            $hora_exacta = $texto_hora . ':00';
+                                            $enlace = "reservas.php?cancha_pre={$idcancha}&fecha_pre={$fecha_seleccionada}&hora_pre={$hora_exacta}";
+                                            
+                                            echo "<td class='celda-vacia'>";
+                                            echo "<a href='{$enlace}' class='celda-libre' title='Hacer reserva'>";
+                                            echo "<i class='fas fa-plus-circle'></i> Libre";
+                                            echo "</a>";
+                                            echo "</td>";
+                                        }
+                                    ?>
+                                <?php endforeach; ?>
+                            </tr>
+                        <?php endfor; ?>
+                    </tbody>
+                </table>
             </div>
+
         </div>
     </div>
 
