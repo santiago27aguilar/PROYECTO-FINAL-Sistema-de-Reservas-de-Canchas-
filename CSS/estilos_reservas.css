@@ -41,7 +41,7 @@ body {
 }
 
 .nav-links a:hover { 
-    color: #00ff3c; 
+    color: #ffffff; 
 }
 
 .navbar .nav-links a.link-activo {
@@ -243,7 +243,88 @@ input:focus, select:focus{
     border-bottom: 1px solid #ccc; 
 }
 
-.btn-eliminar { 
+/* COLORES DE ESTADOS DE RESERVA */
+.estado-pendiente {
+    color: #ef6c00;
+    font-weight: bold;
+}
+.estado-confirmado {
+    color: #2e7d32;
+    font-weight: bold;
+}
+.estado-pagado {
+    color: #1976d2;
+    font-weight: bold;
+}
+.estado-cancelado {
+    color: #c62828;
+    font-weight: bold;
+}
+
+.acciones-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap; 
+}
+
+.btn-confirmar {
+    background-color: #2614c2;
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 4px;
+    white-space: nowrap;
+    transition: all 0.5s ease;
+}
+.btn-confirmar:hover { 
+    background-color: #1c1266; 
+}
+
+.btn-cancelar {
+    background-color: #f39c12;
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 4px;
+    white-space: nowrap;
+    transition: all 0.5s ease;
+}
+.btn-cancelar:hover { 
+    background-color: #c27d0c; 
+}
+
+/* NUEVO BOTON PARA COBRAR */
+.btn-cobrar {
+    background-color: #1976d2; 
+    color: white;
+    padding: 8px 12px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 4px;
+    white-space: nowrap;
+    transition: all 0.5s ease;
+}
+.btn-cobrar:hover {
+    background-color: #115293;
+}
+
+/* NUEVO TEXTO CUANDO ESTÁ PAGADO */
+.texto-pagado {
+    font-size: 13px;
+    font-weight: bold;
+    color: #1976d2;
+    white-space: nowrap;
+    padding: 8px 0;
+}
+
+.btn-borrar {
     background-color: #e60b0b;
     color: white;
     padding: 8px 12px;
@@ -251,6 +332,11 @@ input:focus, select:focus{
     font-size: 13px;
     font-weight: bold;
     border-radius: 4px;
+    white-space: nowrap;
+    transition: all 0.5s ease;
+}
+.btn-borrar:hover { 
+    background-color: #a30707; 
 }
 
 .alerta {
