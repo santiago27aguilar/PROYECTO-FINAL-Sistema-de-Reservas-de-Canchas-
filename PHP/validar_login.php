@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $datos = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // AJUSTE AQUÍ: Usamos password_verify en lugar de ===
+        // Usamos password_verify en lugar de ===
         if ($datos && password_verify($password, $datos['password'])) {
             
             session_regenerate_id(true);
@@ -36,8 +36,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit(); 
             
         } else {
-            // El usuario o la contraseña son incorrectos
-            header("Location: ../html/login.php?error=incorrecto");
+            // NUEVO: Guardamos el error en la sesión en vez de pasarlo por la URL
+            $_SESSION['error_login'] = "Usuario o contraseña incorrectos";
+            header("Location: ../html/login.php");
             exit();
         }
     } 
