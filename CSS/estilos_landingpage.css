@@ -1,0 +1,238 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #dbdbdb;
+    color: #000;
+}
+
+/* --- HEADER --- */
+.navbar-landing {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    background-color: #00aa00; 
+    position: relative; /* Necesario para posicionar el menú en móviles */
+    z-index: 1000;
+}
+
+.logo h1 {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Ocultamos el ícono de hamburguesa en la compu */
+.menu-toggle {
+    display: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.botones-auth {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-auth {
+    background-color: #006600; 
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.5s ease;
+    border-radius: 4px;
+}
+
+.btn-auth:hover {
+    background-color: #004400;
+}
+
+/* --- BANNER (HERO) - NUEVA ESTRUCTURA --- */
+.contenedor-banner {
+    margin: 50px 50px; 
+    border-radius: 8px; 
+    overflow: hidden; /* Aplica bordes redondos a todo el conjunto */
+    display: flex;
+    flex-direction: column;
+}
+
+.banner-cancha {
+    background-color: #a3a3a3; 
+    background-image: url('../img/cancha-logo.jpeg'); 
+    background-size: cover;
+    background-position: center;
+    height: 500px; /* Altura de la foto (podés ajustarla si querés) */
+    width: 100%;
+}
+
+.banner-overlay {
+    background: radial-gradient(#056d29 0%, #02200d 100%);
+    width: 100%;
+    padding: 20px 30px;
+    color: white;
+}
+
+.titulo-complejo {
+    font-size: 24px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.banner-overlay p {
+    font-size: 16px;
+    color: #f1f1f1;
+}
+
+/* --- MAPA E INFO --- */
+.info-complejo {
+    padding: 20px 50px 60px 50px;
+}
+
+.titulo-seccion {
+    font-size: 22px;
+    color: #000000;
+    text-align: left;
+    margin-left: 295px; 
+    margin-bottom: 30px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.grid-info {
+    display: grid;
+    grid-template-columns: 2fr 1fr; 
+    gap: 30px;
+}
+
+.mapa-iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 450px;
+    border: none;
+    background-color: #bcbcbc; 
+    border-radius: 8px;
+}
+
+.datos-club {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; 
+}
+
+.tarjeta-verde {
+    background-color: #00aa00; 
+    color: white;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 110px;
+    border-radius: 8px;
+}
+
+.tarjeta-verde h4 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tarjeta-verde p {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+/* --- FOOTER --- */
+.footer-landing {
+    text-align: center;
+    padding: 20px;
+    background-color: #00aa00;
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+/* =========================================
+   RESPONSIVE (Para Celulares y Tablets)
+   ========================================= */
+@media (max-width: 850px) {
+    /* Achicamos padding general */
+    .navbar-landing {
+        padding: 15px 20px;
+    }
+    
+    .logo h1 {
+        font-size: 18px; 
+    }
+
+    /* Mostramos la hamburguesa */
+    .menu-toggle {
+        display: block; 
+    }
+
+    /* Modificamos el contenedor de botones para que sea un menú desplegable */
+    .botones-auth {
+        flex-direction: column;
+        position: absolute;
+        top: 100%; 
+        left: 0;
+        width: 100%;
+        background-color: #00aa00;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out;
+    }
+
+    /* Clase que se activa con Javascript al tocar la hamburguesa */
+    .botones-auth.active {
+        max-height: 200px;
+        padding: 0 20px 20px 20px;
+    }
+
+    .btn-auth {
+        width: 100%; 
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    /* Ajustes visuales de la página */
+    .contenedor-banner {
+        margin: 15px; /* Quitamos los márgenes blancos gigantes en móvil */
+    }
+
+    .banner-cancha {
+        height: 250px; /* Hacemos la foto más petisa para que no ocupe toda la pantalla del celu */
+    }
+
+    .titulo-complejo {
+        font-size: 18px; 
+    }
+
+    .info-complejo {
+        padding: 15px; 
+    }
+
+    .titulo-seccion {
+        margin-left: 0; 
+        text-align: center; 
+    }
+
+    .grid-info {
+        grid-template-columns: 1fr; 
+    }
+
+    .mapa-iframe {
+        height: 300px; 
+    }
+}
