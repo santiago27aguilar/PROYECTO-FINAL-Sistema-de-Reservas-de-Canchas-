@@ -11,7 +11,7 @@ $token = $_GET['token'];
 
 try {
     // Verificamos si el token existe en la base de datos
-    $sql = "SELECT correo FROM recuperacion_clave_clientes WHERE token = :token LIMIT 1";
+    $sql = "SELECT correo FROM recuperacion_de_clave_clientes WHERE token = :token LIMIT 1";
     $stmt = $conexion->prepare($sql);
     $stmt->execute([':token' => $token]);
     $registro = $stmt->fetch(PDO::FETCH_ASSOC);
