@@ -10,7 +10,7 @@
     $busqueda = isset($_GET['buscar']) ? $_GET['buscar'] : '';
     
     // --- CONFIGURACIÓN DE PAGINACIÓN ---
-    $registros_por_pagina = 5; 
+    $registros_por_pagina = 5;
     $pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
     if ($pagina_actual < 1) $pagina_actual = 1;
     $offset = ($pagina_actual - 1) * $registros_por_pagina;
@@ -58,19 +58,19 @@
             <?php if(isset($_SESSION['usuario_rol']) && in_array(strtolower($_SESSION['usuario_rol']), ['duenio', 'dueño'])): ?>
                 <a href="dashboard.php">Tablero</a>
                 <a href="personal.php">Personal</a>
-                <a href="calendario.php">Calendario</a> 
+                <a href="calendario.php">Calendario</a>
             <?php endif; ?>
             
             <!-- 👥 COSAS QUE VEN TODOS (Dueño, Admin y Empleados) -->
-            <a href="inicio.php" class="link-activo">Clientes</a> <!-- Acá está el link verde -->
+            <a href="inicio.php" class="link-activo">Clientes</a>
             <a href="reservas.php">Reservas</a>
             <a href="canchas.php">Canchas</a>
             <a href="pagos.php">Pagos</a>
             
             <?php if(isset($_SESSION['usuario_nombre']) && isset($_SESSION['usuario_rol'])): ?>
                 <div class="user-info">
-                    <i class="fas fa-user-circle"></i> 
-                    <strong><?= htmlspecialchars($_SESSION['usuario_nombre']) ?></strong> 
+                    <i class="fas fa-user-circle"></i>
+                    <strong><?= htmlspecialchars($_SESSION['usuario_nombre']) ?></strong>
                     <span class="user-rol">(<?= htmlspecialchars($_SESSION['usuario_rol']) ?>)</span>
                 </div>
             <?php endif; ?>
@@ -79,10 +79,33 @@
     </div>
 
     <div class="container">  
-        <!--<div class="header-titulo">
-            <h1>PANEL DE CLIENTES</h1>
-            <img src="../img/icono-usuario.png" alt="Icono Usuario" class="icono-usuario">
-        </div>-->
+
+        <!-- INICIO DE ALERTAS -->
+        <?php if(isset($_GET['mensaje']) && $_GET['mensaje'] == 'reactivado'): ?>
+            <div class="alerta alerta-exito">
+                ¡Cliente reactivado correctamente!
+            </div>
+        <?php endif; ?>
+
+        <!-- ESTE ES EL NUEVO CARTEL DE SUSPENSIÓN -->
+        <?php if(isset($_GET['mensaje']) && $_GET['mensaje'] == 'suspendido'): ?>
+            <div class="alerta alerta-exito">
+                ¡Cliente suspendido correctamente!
+            </div>
+        <?php endif; ?>
+
+        <?php if(isset($_GET['error']) && $_GET['error'] == 'sin_permisos'): ?>
+            <div class="alerta alerta-error">
+                No tienes permisos para realizar esta acción.
+            </div>
+        <?php endif; ?>
+        
+        <?php if(isset($_GET['error']) && $_GET['error'] == 'fallo_db'): ?>
+            <div class="alerta alerta-error">
+                Ocurrió un error en la base de datos al intentar procesar la solicitud.
+            </div>
+        <?php endif; ?>
+        <!-- FIN DE ALERTAS -->
         
         <div class="card-blanca">
             <h2>REGISTRAR NUEVO CLIENTE</h2>
@@ -108,7 +131,6 @@
                         <label>Correo <span class="asterisco">*</span></label>
                         <input type="email" name="correo" placeholder="email@ejemplo.com">
                     </div>
-                    <!-- Agregada la clase align-self-end en vez del style -->
                     <button type="submit" class="btn-guardar btn-full align-self-end">GUARDAR CLIENTE</button>
                 </div>
             </form>
@@ -126,7 +148,6 @@
                 </div>
             </div>
 
-            <!-- Agregada la clase d-none en vez del style -->
             <form id="form-real" method="GET" action="inicio.php" class="d-none">
                 <input type="hidden" name="buscar" value="<?php echo htmlspecialchars($busqueda); ?>">
             </form>
@@ -138,7 +159,7 @@
                             <th>Cliente</th>
                             <th>DNI</th>
                             <th>Teléfono</th>
-                            <th>Acciones</th> 
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -154,7 +175,6 @@
                                         <div class="acciones-flex">
                                             <a href="editar_cliente.php?id=<?php echo $fila['idclientes'];?>" class="btn-editar">Editar</a>
                                             <?php if (in_array(strtolower($rol_usuario), ['admin', 'administrador', 'duenio', 'dueño'])): ?>
-                                                <!-- Agregada la clase btn-suspender en vez del style naranja -->
                                                 <a href="../php/eliminar_cliente.php?id=<?php echo $fila['idclientes'];?>" class="btn-eliminar btn-suspender" onclick="return confirm('¿Deseas suspender a este cliente?')">Suspender</a>
                                             <?php else: ?>
                                                 <span class="sin-permisos">Sin permisos</span>
@@ -170,9 +190,9 @@
 
             <?php if($total_paginas > 1): ?>
                 <div class="paginacion-wrapper">
-                    <?php 
+                    <?php
                         $url_busqueda = !empty($busqueda) ? "&buscar=".urlencode($busqueda) : "";
-                        if($pagina_actual > 1): 
+                        if($pagina_actual > 1):
                     ?>
                         <a href="?pagina=<?php echo $pagina_actual - 1; ?><?php echo $url_busqueda; ?>" class="btn-pag">&laquo; Anterior</a>
                     <?php endif; ?>
@@ -188,18 +208,16 @@
             <?php endif; ?>
         </div>
 
-        <!-- Agregada la clase mt-30 en vez del style -->
         <div class="seccion-clientes mt-30">
             <h2 style="color: #666;">CLIENTES INACTIVOS (SUSPENDIDOS)</h2>
             <div class="table-responsive-wrapper">
-                <!-- Agregada la clase tabla-opaca en vez del style -->
                 <table class="tabla-moderna tabla-opaca">
                     <thead>
                         <tr>
                             <th>Cliente</th>
                             <th>DNI</th>
                             <th>Teléfono</th>
-                            <th>Acciones</th> 
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -214,7 +232,6 @@
                                     <td>
                                         <div class="acciones-flex">
                                             <?php if (in_array(strtolower($rol_usuario), ['admin', 'administrador', 'duenio', 'dueño'])): ?>
-                                                <!-- Agregada la clase btn-reactivar en vez del style verde -->
                                                 <a href="../php/reactivar_cliente.php?id=<?php echo $fila['idclientes'];?>" class="btn-editar btn-reactivar" onclick="return confirm('¿Restaurar a este cliente?')">Reactivar</a>
                                             <?php else: ?>
                                                 <span class="sin-permisos">Sin permisos</span>
