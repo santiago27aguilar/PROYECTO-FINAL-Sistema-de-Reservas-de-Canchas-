@@ -84,7 +84,6 @@
                                 <?php
                                     include '../php/conexion.php';
                                     
-                                    // LA ÚNICA LÍNEA MODIFICADA: r.estado = 'Confirmado'
                                     $query = $conexion->query("SELECT r.idreservas, c.nombre, c.apellido, can.precio_hora, r.hora_inicio, r.hora_fin, TIMESTAMPDIFF(HOUR, r.hora_inicio, r.hora_fin) AS total_horas FROM reservas r JOIN clientes c ON r.clientes_idclientes = c.idclientes JOIN cancha can ON r.cancha_idcancha = can.idcancha WHERE r.estado = 'Confirmado'");
 
                                     while($reg = $query->fetch(PDO::FETCH_ASSOC)){
@@ -152,6 +151,7 @@
                         <tr>
                             <th>Monto</th>
                             <th>Método</th>
+                            <th>Detalle del Pago</th> <!-- ACÁ AGREGAMOS EL ENCABEZADO -->
                             <th>Cliente</th>
                             <th>Cancha</th>
                             <th>Acciones</th>
@@ -159,13 +159,23 @@
                     </thead> 
                     <tbody>
                         <?php
-                            $sql = "SELECT pagos.idpagos, pagos.monto, pagos.metodo_pago, clientes.nombre, clientes.apellido, cancha.tipo_cancha FROM pagos JOIN reservas ON pagos.reservas_idreservas = reservas.idreservas JOIN clientes ON reservas.clientes_idclientes = clientes.idclientes JOIN cancha ON reservas.cancha_idcancha = cancha.idcancha ORDER BY pagos.idpagos DESC";
+                            // ACÁ AGREGAMOS pagos.detalle_senia AL SELECT DE LA BASE DE DATOS
+                            $sql = "SELECT pagos.idpagos, pagos.monto, pagos.metodo_pago, pagos.detalle_senia, clientes.nombre, clientes.apellido, cancha.tipo_cancha FROM pagos JOIN reservas ON pagos.reservas_idreservas = reservas.idreservas JOIN clientes ON reservas.clientes_idclientes = clientes.idclientes JOIN cancha ON reservas.cancha_idcancha = cancha.idcancha ORDER BY pagos.idpagos DESC";
                             
                             $resPagos = $conexion->query($sql);
                             while($f = $resPagos->fetch(PDO::FETCH_ASSOC)) { ?>
                             <tr>
                                 <td>$<?php echo number_format($f['monto'], 2); ?></td>
                                 <td><?php echo ucfirst($f['metodo_pago']); ?></td>
+                                
+                                <!-- ACÁ IMPRIMIMOS EL DATO EN LA CELDA -->
+                                <td>
+                                    <?php 
+                                        // Si el campo está vacío (por los pagos viejos), mostramos un guión, sino mostramos si es Seña o Saldo
+                                        echo !empty($f['detalle_senia']) ? $f['detalle_senia'] : '-'; 
+                                    ?>
+                                </td>
+                                
                                 <td><?php echo $f['nombre'] . " " . $f['apellido']; ?></td>
                                 <td><?php echo $f['tipo_cancha']; ?></td>
                                 <td>
