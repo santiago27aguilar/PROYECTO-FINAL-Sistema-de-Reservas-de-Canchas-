@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         // 1. Buscamos el correo asociado a ese token
-        $sql_token = "SELECT correo FROM recuperacion_clave_clientes WHERE token = :token LIMIT 1";
+        $sql_token = "SELECT correo FROM recuperacion_de_clave_clientes WHERE token = :token LIMIT 1";
         $stmt_token = $conexion->prepare($sql_token);
         $stmt_token->execute([':token' => $token]);
         $registro = $stmt_token->fetch(PDO::FETCH_ASSOC);
@@ -27,11 +27,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt_update->execute([':pass' => $password_hasheada, ':correo' => $correo]);
 
             // 4. Borramos el token para que no se pueda reutilizar el enlace
-            $sql_delete = "DELETE FROM recuperacion_clave_clientes WHERE correo = :correo";
+            $sql_delete = "DELETE FROM recuperacion_de_clave_clientes WHERE correo = :correo";
             $stmt_delete = $conexion->prepare($sql_delete);
             $stmt_delete->execute([':correo' => $correo]);
 
             $conexion->commit();
+
+            sleep(4);
 
             // Éxito completo, lo mandamos al login avisando que ya cambió
             header("Location: ../html/login_cliente.php?mensaje=password_cambiada");
