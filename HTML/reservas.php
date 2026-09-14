@@ -36,7 +36,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion de Reservas - Pampa Fútbol</title>
-    <link rel="stylesheet" href="../css/estilos_reservas.css?v=2">
+    <link rel="stylesheet" href="../css/estilos_reservas.css?v=5">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -88,6 +88,13 @@
             <div class="alerta alerta-error">El horario ya está ocupado para la cancha seleccionada</div>
         <?php endif; ?>
         
+        <!-- NUEVO CARTEL DE ERROR POR PAGO ASOCIADO -->
+        <?php if (isset($_GET['error']) && $_GET['error'] === 'tiene_pago'): ?>
+            <div class="alerta alerta-error">
+                <strong>Error:</strong> Esta reserva ya tiene un pago realizado. Debes ir a la sección de "Pagos", eliminar el registro correspondiente y luego intentar borrar la reserva nuevamente.
+            </div>
+        <?php endif; ?>
+        
         <div class="card-blanca"> 
             <div class="header-reserva">
                 <h2 class="titulo-centrado">REGISTRAR NUEVA RESERVA</h2>
@@ -114,7 +121,7 @@
                     </div>
                     <div class="form-group">
                         <label>Hora de Inicio <span class="asterisco">*</span></label>
-                        <input type="time" name="hora_inicio" value="<?php echo htmlspecialchars($hora_pre); ?>" required>
+                        <input type="time" name="hora_inicio" min="14:00" max="23:59" value="<?php echo htmlspecialchars($hora_pre); ?>" required>
                     </div>
                     <div class="form-group">
                         <label>Seleccionar Cancha <span class="asterisco">*</span></label>
@@ -132,7 +139,7 @@
                     </div>
                     <div class="form-group">
                         <label>Hora de Finalizacion <span class="asterisco">*</span></label>
-                        <input type="time" name="hora_fin" value="<?php echo htmlspecialchars($hora_fin_pre); ?>" required>
+                        <input type="time" name="hora_fin" min="15:00" max="23:59" value="<?php echo htmlspecialchars($hora_fin_pre); ?>" required>
                     </div>
                     <button type="submit" class="btn-guardar btn-full">GUARDAR RESERVA</button>
                 </div>
@@ -178,13 +185,9 @@
                                 $horaF = date("H:i", strtotime($fila['hora_fin']));
                                 $nombreCompleto = $fila['nombre'] . " " . $fila['apellido'];
                                 
-                                // Color para la columna estado
-                                $color_estado = '#333';
+                                // Clase CSS dinámica para la columna estado
                                 $estado_texto = isset($fila['estado']) ? $fila['estado'] : 'Pendiente';
-
-                                if($estado_texto == 'Confirmado') $color_estado = '#2e7d32'; // Verde
-                                if($estado_texto == 'Cancelado') $color_estado = '#c62828'; // Rojo
-                                if($estado_texto == 'Pendiente') $color_estado = '#ef6c00'; // Naranja
+                                $clase_estado = 'estado-' . strtolower($estado_texto);
                         ?>
                         <tr>
                             <td><?php echo htmlspecialchars($nombreCompleto); ?></td>
@@ -192,7 +195,7 @@
                             <td><?php echo $soloFecha; ?></td>
                             <td><?php echo $horaI . " a " . $horaF; ?> hs</td>
                             
-                            <td style="color: <?php echo $color_estado; ?>; font-weight: bold;">
+                            <td class="<?php echo $clase_estado; ?>">
                                 <?php echo strtoupper($estado_texto); ?>
                             </td>
                             
@@ -203,13 +206,22 @@
                                 <div class="acciones-flex">
                                     <?php if (in_array(strtolower($rol_usuario), ['admin', 'administrador', 'duenio', 'dueño'])): ?>
                                         
-                                        <!-- Botones para Confirmar o Cancelar solo si está Pendiente -->
+                                        <!-- Botones dinámicos según el estado -->
                                         <?php if(strtolower($estado_texto) == 'pendiente'): ?>
-                                            <a href="../php/cambiar_estado_reserva.php?id=<?php echo $fila['idreservas']; ?>&accion=confirmar" class="btn-editar" style="background-color: #2e7d32;">Confirmar</a>
-                                            <a href="../php/cambiar_estado_reserva.php?id=<?php echo $fila['idreservas']; ?>&accion=cancelar" class="btn-eliminar" style="background-color: #f39c12;">Cancelar</a>
+                                            <a href="../php/cambiar_estado_reserva.php?id=<?php echo $fila['idreservas']; ?>&accion=confirmar" class="btn-confirmar">Confirmar Seña</a>
+                                            <a href="../php/cambiar_estado_reserva.php?id=<?php echo $fila['idreservas']; ?>&accion=cancelar" class="btn-cancelar">Cancelar</a>
+                                        
+                                        <?php elseif(strtolower($estado_texto) == 'confirmado'): ?>
+                                            <!-- ACÁ ESTÁ EL CAMBIO PARA MANDARLO A PAGOS.PHP -->
+                                            <a href="pagos.php?reserva_id=<?php echo $fila['idreservas']; ?>" class="btn-cobrar">Cobrar Monto</a>
+                                        
+                                        <?php elseif(strtolower($estado_texto) == 'pagado'): ?>
+                                            <span class="texto-pagado">Finalizado</span>
                                         <?php endif; ?>
 
-                                        <a href="../php/eliminar_reserva.php?id=<?php echo $fila['idreservas']; ?>" class="btn-eliminar" onclick="return confirm('¿Deseas eliminar definitivamente esta reserva?')">Borrar</a>
+                                        <!-- Botón borrar siempre visible por si hubo un error -->
+                                        <a href="../php/eliminar_reserva.php?id=<?php echo $fila['idreservas']; ?>" class="btn-borrar" onclick="return confirm('¿Deseas eliminar definitivamente esta reserva?')">Borrar</a>
+                                    
                                     <?php else: ?>
                                         <span class="sin-permisos">Sin Permisos</span>
                                     <?php endif; ?>
