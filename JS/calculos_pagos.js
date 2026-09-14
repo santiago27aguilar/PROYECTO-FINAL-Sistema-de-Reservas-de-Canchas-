@@ -1,7 +1,5 @@
 function mostrarOpciones(){
     let seleccion = document.getElementById("metodo").value;
-    //document.getElementById("opciones_tarjeta").style.display = (seleccion === "Tarjeta")? "block" : "none";
-    //document.getElementById("seccion_alias").style.display = (seleccion === "Transferencia")? "block" : "none";
 
     let divAlias = document.getElementById("seccion_alias");
 
@@ -54,7 +52,8 @@ document.addEventListener('DOMContentLoaded', function(){
                 return;
             }
 
-            const mensaje = "Confirmar el registro de este pago por $" + monto + "?\n\n" + "Al aceptar: \n" + "- La reserva se marcara como 'Pagado'.\n" + "- La cancha quedara 'Disponible' inmediatamente.";
+            // ACÁ ESTÁ EL CAMBIO: El mensaje ya no dice que la cancha queda libre
+            const mensaje = "Confirmar el registro de este pago por $" + monto + "?\n\n" + "Al aceptar: \n" + "- La reserva se marcara como 'Pagado'.";
 
             if(confirm(mensaje)){
                 this.submit();
