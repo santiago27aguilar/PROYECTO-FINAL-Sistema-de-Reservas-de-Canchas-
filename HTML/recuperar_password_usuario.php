@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -22,16 +23,20 @@
             <h1>RECUPERAR CONTRASENIA</h1>
             <p>Ingresa tu correo electrónico para recuperar tu cuenta</p>
 
-            <?php if(isset($_GET['error'])): ?>
+            <!-- NUEVO: Cartel de Error con variable de Sesión -->
+            <?php if(isset($_SESSION['error_recuperacion'])): ?>
                 <div class="error-msg">
-                    El correo electrónico no está registrado.
+                    <?= htmlspecialchars($_SESSION['error_recuperacion']) ?>
                 </div>
+                <?php unset($_SESSION['error_recuperacion']); // Borramos el error ?>
             <?php endif; ?>
 
-            <?php if(isset($_GET['exito'])): ?>
+            <!-- NUEVO: Cartel de Éxito con variable de Sesión -->
+            <?php if(isset($_SESSION['exito_recuperacion'])): ?>
                 <div class="success-msg">
-                    Revisa tu bandeja de entrada. Te enviamos un enlace.
+                    <?= htmlspecialchars($_SESSION['exito_recuperacion']) ?>
                 </div>
+                <?php unset($_SESSION['exito_recuperacion']); // Borramos el éxito ?>
             <?php endif; ?>
 
             <form action="../php/procesar_recuperacion_usuario.php" method="POST" autocomplete="off">
