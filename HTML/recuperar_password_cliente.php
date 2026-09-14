@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -14,12 +15,20 @@
             <h2>RECUPERAR CLAVE</h2>
             <p class="texto-explicativo">Ingresá tu correo y te enviaremos un enlace para cambiar tu contraseña.</p>
 
-            <?php if(isset($_GET['error'])): ?>
-                <div class="alerta-error">El correo no está registrado en el sistema.</div>
+            <!-- Leemos el error desde la sesión y lo borramos -->
+            <?php if(isset($_SESSION['error_rec_cliente'])): ?>
+                <div class="alerta-error">
+                    <?= htmlspecialchars($_SESSION['error_rec_cliente']) ?>
+                </div>
+                <?php unset($_SESSION['error_rec_cliente']); ?>
             <?php endif; ?>
             
-            <?php if(isset($_GET['exito'])): ?>
-                <div class="alerta-exito">¡Listo! Te enviamos un enlace a tu correo.</div>
+            <!-- Leemos el éxito desde la sesión y lo borramos -->
+            <?php if(isset($_SESSION['exito_rec_cliente'])): ?>
+                <div class="alerta-exito">
+                    <?= htmlspecialchars($_SESSION['exito_rec_cliente']) ?>
+                </div>
+                <?php unset($_SESSION['exito_rec_cliente']); ?>
             <?php endif; ?>
 
             <form action="../php/procesar_recuperacion_cliente.php" method="POST">
