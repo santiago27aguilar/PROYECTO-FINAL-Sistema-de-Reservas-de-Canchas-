@@ -8,7 +8,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #d8d8d8;
     color: #000;
-}
+} 
 
 .container {
     max-width: 1000px;
@@ -16,7 +16,6 @@ body {
     padding: 0 20px;
 }
 
-/* --- NUEVO MENÚ --- */
 .navbar {
     background-color: #000;
     padding: 15px 30px;
@@ -45,9 +44,6 @@ body {
     color: #00ff3c; 
 }
 
-/* =========================================
-   ESTADO ACTIVO DEL MENÚ
-========================================= */
 .navbar .nav-links a.link-activo {
     color: #00ff3c !important;
     font-weight: bold;
@@ -317,30 +313,73 @@ input:focus{
     margin-left: 3px;
 }
 
-/* =========================================
-   PAGINACIÓN
-========================================= */
-.paginacion-wrapper { text-align: center; margin-top: 25px; padding-bottom: 20px; }
-.btn-pag { display: inline-block; padding: 8px 14px; margin: 0 4px; background-color: #f1f1f1; color: #333; text-decoration: none; border-radius: 5px; font-weight: bold; border: 1px solid #ccc; transition: 0.3s; }
-.btn-pag:hover { background-color: #ddd; }
-.btn-pag.activo { background-color: #28a745; color: white; border-color: #28a745; }
+.paginacion-wrapper { 
+    text-align: center; 
+    margin-top: 25px; 
+    padding-bottom: 20px; 
+}
 
-/* =========================================
-   CLASES UTILITARIAS Y BOTONES ESPECÍFICOS
-========================================= */
-.align-self-end { align-self: flex-end; }
-.d-none { display: none !important; }
-.texto-centrado { text-align: center; }
-.mt-30 { margin-top: 30px; }
-.tabla-opaca { opacity: 0.8; }
+.btn-pag { 
+    display: inline-block; 
+    padding: 8px 14px; 
+    margin: 0 4px; 
+    background-color: #f1f1f1; 
+    color: #333; 
+    text-decoration: none; 
+    border-radius: 5px; 
+    font-weight: bold; 
+    border: 1px solid #ccc; 
+    transition: all 0.5s ease; 
+}
 
-.btn-suspender { background-color: #ff9800 !important; color: white !important; }
-.btn-suspender:hover { background-color: #e68a00 !important; }
+.btn-pag:hover { 
+    background-color: #ddd; 
+}
 
-.btn-reactivar { background-color: #28a745 !important; color: white !important; }
-.btn-reactivar:hover { background-color: #218838 !important; }
+.btn-pag.activo { 
+    background-color: #28a745; 
+    color: white; 
+    border-color: #28a745; 
+}
 
-/* --- MEDIA QUERIES MEJORADAS --- */
+.align-self-end { 
+    align-self: flex-end; 
+}
+
+.d-none { 
+    display: none !important; 
+}
+
+.texto-centrado { 
+    text-align: center; 
+}
+
+.mt-30 { 
+    margin-top: 30px; 
+}
+
+.tabla-opaca { 
+    opacity: 0.8; 
+}
+
+.btn-suspender { 
+    background-color: #ff9800 !important; 
+    color: white !important; 
+}
+
+.btn-suspender:hover { 
+    background-color: #e68a00 !important; 
+}
+
+.btn-reactivar { 
+    background-color: #28a745 !important; 
+    color: white !important; 
+}
+
+.btn-reactivar:hover { 
+    background-color: #218838 !important; 
+}
+
 @media (max-width: 768px) {
     .navbar {
         justify-content: flex-start; 
@@ -383,7 +422,6 @@ input:focus{
         text-align: center; 
     }
 
-    /* Identidad del Usuario en Celular */
     .user-info {
         margin: 5px 0 10px 0;
         padding: 15px 0;
@@ -415,4 +453,3 @@ input:focus{
         width: 100%; 
     }
 }
-
