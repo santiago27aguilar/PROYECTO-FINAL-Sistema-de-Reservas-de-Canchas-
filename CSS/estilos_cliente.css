@@ -97,9 +97,7 @@ body {
 }
 
 .form-main-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    display: block;
 }
 
 .form-row-2 {
@@ -213,12 +211,17 @@ input::placeholder {
     margin-left: 3px;
 }
 
+.info-sena {
+    margin-bottom: 15px;
+}
+
+.texto-saldo {
+    color: #000000;
+    font-style: italic;
+}
+
 @media (max-width: 850px) {
     .reserva-card { padding: 25px 30px; }
-    .form-main-grid { 
-        grid-template-columns: 1fr; 
-        gap: 0; 
-    }
 }
 
 @media (max-width: 600px) {
