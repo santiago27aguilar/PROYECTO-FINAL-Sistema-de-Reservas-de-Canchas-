@@ -10,7 +10,7 @@ if (!isset($_SESSION['usuario_nombre'])) {
 
 $rol_actual = isset($_SESSION['usuario_rol']) ? strtolower(trim($_SESSION['usuario_rol'])) : '';
 
-// 3. VERIFICAR PERMISOS (Corregido para incluir al dueño)
+// 3. VERIFICAR PERMISOS (Corregido para incluir al dueño y admin)
 if (!in_array($rol_actual, ['admin', 'administrador', 'duenio', 'dueño'])) {
     header("Location: ../html/inicio.php?error=sin_permisos");
     exit();
@@ -29,10 +29,10 @@ if (isset($_GET['id'])) {
         $stmt = $conexion->prepare($sql);
         $stmt->execute([':id' => $id]);
 
-        // Redirigimos con el mismo mensaje de éxito para aprovechar tus alertas verdes
-        header("Location: ../html/inicio.php?mensaje=eliminado");
-        exit(); 
-    } 
+        // Redirigimos con el mensaje de "suspendido" para el cartel verde
+        header("Location: ../html/inicio.php?mensaje=suspendido");
+        exit();
+    }
     catch (PDOException $e) {
         // Si hay un error de conexión o sintaxis
         die("Error crítico: No se pudo cambiar el estado del registro. " . $e->getMessage());
