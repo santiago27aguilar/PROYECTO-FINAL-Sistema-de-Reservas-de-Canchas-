@@ -1,4 +1,6 @@
 <?php
+session_start(); // NUEVO: Iniciamos sesión para poder guardar los mensajes
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -33,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             // --- ACÁ PONÉS TUS DATOS ---
             $mail->Username = 'santiagaguilardecano@gmail.com'; 
-            $mail->Password = 'pbsp tfaw iolq wuwp'; 
+            $mail->Password = 'jnwqlswjeofwzkmk'; 
             // ---------------------------
 
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
@@ -47,12 +49,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                               <a href="http://localhost/Gestion de Reservas de Canchas/html/nuevo_password_usuario.php?token='.$token.'">Recuperar cuenta</a>';
 
             $mail->send();
-            header("Location: ../html/recuperar_password_usuario.php?exito=1");
+            
+            // NUEVO: Guardamos el éxito en la sesión y redireccionamos limpio
+            $_SESSION['exito_recuperacion'] = "Revisa tu bandeja de entrada. Te enviamos un enlace.";
+            header("Location: ../html/recuperar_password_usuario.php");
+            exit();
         } catch (Exception $e) {
             echo "Error al enviar el mail: {$mail->ErrorInfo}";
         }
     } else {
-        header("Location: ../html/recuperar_password_usuario.php?error=1");
+        // NUEVO: Guardamos el error en la sesión y redireccionamos limpio
+        $_SESSION['error_recuperacion'] = "El correo electrónico no está registrado.";
+        header("Location: ../html/recuperar_password_usuario.php");
+        exit();
     }
 }
 ?>
