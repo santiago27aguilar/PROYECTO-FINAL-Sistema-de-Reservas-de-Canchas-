@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -25,8 +26,13 @@
                 <h1>CONTROL DE ACCESO</h1>
                 <p>INGRESA TUS DATOS PARA CONTINUAR</p>
 
-                <?php if (isset($_GET['error'])): ?>
-                    <div class="error-msg">Usuario o contraseña incorrectos</div>
+                <!-- NUEVO: Leemos el error desde la SESIÓN y luego lo borramos -->
+                <?php if (isset($_SESSION['error_login'])): ?>
+                    <div class="error-msg"><?= htmlspecialchars($_SESSION['error_login']) ?></div>
+                    <?php 
+                        // ¡Acá está la magia! Destruimos la variable para que no salga al apretar F5
+                        unset($_SESSION['error_login']); 
+                    ?>
                 <?php endif; ?>
                 
                 <form action="../php/validar_login.php" method="POST" autocomplete="off">
@@ -43,12 +49,12 @@
                     <button type="submit" class="btn-login">ACCEDER AL INICIO</button>
                     
                     <div class="forgot-link">
-                        <a href="recuperar_password.php" class="link-forgot">¿OLVIDASTE TU CONTRASENIA?</a>
+                        <a href="recuperar_password_usuario.php" class="link-forgot">¿OLVIDASTE TU CONTRASENIA?</a>
                     </div>
                 </form>
             </div>
 
         </div>
     </div>
-</body>
+</body> 
 </html>
