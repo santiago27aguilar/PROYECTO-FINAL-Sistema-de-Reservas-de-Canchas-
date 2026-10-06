@@ -28,28 +28,30 @@ body, html {
     min-height: 500px;
 }
 
+/* Columna Izquierda con un solo logo centrado */
 .left-side {
     flex: 1;
     display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center;     /* Centra verticalmente */
     padding: 20px;
+    background-color: #fcfcfc; /* Fondo suave para resaltar el logo */
 }
 
+/* Contenedor del logo */
 .img-wrapper {
     width: 100%;
-    max-width: 200px;
-    height: 180px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 10px;
 }
 
+/* Logo adaptado y más grande para que no quede espacio en blanco */
 .img-wrapper img {
-    width: 80%;
+    width: 95%;
+    max-width: 450px; 
     height: auto;
+    object-fit: contain;
 }
 
 .right-side {
@@ -140,15 +142,8 @@ input:focus {
     font-weight: bold;
     cursor: pointer;
     color: #666;
-    cursor: pointer;
     transition: all 0.5s ease;
 }
-
-/*.link-forgot{
-    color: #666;
-    cursor: pointer;
-    transition: all 0.5s ease;
-}*/
 
 .forgot-link a:hover{
     color: #11ac35;
