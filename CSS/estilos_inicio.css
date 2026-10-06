@@ -85,29 +85,8 @@ body {
     font-size: 12px;
     font-weight: bold;
 }
+
 /* ------------------ */
-
-.header-titulo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 40px;
-}
-
-h1 { 
-    font-size: 32px; font-weight: bold; 
-}
-
-.icono-usuario { 
-    width: 45px; height: auto; 
-}
-
-.bienvenida { 
-    text-align: center; 
-    font-size: 14px; 
-    margin-bottom: 40px; 
-}
 
 .card-blanca {
     background-color: #fff;
@@ -137,16 +116,18 @@ label {
     font-size: 15px; 
 }
 
-input {
+/* Estilos de los inputs del formulario de registro */
+.input-form {
     width: 100%;
     padding: 14px; 
     background-color: #e0e0e0;
     border: none;
     border-radius: 2px;
     font-size: 15px;
+    outline: none;
 }
 
-input:focus{
+.input-form:focus{
     outline: 2px solid #28a745;
 }
 
@@ -176,60 +157,124 @@ input:focus{
     margin-top: 40px; 
 }
 
-.contenedor-busqueda-disenio {
-    margin-bottom: 22px;
-}
-
-.label-buscar { 
-    font-size: 14px; 
-    margin-bottom: 10px; 
-    text-align: center;
-}
-
-.buscador-largo input {
-    width: 100%;
-    background-color: #fff;
-    border-radius: 4px;
+/* =========================================
+   NUEVO LAYOUT: TITULO Y BOTONES EXPORTAR JUNTOS
+   ========================================= */
+.header-lista {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
 }
 
-.fila-botones-disenio {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
+.header-lista h2 {
+    margin-bottom: 0; /* Quitamos el margen inferior porque ahora está en línea */
+    flex: 1; /* Permite que el título se mantenga en el centro */
+    text-align: center;
 }
 
-.btn-disenio {
-    padding: 12px 25px;
-    font-weight: bold;
-    border: none;
+.btn-exportar {
+    padding: 12px 35px;
+    border-radius: 4px;
     color: white;
+    text-decoration: none;
+    font-weight: bold;
     font-size: 14px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: all 0.5s ease;
+    text-transform: uppercase;
+    text-align: center;
     min-width: 120px;
+    transition: all 0.5s ease;
+    border: none;
+    cursor: pointer;
 }
 
-.btn-verde { 
-    background-color: #11ac35; 
+.btn-excel { background-color: #28a745; }
+.btn-excel:hover { background-color: #0d7223; }
+.btn-pdf { background-color: #e60b0b; }
+.btn-pdf:hover { background-color: #6f0e0e; }
+
+
+/* =========================================
+   ESTILOS PARA LA BARRA DE FILTROS (TIPO RESERVAS UNIFICADO)
+   ========================================= */
+.barra-filtros {
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 25px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: flex-end;
 }
 
-.btn-verde:hover { 
-    background-color: #0d7223; 
+.grupo-filtro {
+    display: flex;
+    flex-direction: column;
+    flex: 1; 
+    min-width: 150px;
 }
 
-.btn-rojo { 
-    background-color: #e60b0b; 
+.filtro-largo {
+    flex: 2; /* El buscador ocupa más espacio visual */
 }
 
-.btn-rojo:hover { 
-    background-color: #6f0e0e; 
+.grupo-filtro label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #495057;
 }
 
-.link-disenio { 
-    text-decoration: none; 
+/* El buscador de texto y el select ahora comparten el mismo estilo plano */
+.grupo-filtro input[type="text"], 
+.grupo-filtro select {
+    padding: 11px 10px;
+    width: 100%;
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 2px;
+    font-size: 14px;
+    color: #333;
+    cursor: text; /* El select tiene su cursor pointer default de navegador, acá forzamos para texto */
+    outline: none;
 }
+
+.grupo-filtro select {
+    cursor: pointer;
+}
+
+.grupo-filtro input[type="text"]:focus, 
+.grupo-filtro select:focus {
+    outline: 2px solid #28a745;
+}
+
+.grupo-botones-filtro {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 2px; /* Alineación fina con los inputs */
+}
+
+.btn-limpiar {
+    background-color: #e32626;
+    color: white;
+    text-decoration: none;
+    padding: 11px 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s ease;
+    font-size: 14px;
+}
+
+.btn-limpiar:hover { background-color: #9b1b1b; }
+
+.btn-limpiar i { margin-right: 8px; }
+
+/* ========================================= */
 
 .table-responsive-wrapper { 
     width: 100%; 
@@ -274,6 +319,11 @@ input:focus{
     text-decoration: none; 
     border-radius: 4px; 
     font-weight: bold; 
+    transition: all 0.5s ease;
+}
+
+.btn-editar:hover {
+    background-color: #051373; 
 }
 
 .btn-eliminar { 
@@ -324,11 +374,10 @@ input:focus{
     padding: 8px 14px; 
     margin: 0 4px; 
     background-color: #f1f1f1; 
-    color: #333; 
+    color: #000000; 
     text-decoration: none; 
     border-radius: 5px; 
     font-weight: bold; 
-    border: 1px solid #ccc; 
     transition: all 0.5s ease; 
 }
 
@@ -346,16 +395,8 @@ input:focus{
     align-self: flex-end; 
 }
 
-.d-none { 
-    display: none !important; 
-}
-
 .texto-centrado { 
     text-align: center; 
-}
-
-.mt-30 { 
-    margin-top: 30px; 
 }
 
 .tabla-opaca { 
@@ -363,21 +404,22 @@ input:focus{
 }
 
 .btn-suspender { 
-    background-color: #ff9800 !important; 
-    color: white !important; 
+    background-color: #ff9800; 
+    color: white; 
+    transition: all 0.5s ease;
 }
 
 .btn-suspender:hover { 
-    background-color: #e68a00 !important; 
+    background-color: #a66708; 
 }
 
 .btn-reactivar { 
-    background-color: #28a745 !important; 
-    color: white !important; 
+    background-color: #28a745; 
+    color: white; 
 }
 
 .btn-reactivar:hover { 
-    background-color: #218838 !important; 
+    background-color: #218838; 
 }
 
 @media (max-width: 768px) {
@@ -441,15 +483,28 @@ input:focus{
         grid-template-columns: 1fr; 
     }
 
-    .header-titulo { 
-        flex-direction: column; text-align: center; 
-    }
-
-    .fila-botones-disenio { 
+    /* Adaptación del Título y Botones en celular */
+    .header-lista { 
         flex-direction: column; 
+        gap: 15px;
+    }
+    .header-lista h2 {
+        order: -1; /* Forzamos a que el título quede arriba de los botones en el celular */
+    }
+    .btn-exportar { 
+        width: 100%; 
     }
 
-    .btn-disenio { 
-        width: 100%; 
+    /* Adaptación de la barra de filtros a celular */
+    .barra-filtros {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .grupo-filtro { flex-direction: column; align-items: flex-start; width: 100%; gap: 5px; margin-bottom: 10px; }
+    .grupo-filtro select, .grupo-filtro input[type="text"], .btn-limpiar { width: 100%; }
+
+    .grupo-botones-filtro {
+        margin-top: 10px;
     }
 }
