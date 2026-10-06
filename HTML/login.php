@@ -4,20 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Sistema de Canchas</title>
+    <title>Login de Usuarios - Planeta de Futbol</title>
+    <?php include 'head_comun.php'; ?>
     <link rel="stylesheet" href="../css/estilos_login.css">
 </head>
 <body>
     <div class="login-container">
-        <div class="login-card">
+        <div class="login-card"> 
             
-            <!-- COLUMNA IZQUIERDA: IMÁGENES -->
+            <!-- COLUMNA IZQUIERDA: NUEVO LOGO CENTRAL -->
             <div class="left-side">
                 <div class="img-wrapper">
-                    <img src="../img/padel.png" alt="Futbol">
-                </div>
-                <div class="img-wrapper">
-                    <img src="../img/futbol.png" alt="Padel">
+                    <img src="../img/logo-principal-reservas.png" alt="Planeta Fútbol y Pádel">
                 </div>
             </div>
 
@@ -42,14 +40,14 @@
                     </div>
                     
                     <div class="form-group">
-                        <label>CONTRASENIA</label>
+                        <label>CONTRASEÑA</label>
                         <input type="password" name="pass" autocomplete="new-password" placeholder="••••••••" required>
                     </div>
                     
                     <button type="submit" class="btn-login">ACCEDER AL INICIO</button>
                     
                     <div class="forgot-link">
-                        <a href="recuperar_password_usuario.php" class="link-forgot">¿OLVIDASTE TU CONTRASENIA?</a>
+                        <a href="recuperar_password_usuario.php" class="link-forgot">¿OLVIDASTE TU CONTRASEÑA?</a>
                     </div>
                 </form>
             </div>
