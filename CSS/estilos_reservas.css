@@ -394,6 +394,93 @@ input:focus, select:focus{
     background-color: #28a745; color: white; border-color: #28a745; 
 }
 
+
+/* =========================================
+   ESTILOS PARA LA BARRA DE FILTROS (DROP DOWNS)
+   ========================================= */
+.barra-filtros {
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 25px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+.grupo-filtro {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 150px;
+}
+.grupo-filtro label {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+.grupo-filtro input, .grupo-filtro select {
+    padding: 10px;
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 2px;
+    font-size: 14px;
+    width: 100%;
+}
+.grupo-filtro input:focus, .grupo-filtro select:focus {
+    outline: 2px solid #28a745;
+}
+.grupo-botones-filtro {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+    min-width: 200px;
+}
+.btn-filtrar {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 11px 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    flex: 1;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+}
+.btn-filtrar:hover { background-color: #0d7223; }
+
+.btn-limpiar {
+    background-color: #e32626;
+    color: white;
+    text-decoration: none;
+    padding: 11px 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s ease;
+    flex: 1;
+    font-size: 14px;
+}
+.btn-limpiar:hover { background-color: #9b1b1b; }
+
+/* ACÁ ESTÁ LA CORRECCIÓN: Separación del ícono respecto a la palabra */
+.btn-filtrar i,
+.btn-limpiar i {
+    margin-right: 8px;
+}
+
+
+/* =========================================
+   MEDIA QUERIES (RESPONSIVE)
+   ========================================= */
 @media (max-width: 768px) {
     .navbar {
         justify-content: flex-start; 
@@ -461,5 +548,14 @@ input:focus, select:focus{
     .btn-exportar { 
         width: 100%; 
         text-align: center; 
+    }
+    
+    /* Adaptación de los filtros para celulares */
+    .barra-filtros {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .grupo-botones-filtro {
+        margin-top: 10px;
     }
 }
