@@ -44,6 +44,11 @@ body {
     color: #ffffff; 
 }
 
+.navbar .nav-links a.link-activo {
+    color: #00ff3c !important; /* Color verde flúor */
+    font-weight: bold;
+}
+
 .nav-links .btn-salir {
     background-color: #e32626;
     padding: 8px 15px;
@@ -116,13 +121,6 @@ body {
     height: auto;
 }
 
-.titulo-izquierdo {
-    text-align: left;
-    font-size: 26px;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
 .grid-split {
     display: grid;
     grid-template-columns: 1fr 1fr; 
@@ -157,7 +155,8 @@ label {
     font-size: 15px;
 }
 
-input, select {
+/* Formularios de arriba con el estilo viejo para diferenciar de los filtros */
+.input-form {
     width: 100%;
     padding: 14px;
     background-color: #e0e0e0;
@@ -168,7 +167,7 @@ input, select {
     font-family: inherit;
 }
 
-input:focus, select:focus {
+.input-form:focus {
     outline: 2px solid #28a745;
 }
 
@@ -197,6 +196,97 @@ input:focus, select:focus {
 .btn-margen {
     margin-top: 15px;
 }
+
+
+/* =========================================
+   NUEVO LAYOUT: TITULO UNIFICADO
+   ========================================= */
+.header-lista {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header-lista h2 {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+
+/* =========================================
+   ESTILOS PARA LA BARRA DE FILTROS (TIPO RESERVAS UNIFICADO)
+   ========================================= */
+.barra-filtros {
+    background: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 25px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.grupo-filtro {
+    display: flex;
+    flex-direction: column;
+    flex: 1; 
+    min-width: 150px;
+}
+
+.grupo-filtro label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #495057;
+}
+
+/* Cajitas grises sin bordes, iguales a las del resto del sistema */
+.grupo-filtro select {
+    padding: 11px 10px;
+    width: 100%;
+    background-color: #e0e0e0;
+    border: none;
+    border-radius: 2px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+}
+
+.grupo-filtro select:focus {
+    outline: 2px solid #28a745;
+}
+
+.grupo-botones-filtro {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 2px;
+}
+
+.btn-limpiar {
+    background-color: #e32626;
+    color: white;
+    text-decoration: none;
+    padding: 11px 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s ease;
+    font-size: 14px;
+}
+
+.btn-limpiar:hover { background-color: #9b1b1b; }
+
+.btn-limpiar i { margin-right: 8px; }
+
+/* ========================================= */
 
 .table-responsive-wrapper {
     width: 100%;
@@ -281,11 +371,6 @@ input:focus, select:focus {
     margin-left: 3px;
 }
 
-.navbar .nav-links a.link-activo {
-    color: #00ff3c !important; /* Color verde flúor */
-    font-weight: bold;
-}
-
 @media (max-width: 768px) {
     .navbar {
         justify-content: flex-start; 
@@ -357,7 +442,16 @@ input:focus, select:focus {
         align-items: center;
     }
 
-    .titulo-izquierdo {
-        text-align: center;
+    /* Adaptación de la barra de filtros a celular */
+    .barra-filtros {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .grupo-filtro { flex-direction: column; align-items: flex-start; width: 100%; gap: 5px; margin-bottom: 10px; }
+    .grupo-filtro select, .btn-limpiar { width: 100%; }
+
+    .grupo-botones-filtro {
+        margin-top: 10px;
     }
 }
