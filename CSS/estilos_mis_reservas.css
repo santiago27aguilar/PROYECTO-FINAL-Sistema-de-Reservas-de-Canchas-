@@ -132,9 +132,8 @@ input:focus {
 }
 
 .link-gestion .link-destacado {
-    color: #2c3e50;
+    color: #517ba5;
     font-weight: bold;
-    text-decoration: underline;
 }
 
 .link-gestion .link-destacado:hover {
