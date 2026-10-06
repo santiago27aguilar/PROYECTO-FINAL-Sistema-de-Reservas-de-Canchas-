@@ -32,8 +32,8 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historial de Turnos - Pampa Fútbol</title>
-    <!-- Vinculamos el nuevo archivo CSS exclusivo -->
+    <title>Historial de Turnos - Planeta de Futbol</title>
+    <?php include 'head_comun.php'; ?>
     <link rel="stylesheet" href="../css/estilos_historial_reservas.css"> 
 </head>
 <body>
