@@ -7,29 +7,50 @@
 
 body {
     background-color: #d9d9d9;
-    padding: 20px;
+    padding: 20px 0; 
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; 
     min-height: 100vh; 
+}
+
+/* Contenedor para agrupar las dos tarjetas y centrarlas */
+.contenedor-principal {
+    width: 100%;
+    max-width: 950px;
+    padding: 20px;
+    padding-bottom: 2px;
+    margin: 0 auto;
 }
 
 .reserva-card {
     background-color: #ffffff;
     width: 100%;
-    max-width: 950px;
-    margin: auto;
     padding: 35px 50px;
     border-radius: 8px;
+    margin-bottom: 50px; /* Esto separa limpiamente una tarjeta de la otra */
 }
 
-.reserva-card h2 {
-    text-align: center;
+/* Título y Logo alineados */
+.header-titulo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 35px;
+}
+
+.header-titulo h2 {
     font-size: 28px;
     font-weight: bold;
     color: #000;
-    margin-bottom: 20px;
     text-transform: uppercase;
+    margin-bottom: 0;
+}
+
+.icono-usuario-inline {
+    width: 60px;
+    height: auto;
 }
 
 .mensaje-exito {
@@ -91,11 +112,6 @@ body {
     font-weight: bold;
 }
 
-.icono-usuario {
-    width: 80px; height: 80px;
-    display: block; margin: 0 auto 30px auto;
-}
-
 .form-main-grid {
     display: block;
 }
@@ -109,8 +125,10 @@ body {
 .form-group { margin-bottom: 20px; }
 
 label {
-    display: block; font-size: 14px;
-    font-weight: 600; margin-bottom: 8px;
+    display: block; 
+    font-size: 14=6px;
+    font-weight: 700; 
+    margin-bottom: 8px;
 }
 
 input, select {
@@ -120,7 +138,7 @@ input, select {
     background-color: #e0e0e0; 
     border: none;
     font-size: 15px;
-    color: #333;
+    color: #000000;
     outline: none;
     border-radius: 4px;
 }
@@ -220,6 +238,144 @@ input::placeholder {
     font-style: italic;
 }
 
+/* =========================================================
+   ESTILOS CALENDARIO DE DISPONIBILIDAD EN CLIENTES
+   ========================================================= */
+.seccion-disponibilidad {
+    padding-top: 10px;
+}
+
+.titulo-disponibilidad {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: #000000;
+    margin-bottom: 5px;
+}
+
+.subtitulo-disponibilidad {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+/* Aca también actualizamos la clase para que conecte con tu JS */
+.controles-calendario {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.control-fecha-cliente {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.control-fecha-cliente input[type="date"] {
+    width: auto;
+    height: 40px;
+    cursor: pointer;
+}
+
+.tabs-canchas {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.tab-btn {
+    padding: 8px 18px;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #000000;
+    cursor: pointer;
+    transition: all 0.5s ease;
+}
+
+.tab-btn:hover {
+    background-color: #e2e2e2;
+}
+
+.tab-btn.activo {
+    background-color: #2b1b54;
+    color: white;
+    border-color: #2b1b54;
+}
+
+.table-responsive-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.tabla-calendario {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 500px;
+}
+
+.tabla-calendario th, .tabla-calendario td {
+    border: 3px solid #ecf0f1;
+}
+
+.celda-header {
+    background-color: #2b1b54;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.celda-hora {
+    background-color: #34495e;
+    color: white;
+    padding: 12px 5px;
+    text-align: center;
+    font-weight: bold;
+    width: 80px;
+}
+
+.celda-vacia {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 12px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.celda-libre-texto {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.celda-ocupado {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 12px;
+    text-align: center;
+    font-size: 0.9em;
+    vertical-align: middle;
+}
+
+.celda-sin-canchas {
+    background-color: #f8f9fa;
+}
+
+
+/* =========================================================
+   MEDIA QUERIES RESPONSIVE
+   ========================================================= */
 @media (max-width: 850px) {
     .reserva-card { padding: 25px 30px; }
 }
@@ -250,5 +406,16 @@ input::placeholder {
     
     .btn-whatsapp {
         width: 100%;
+    }
+
+    .tabs-canchas {
+        width: 100%;
+    }
+
+    .tab-btn {
+        flex: 1;
+        text-align: center;
+        padding: 8px 5px;
+        font-size: 13px;
     }
 }
