@@ -65,7 +65,7 @@
                 <a href="calendario.php">Calendario</a> 
             <?php endif; ?>
 
-            <!-- 👥 COSAS QUE VEN TODOS -->
+            <!-- COSAS QUE VEN TODOS -->
             <a href="inicio.php">Clientes</a>
             <a href="reservas.php">Reservas</a>
             <a href="canchas.php" class="link-activo">Canchas</a> 
@@ -117,7 +117,7 @@
 
                     <div class="seccion-form">
                         <div class="form-group">
-                            <label>Tipo de CANCHA: <span class="asterisco">*</span></label>
+                            <label>Tipo de CANCHA: </label>
                             <select name="tipo_cancha" required class="input-form">
                                 <option value="">> Elije una cancha <</option>
                                 <option value="Futbol 5 - Cancha 1">Futbol 5 - Cancha 1</option>
@@ -133,12 +133,14 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Precio por HORA: <span class="asterisco">*</span></label>
+                            <label>Precio por HORA: </label>
                             <input type="number" name="precio_hora" onkeydown="return event.keyCode !== 69" placeholder="Ej: 5000" autocomplete="off" required class="input-form">
                         </div>
 
                         <button type="submit" class="btn-guardar btn-full btn-margen">GUARDAR CANCHA</button>
                     </div>
+
+                    <!--<span class="asterisco">*</span>-->
                 </div>
             </form>
         </div>
