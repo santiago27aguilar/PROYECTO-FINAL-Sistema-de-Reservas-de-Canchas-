@@ -130,6 +130,8 @@ try {
 
             <button id="btn-filtrar" class="btn-verde-chico" title="Buscar por fechas"><i class="fas fa-search"></i> Buscar</button>
             <button id="btn-historico" class="btn-rojo btn-historico-estilo" title="Ver Todo el Historial Completo"><i class="fas fa-globe"></i> Historial Completo</button>
+
+            <a href="#" id="btn-pdf-dashboard" class="btn-pdf-estilo" title="Generar Reporte PDF"><i class="fas fa-file-pdf"></i> Reporte PDF</a>
         </div>
     </div>
 
