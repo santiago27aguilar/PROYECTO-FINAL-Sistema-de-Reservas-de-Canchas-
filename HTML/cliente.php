@@ -71,25 +71,41 @@ $horario_cierre = 24;
     <!-- ========================================== -->
     <div class="reserva-card">
 
-        <!-- MENSAJES DE ÉXITO O ERROR (Mantenidos arriba de todo) -->
+        <!-- MENSAJES DE ÉXITO O ERROR -->
         <?php if (isset($_GET['reserva']) && $_GET['reserva'] == 'ok'): ?>
             <?php 
                 $num = "5493814152422"; 
                 $texto = rawurlencode("¡Hola! Soy $nombre_cliente. Acabo de solicitar un turno en la web. Te adjunto el comprobante de pago para confirmarlo.");
             ?>
             <div class="mensaje-exito">
-                <h3>¡Pre-Reserva realizada con Éxito!</h3>
-                <p class="estado-pago">ESTADO: PAGO PENDIENTE</p>
-                <div>
-                    <a href="https://api.whatsapp.com/send?phone=<?php echo $num; ?>&text=<?php echo $texto; ?>" target="_blank" class="btn-whatsapp">Contactar por WhatsApp</a>
+                <div class="mensaje-exito-contenido">
+                    
+                    <!-- COLUMNA IZQUIERDA: Textos y Botón -->
+                    <div class="mensaje-exito-texto">
+                        <h3>¡Pre-Reserva realizada con Éxito!</h3>
+                        <p class="estado-pago">ESTADO: PAGO PENDIENTE</p>
+                        
+                        <p class="info-sena">
+                            Para <strong>confirmar tu turno definitivamente</strong>, transfiere el monto de la seña (50%) enviando el comprobante.
+                            <br>
+                            <span class="texto-saldo">El monto restante lo podés abonar en efectivo o continuar pagando con transferencia en el complejo.</span>
+                        </p>
+                        
+                        <p class="info-alias">Si realizas el pago manual, el Alias es: <span class="alias-destacado">planeta.futbol.padel</span></p>
+
+                        <div>
+                            <a href="https://api.whatsapp.com/send?phone=<?php echo $num; ?>&text=<?php echo $texto; ?>" target="_blank" class="btn-whatsapp"> <i class="fab fa-whatsapp"></i> Contactar</a>
+                        </div>
+                    </div>
+
+                    <!-- COLUMNA DERECHA: Código QR -->
+                    <div class="mensaje-exito-qr">
+                        <p class="qr-titulo"><i class="fas fa-qrcode"></i> Escaneá para señar</p>
+                        <!-- ACÁ REEMPLAZAS EL LINK DE MERCADO PAGO AL FINAL -->
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://link.mercadopago.com.ar/planetafutbol" alt="QR Mercado Pago" class="qr-img">
+                    </div>
+
                 </div>
-                
-                <p class="info-sena">
-                    Para <strong>confirmar tu turno definitivamente</strong>, transfiere el monto de la seña (50%) enviando el comprobante.<br>
-                    <span class="texto-saldo">El monto restante lo podés abonar en efectivo o continuar pagando con transferencia en el complejo.</span>
-                </p>
-                
-                <p>Si realizas el pago por transferencia (Alias: <span class="alias-destacado">planeta.futbol.padel</span>)</p>
             </div>
         <?php endif; ?>
 
@@ -119,7 +135,7 @@ $horario_cierre = 24;
             <h3 class="titulo-disponibilidad">ESTADO DE LAS CANCHAS</h3>
             <p class="subtitulo-disponibilidad">Consultá la disponibilidad horaria antes de reservar</p>
 
-            <!-- CONTROLES (FECHA Y PESTAÑAS) - CLASE CORREGIDA A .controles-calendario -->
+            <!-- CONTROLES (FECHA Y PESTAÑAS) -->
             <form method="GET" class="controles-calendario">
                 <div class="control-fecha-cliente">
                     <label>Fecha:</label>
@@ -187,10 +203,6 @@ $horario_cierre = 24;
         </div>
     </div> <!-- FIN DE LA TARJETA 1 -->
 
-
-    <!-- ========================================== -->
-    <!-- TARJETA 2: FORMULARIO DE RESERVA           -->
-    <!-- ========================================== -->
     <div class="reserva-card">
         <!-- TÍTULO Y LOGO ALINEADOS -->
         <div class="header-titulo">
@@ -205,9 +217,9 @@ $horario_cierre = 24;
                 
                 <div class="form-row-2">
                     <div class="form-group">
-                        <label>CANCHA<span class="asterisco">*</span></label>
+                        <label>CANCHA</label>
                         <select name="idcancha" id="id_cancha" required>
-                            <option value="">Seleccionar...</option>
+                            <option value="">Selecciona la cancha ...</option>
                             <?php
                                 $q = $conexion->query("SELECT idcancha, tipo_cancha, precio_hora FROM cancha");
                                 while($r = $q->fetch(PDO::FETCH_ASSOC)) {
@@ -217,21 +229,21 @@ $horario_cierre = 24;
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>FECHA<span class="asterisco">*</span></label>
+                        <label>FECHA</label>
                         <input type="date" name="fecha_reserva" id="fecha_reserva" min="<?php echo date('Y-m-d'); ?>" required>
                     </div>
                 </div>
 
                 <div class="form-row-2">
                     <div class="form-group">
-                        <label>DURACION<span class="asterisco">*</span></label>
+                        <label>DURACION</label>
                         <select name="duracion" id="duracion_turno" required>
                             <option value="1">1 Hora</option>
                             <option value="2">2 Horas</option>
                         </select>
                     </div>
                     <div class="form-group"> 
-                        <label>HORA de INICIO<span class="asterisco">*</span></label>
+                        <label>HORA de INICIO</label>
                         <select name="hora_inicio" id="hora_reserva" required>
                             <option value="">Elegir Horario...</option>
                         </select>
@@ -246,6 +258,9 @@ $horario_cierre = 24;
                         </p>
                     </div>
                 </div>
+                
+                <!--<span class="asterisco">*</span>-->
+                
 
             </div>
 
@@ -257,11 +272,10 @@ $horario_cierre = 24;
             </div>
             
         </form>
-    </div> <!-- FIN DE LA TARJETA 2 -->
+    </div> <!-- FIN DE LA TARJETA 2 --> 
 
 </div> <!-- FIN DEL CONTENEDOR PRINCIPAL -->
 
-<!-- SCRIPTS LINKADOS EXTERNAMENTE -->
 <script src="../js/logica_reserva.js"></script>
 <script src="../js/tabs_calendario.js"></script>
 
