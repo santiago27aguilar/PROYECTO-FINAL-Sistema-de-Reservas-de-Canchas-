@@ -4,7 +4,7 @@ session_start();
 if (!isset($_SESSION['id_cliente'])) {
     header("Location: login_cliente.php");
     exit();
-}
+} 
 
 require '../php/conexion.php';
 
