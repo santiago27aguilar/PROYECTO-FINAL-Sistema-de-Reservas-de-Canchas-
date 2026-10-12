@@ -100,7 +100,7 @@
                     <li><a href="como_funciona.php">¿Cómo Funciona?</a></li>
                     <li><a href="login_cliente.php">Iniciar Sesión</a></li>
                     <li><a href="registro_cliente.php">Crear Cuenta</a></li>
-                    <li><a href="#ubicacion-horarios">Ubicación y Horarios</a></li>
+                    <!--<li><a href="#ubicacion-horarios">Ubicación y Horarios</a></li>-->
                 </ul>
             </div>
             
