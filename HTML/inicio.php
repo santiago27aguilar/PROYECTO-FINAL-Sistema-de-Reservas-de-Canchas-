@@ -104,27 +104,30 @@
             <form action="../php/registrar_cliente.php" method="POST">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label>Nombre <span class="asterisco">*</span></label>
+                        <label>Nombre</label>
                         <input type="text" name="nombre" placeholder="Ej: Juan" required class="input-form">
                     </div>
                     <div class="form-group">
-                        <label>Apellido <span class="asterisco">*</span></label>
+                        <label>Apellido</label>
                         <input type="text" name="apellido" placeholder="Ej: Pérez" required class="input-form">
                     </div>
                     <div class="form-group">
-                        <label>DNI <span class="asterisco">*</span></label>
+                        <label>DNI - Documento</label>
                         <input type="number" name="dni" placeholder="Sin puntos" class="input-form">
                     </div>
                     <div class="form-group">
-                        <label>Teléfono <span class="asterisco">*</span></label>
+                        <label>Teléfono</label>
                         <input type="text" name="telefono" placeholder="Ej: 381..." class="input-form">
                     </div>
                     <div class="form-group">
-                        <label>Correo <span class="asterisco">*</span></label>
+                        <label>Correo Electrónico</label>
                         <input type="email" name="correo" placeholder="email@ejemplo.com" class="input-form">
                     </div>
                     <button type="submit" class="btn-guardar btn-full align-self-end">GUARDAR CLIENTE</button>
                 </div>
+
+                <!--<span class="asterisco">*</span>-->
+
             </form>
         </div>
 
