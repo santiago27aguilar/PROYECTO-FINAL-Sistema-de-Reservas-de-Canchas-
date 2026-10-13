@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recuperar Cuenta - Gestión de Canchas</title>
+    <title>Recuperar Clave del Usuario - Planeta de Futbol</title>
+    <?php include 'head_comun.php'; ?>
     <link rel="stylesheet" href="../css/estilos_recuperar_password_usuario.css">
 </head>
 <body>
@@ -20,8 +21,8 @@
                 </div>
             </div>
 
-            <h1>RECUPERAR CONTRASENIA</h1>
-            <p>Ingresa tu correo electrónico para recuperar tu cuenta</p>
+            <h1>RECUPERA TU CONTRASEÑA</h1>
+            <p>Ingresa tu correo electrónico para recuperar tu contraseña</p>
 
             <!-- NUEVO: Cartel de Error con variable de Sesión -->
             <?php if(isset($_SESSION['error_recuperacion'])): ?>
