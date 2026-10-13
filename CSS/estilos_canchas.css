@@ -45,7 +45,7 @@ body {
 }
 
 .navbar .nav-links a.link-activo {
-    color: #00ff3c !important; /* Color verde flúor */
+    color: #00ff3c ; 
     font-weight: bold;
 }
 
@@ -150,12 +150,11 @@ body {
 
 label {
     display: block;
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 10px;
     font-size: 15px;
 }
 
-/* Formularios de arriba con el estilo viejo para diferenciar de los filtros */
 .input-form {
     width: 100%;
     padding: 14px;
@@ -197,10 +196,6 @@ label {
     margin-top: 15px;
 }
 
-
-/* =========================================
-   NUEVO LAYOUT: TITULO UNIFICADO
-   ========================================= */
 .header-lista {
     display: flex;
     justify-content: center;
@@ -215,10 +210,6 @@ label {
     text-align: center;
 }
 
-
-/* =========================================
-   ESTILOS PARA LA BARRA DE FILTROS (TIPO RESERVAS UNIFICADO)
-   ========================================= */
 .barra-filtros {
     background: #ffffff;
     border: 1px solid #dee2e6;
@@ -245,7 +236,6 @@ label {
     color: #495057;
 }
 
-/* Cajitas grises sin bordes, iguales a las del resto del sistema */
 .grupo-filtro select {
     padding: 11px 10px;
     width: 100%;
@@ -285,8 +275,6 @@ label {
 .btn-limpiar:hover { background-color: #9b1b1b; }
 
 .btn-limpiar i { margin-right: 8px; }
-
-/* ========================================= */
 
 .table-responsive-wrapper {
     width: 100%;
@@ -442,7 +430,6 @@ label {
         align-items: center;
     }
 
-    /* Adaptación de la barra de filtros a celular */
     .barra-filtros {
         flex-direction: column;
         align-items: stretch;
