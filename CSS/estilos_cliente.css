@@ -14,7 +14,6 @@ body {
     min-height: 100vh; 
 }
 
-/* Contenedor para agrupar las dos tarjetas y centrarlas */
 .contenedor-principal {
     width: 100%;
     max-width: 950px;
@@ -28,10 +27,9 @@ body {
     width: 100%;
     padding: 35px 50px;
     border-radius: 8px;
-    margin-bottom: 50px; /* Esto separa limpiamente una tarjeta de la otra */
+    margin-bottom: 50px; 
 }
 
-/* Título y Logo alineados */
 .header-titulo {
     display: flex;
     justify-content: center;
@@ -58,7 +56,6 @@ body {
     color: #155724;
     padding: 25px;
     border-radius: 12px;
-    text-align: center;
     margin-bottom: 25px;
     border: 1px solid #c3e6cb;
 }
@@ -106,10 +103,54 @@ body {
     color: #ffffff;
 }
 
+.mensaje-exito-contenido {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.mensaje-exito-texto {
+    flex: 1;
+    text-align: left; 
+}
+
+.mensaje-exito-texto h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.info-alias {
+    margin-bottom: 15px;
+}
+
 .alias-destacado {
     font-size: 1.2em;
     color: #1e7e34;
     font-weight: bold;
+}
+
+.mensaje-exito-qr {
+    background-color: #ffffff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    text-align: center;
+    min-width: 170px;
+}
+
+.qr-titulo {
+    font-weight: bold;
+    font-size: 14px;
+    color: #000000;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.qr-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 5px;
 }
 
 .form-main-grid {
@@ -126,7 +167,7 @@ body {
 
 label {
     display: block; 
-    font-size: 14=6px;
+    font-size: 14px;
     font-weight: 700; 
     margin-bottom: 8px;
 }
@@ -238,9 +279,6 @@ input::placeholder {
     font-style: italic;
 }
 
-/* =========================================================
-   ESTILOS CALENDARIO DE DISPONIBILIDAD EN CLIENTES
-   ========================================================= */
 .seccion-disponibilidad {
     padding-top: 10px;
 }
@@ -260,7 +298,6 @@ input::placeholder {
     margin-bottom: 25px;
 }
 
-/* Aca también actualizamos la clase para que conecte con tu JS */
 .controles-calendario {
     display: flex;
     flex-direction: column;
@@ -372,10 +409,6 @@ input::placeholder {
     background-color: #f8f9fa;
 }
 
-
-/* =========================================================
-   MEDIA QUERIES RESPONSIVE
-   ========================================================= */
 @media (max-width: 850px) {
     .reserva-card { padding: 25px 30px; }
 }
@@ -417,5 +450,13 @@ input::placeholder {
         text-align: center;
         padding: 8px 5px;
         font-size: 13px;
+    }
+    
+    .mensaje-exito-contenido {
+        flex-direction: column;
+        text-align: center;
+    }
+    .mensaje-exito-texto {
+        text-align: center;
     }
 }
