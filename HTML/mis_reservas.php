@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestionar Mi Reserva</title>
+    <title>Gestionar Mi Reserva - Planeta de Futbol</title>
+    <?php include 'head_comun.php'; ?>
     <link rel="stylesheet" href="../css/estilos_mis_reservas.css">
 </head>
-<body>
+<body> 
 
 <div class="reserva-card">
     <h2>GESTIONÁ TU TURNO</h2>
     
     <img src="../img/usuario-logo.png" alt="Icono Usuario" class="icono-usuario">
     
-    <p class="texto-explicativo">Ingresá tus datos para VER RESERVA o CANCELAR RESERVA si es necesario</p>
+    <p class="texto-explicativo">Ingresá tus datos para VER RESERVAS ACTIVAS o CANCELAR RESERVA si es necesario</p>
 
     <?php if (isset($_GET['mensaje']) && $_GET['mensaje'] == 'cancelado'): ?>
         <div class="alerta-exito">
@@ -25,13 +26,13 @@
         
         <div class="form-row-2">
             <div class="form-group">
-                <label>Documento (DNI)</label>
-                <input type="text" name="dni" placeholder="Sin puntos..." required>
+                <label>DOCUMENTO (DNI)</label>
+                <input type="text" name="dni" placeholder="Sin puntos..." autocomplete="off" required>
             </div>
 
             <div class="form-group">
-                <label>Correo Electrónico</label>
-                <input type="email" name="correo" placeholder="ejemplo@correo.com" required>
+                <label>CORREO ELECTRONICO</label>
+                <input type="email" name="correo" placeholder="ejemplo@correo.com" autocomplete="off" required>
             </div>
         </div>
 
@@ -43,7 +44,7 @@
     </div>
 
     <div class="link-gestion margen-top">
-        <a href="historial_reservas.php" class="link-destacado">VER MI HISTORIAL COMPLETO DE TURNOS</a>
+        <a href="historial_reservas.php" class="link-destacado">VER MIS RESERVAS ACTIVAS</a>
     </div>
 
 </div>
