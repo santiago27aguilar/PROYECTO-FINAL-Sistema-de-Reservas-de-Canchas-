@@ -8,25 +8,57 @@
     include '../php/conexion.php';
     $rol_usuario = $_SESSION['usuario_rol']; 
 
-    // --- CAPTURAR DATOS DEL CALENDARIO (SI EXISTEN) ---
+    // --- CAPTURAR DATOS DEL CALENDARIO PARA NUEVAS RESERVAS ---
     $cancha_pre = isset($_GET['cancha_pre']) ? $_GET['cancha_pre'] : '';
     $fecha_pre  = isset($_GET['fecha_pre']) ? $_GET['fecha_pre'] : '';
     $hora_pre   = isset($_GET['hora_pre']) ? $_GET['hora_pre'] : '';
     
-    // Calcular automáticamente la hora de fin (1 hora después) para agilizar la carga
     $hora_fin_pre = '';
     if (!empty($hora_pre)) {
         $hora_fin_pre = date('H:i', strtotime($hora_pre . ' + 1 hour'));
     }
 
-    // --- CONFIGURACIÓN DE PAGINACIÓN ---
+    // ==========================================
+    // SISTEMA DE FILTRADOS (DROP DOWNS)
+    // ==========================================
+    $f_fecha  = isset($_GET['f_fecha']) ? $_GET['f_fecha'] : '';
+    $f_cancha = isset($_GET['f_cancha']) ? $_GET['f_cancha'] : '';
+    $f_estado = isset($_GET['f_estado']) ? $_GET['f_estado'] : '';
+
+    $where_clauses = [];
+    $params = [];
+
+    if (!empty($f_fecha)) {
+        $where_clauses[] = "DATE(r.hora_inicio) = :f_fecha";
+        $params[':f_fecha'] = $f_fecha;
+    }
+    if (!empty($f_cancha)) {
+        $where_clauses[] = "ca.tipo_cancha LIKE :f_cancha";
+        $params[':f_cancha'] = '%' . $f_cancha . '%';
+    }
+    if (!empty($f_estado)) {
+        $where_clauses[] = "r.estado = :f_estado";
+        $params[':f_estado'] = $f_estado;
+    }
+
+    $where_sql = "";
+    if (count($where_clauses) > 0) {
+        $where_sql = " WHERE " . implode(" AND ", $where_clauses);
+    }
+
+    // Mantener los filtros en la URL para la paginación
+    $url_filtros = "&f_fecha=" . urlencode($f_fecha) . "&f_cancha=" . urlencode($f_cancha) . "&f_estado=" . urlencode($f_estado);
+
+    // --- CONFIGURACIÓN DE PAGINACIÓN ADAPTADA A FILTROS ---
     $registros_por_pagina = 5; 
     $pagina_actual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
     if ($pagina_actual < 1) $pagina_actual = 1;
     $offset = ($pagina_actual - 1) * $registros_por_pagina;
 
-    $sql_total = $conexion->query("SELECT COUNT(*) as total FROM reservas");
-    $total_registros = $sql_total->fetch(PDO::FETCH_ASSOC)['total'];
+    $sql_total_str = "SELECT COUNT(*) as total FROM reservas r JOIN cancha ca ON r.cancha_idcancha = ca.idcancha" . $where_sql;
+    $stmt_total = $conexion->prepare($sql_total_str);
+    $stmt_total->execute($params);
+    $total_registros = $stmt_total->fetch(PDO::FETCH_ASSOC)['total'];
     $total_paginas = ceil($total_registros / $registros_por_pagina);
 ?>
 
@@ -35,8 +67,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestion de Reservas - Pampa Fútbol</title>
-    <link rel="stylesheet" href="../css/estilos_reservas.css?v=5">
+    <title>Gestion de Reservas - Planeta Futbol</title>
+    <?php include 'head_comun.php'; ?>
+    <!-- Le sumamos v=6 para limpiar la caché y que tome los nuevos estilos -->
+    <link rel="stylesheet" href="../css/estilos_reservas.css?v=6">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -87,8 +121,6 @@
         <?php if (isset($_GET['error']) && $_GET['error'] === 'horario_ocupado'): ?>
             <div class="alerta alerta-error">El horario ya está ocupado para la cancha seleccionada</div>
         <?php endif; ?>
-        
-        <!-- NUEVO CARTEL DE ERROR POR PAGO ASOCIADO -->
         <?php if (isset($_GET['error']) && $_GET['error'] === 'tiene_pago'): ?>
             <div class="alerta alerta-error">
                 <strong>Error:</strong> Esta reserva ya tiene un pago realizado. Debes ir a la sección de "Pagos", eliminar el registro correspondiente y luego intentar borrar la reserva nuevamente.
@@ -104,11 +136,11 @@
             <form action="../php/registrar_reservas.php" method="POST">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label>Fecha de la Reserva <span class="asterisco">*</span></label>
+                        <label>Fecha de la Reserva: </label>
                         <input type="date" name="fecha_reserva" value="<?php echo htmlspecialchars($fecha_pre); ?>" required>
                     </div>
                     <div class="form-group">
-                        <label>Seleccionar Cliente <span class="asterisco">*</span></label>
+                        <label>Seleccionar Cliente: </label>
                         <select name="id_cliente" required>
                             <option value="">> Elija un cliente <</option>
                             <?php
@@ -120,17 +152,16 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Hora de Inicio <span class="asterisco">*</span></label>
+                        <label>Hora de Inicio: </label>
                         <input type="time" name="hora_inicio" min="14:00" max="23:59" value="<?php echo htmlspecialchars($hora_pre); ?>" required>
                     </div>
                     <div class="form-group">
-                        <label>Seleccionar Cancha <span class="asterisco">*</span></label>
+                        <label>Seleccionar Cancha: </label>
                         <select name="idcancha" required>
                             <option value="">> Elija una cancha <</option>
                             <?php
                                 $queryC = $conexion->query("SELECT idcancha, tipo_cancha FROM cancha");
                                 while($regC = $queryC->fetch(PDO::FETCH_ASSOC)){
-                                    // AUTO-SELECCIONAR CANCHA
                                     $selected = ($regC['idcancha'] == $cancha_pre) ? 'selected' : '';
                                     echo "<option value='".$regC['idcancha']."' ".$selected.">".$regC['tipo_cancha']."</option>";
                                 }
@@ -138,10 +169,13 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Hora de Finalizacion <span class="asterisco">*</span></label>
+                        <label>Hora de Finalizacion: </label>
                         <input type="time" name="hora_fin" min="15:00" max="23:59" value="<?php echo htmlspecialchars($hora_fin_pre); ?>" required>
                     </div>
                     <button type="submit" class="btn-guardar btn-full">GUARDAR RESERVA</button>
+
+                    <!--<span class="asterisco">*</span>-->
+
                 </div>
             </form>
         </div>
@@ -154,6 +188,36 @@
                     <a href="../php/exportar_excel_reservas.php" class="btn-exportar btn-excel">EXCEL</a>
                 </div>
             </div>
+
+            <form action="reservas.php" method="GET" class="barra-filtros">
+                <div class="grupo-filtro">
+                    <label>Filtrar por Fecha:</label>
+                    <input type="date" name="f_fecha" value="<?php echo htmlspecialchars($f_fecha); ?>">
+                </div>
+                <div class="grupo-filtro">
+                    <label>Tipo de Cancha:</label>
+                    <select name="f_cancha">
+                        <option value="">Todas las canchas</option>
+                        <option value="Futbol 5" <?php echo ($f_cancha == 'Futbol 5') ? 'selected' : ''; ?>>Solo Fútbol 5</option>
+                        <option value="Futbol 7" <?php echo ($f_cancha == 'Futbol 7') ? 'selected' : ''; ?>>Solo Fútbol 7</option>
+                        <option value="Padel" <?php echo ($f_cancha == 'Padel') ? 'selected' : ''; ?>>Solo Pádel</option>
+                    </select>
+                </div>
+                <div class="grupo-filtro">
+                    <label>Estado del Turno:</label>
+                    <select name="f_estado">
+                        <option value="">Todos los estados</option>
+                        <option value="Pendiente" <?php echo ($f_estado == 'Pendiente') ? 'selected' : ''; ?>>Pendiente de Seña</option>
+                        <option value="Confirmado" <?php echo ($f_estado == 'Confirmado') ? 'selected' : ''; ?>>Confirmado</option>
+                        <option value="Pagado" <?php echo ($f_estado == 'Pagado') ? 'selected' : ''; ?>>Pagado (Finalizado)</option>
+                        <option value="Cancelado" <?php echo ($f_estado == 'Cancelado') ? 'selected' : ''; ?>>Cancelado</option>
+                    </select>
+                </div>
+                <div class="grupo-botones-filtro">
+                    <button type="submit" class="btn-filtrar"><i class="fas fa-search"></i>Filtrar</button>
+                    <a href="reservas.php" class="btn-limpiar"><i class="fas fa-times"></i>Limpiar</a>
+                </div>
+            </form>
             
             <div class="table-responsive-wrapper">
                 <table class="tabla-moderna">
@@ -174,18 +238,23 @@
                                     FROM reservas r 
                                     LEFT JOIN clientes c ON r.clientes_idclientes = c.idclientes 
                                     JOIN cancha ca ON r.cancha_idcancha = ca.idcancha 
+                                    $where_sql 
                                     ORDER BY r.hora_inicio DESC 
                                     LIMIT $registros_por_pagina OFFSET $offset";
             
-                            $consulta = $conexion->query($sql);
+                            $stmt = $conexion->prepare($sql);
+                            $stmt->execute($params);
 
-                            while($fila = $consulta->fetch(PDO::FETCH_ASSOC)){
+                            if($stmt->rowCount() == 0) {
+                                echo "<tr><td colspan='7' style='text-align:center; padding: 20px;'>No se encontró información relevante para estos filtros.</td></tr>";
+                            }
+
+                            while($fila = $stmt->fetch(PDO::FETCH_ASSOC)){
                                 $soloFecha = date("d-m-Y", strtotime($fila['hora_inicio']));
                                 $horaI = date("H:i", strtotime($fila['hora_inicio']));
                                 $horaF = date("H:i", strtotime($fila['hora_fin']));
                                 $nombreCompleto = $fila['nombre'] . " " . $fila['apellido'];
                                 
-                                // Clase CSS dinámica para la columna estado
                                 $estado_texto = isset($fila['estado']) ? $fila['estado'] : 'Pendiente';
                                 $clase_estado = 'estado-' . strtolower($estado_texto);
                         ?>
@@ -206,20 +275,17 @@
                                 <div class="acciones-flex">
                                     <?php if (in_array(strtolower($rol_usuario), ['admin', 'administrador', 'duenio', 'dueño'])): ?>
                                         
-                                        <!-- Botones dinámicos según el estado -->
                                         <?php if(strtolower($estado_texto) == 'pendiente'): ?>
                                             <a href="../php/cambiar_estado_reserva.php?id=<?php echo $fila['idreservas']; ?>&accion=confirmar" class="btn-confirmar">Confirmar Seña</a>
                                             <a href="../php/cambiar_estado_reserva.php?id=<?php echo $fila['idreservas']; ?>&accion=cancelar" class="btn-cancelar">Cancelar</a>
                                         
                                         <?php elseif(strtolower($estado_texto) == 'confirmado'): ?>
-                                            <!-- ACÁ ESTÁ EL CAMBIO PARA MANDARLO A PAGOS.PHP -->
                                             <a href="pagos.php?reserva_id=<?php echo $fila['idreservas']; ?>" class="btn-cobrar">Cobrar Monto</a>
                                         
                                         <?php elseif(strtolower($estado_texto) == 'pagado'): ?>
                                             <span class="texto-pagado">Finalizado</span>
                                         <?php endif; ?>
 
-                                        <!-- Botón borrar siempre visible por si hubo un error -->
                                         <a href="../php/eliminar_reserva.php?id=<?php echo $fila['idreservas']; ?>" class="btn-borrar" onclick="return confirm('¿Deseas eliminar definitivamente esta reserva?')">Borrar</a>
                                     
                                     <?php else: ?>
@@ -236,15 +302,15 @@
             <?php if($total_paginas > 1): ?>
                 <div class="paginacion-wrapper">
                     <?php if($pagina_actual > 1): ?>
-                        <a href="?pagina=<?php echo $pagina_actual - 1; ?>" class="btn-pag">&laquo; Anterior</a>
+                        <a href="?pagina=<?php echo $pagina_actual - 1; ?><?php echo $url_filtros; ?>" class="btn-pag">&laquo; Anterior</a>
                     <?php endif; ?>
 
                     <?php for($i = 1; $i <= $total_paginas; $i++): ?>
-                        <a href="?pagina=<?php echo $i; ?>" class="btn-pag <?php echo ($i == $pagina_actual) ? 'activo' : ''; ?>"><?php echo $i; ?></a>
+                        <a href="?pagina=<?php echo $i; ?><?php echo $url_filtros; ?>" class="btn-pag <?php echo ($i == $pagina_actual) ? 'activo' : ''; ?>"><?php echo $i; ?></a>
                     <?php endfor; ?>
 
                     <?php if($pagina_actual < $total_paginas): ?>
-                        <a href="?pagina=<?php echo $pagina_actual + 1; ?>" class="btn-pag">Siguiente &raquo;</a>
+                        <a href="?pagina=<?php echo $pagina_actual + 1; ?><?php echo $url_filtros; ?>" class="btn-pag">Siguiente &raquo;</a>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
@@ -253,5 +319,6 @@
     </div>
     
     <script src="../js/menu_desplegable.js"></script>
+    <script src="../js/alerta_cliente.js"></script> 
 </body>
 </html>
