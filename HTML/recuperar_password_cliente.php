@@ -4,20 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recuperar Clave - Pampa Fútbol</title>
-    <link rel="stylesheet" href="../css/estilos_recuperar_password_cliente.css"> 
+    <title>Recuperar Clave del Cliente - Planeta de Futbol</title>
+    <?php include 'head_comun.php'; ?>
+    <link rel="stylesheet" href="../css/estilos_recuperar_password_cliente.css?v=2"> 
 </head>
 <body>
+    <div class="recover-container">
+        <div class="recover-card">
 
-    <div class="recuperar-container">
-        <div class="recuperar-card">
-            
-            <h2>RECUPERAR CLAVE</h2>
-            <p class="texto-explicativo">Ingresá tu correo y te enviaremos un enlace para cambiar tu contraseña.</p>
+            <div class="logo-container">
+                <div class="circular-placeholder">
+                    <img src="../img/contrasenia.png" alt="Futbol">
+                </div>
+                <div class="circular-placeholder">
+                    <img src="../img/nueva-contrasenia.png" alt="Padel">
+                </div>
+            </div>
+
+            <h1>RECUPERA TU CONTRASEÑA</h1>
+            <p>Ingresa tu correo electrónico para recuperar tu contraseña</p>
 
             <!-- Leemos el error desde la sesión y lo borramos -->
             <?php if(isset($_SESSION['error_rec_cliente'])): ?>
-                <div class="alerta-error">
+                <div class="error-msg">
                     <?= htmlspecialchars($_SESSION['error_rec_cliente']) ?>
                 </div>
                 <?php unset($_SESSION['error_rec_cliente']); ?>
@@ -25,27 +34,26 @@
             
             <!-- Leemos el éxito desde la sesión y lo borramos -->
             <?php if(isset($_SESSION['exito_rec_cliente'])): ?>
-                <div class="alerta-exito">
+                <div class="success-msg">
                     <?= htmlspecialchars($_SESSION['exito_rec_cliente']) ?>
                 </div>
                 <?php unset($_SESSION['exito_rec_cliente']); ?>
             <?php endif; ?>
 
-            <form action="../php/procesar_recuperacion_cliente.php" method="POST">
+            <form action="../php/procesar_recuperacion_cliente.php" method="POST" autocomplete="off">
                 <div class="form-group">
-                    <label>Correo Electrónico <span class="asterisco">*</span></label>
-                    <input type="email" name="correo" placeholder="ejemplo@gmail.com" required>
+                    <label>CORREO ELECTRÓNICO</label>
+                    <input type="email" name="correo" placeholder="ejemplo@correo.com" required>
                 </div>
                 
-                <button type="submit" class="btn-enviar">ENVIAR ENLACE</button>
+                <button type="submit" class="btn-primary">CONTINUAR</button>
             </form>
 
-            <div class="forgot-link">
+            <div class="footer-link">
                 <a href="login_cliente.php">VOLVER AL INICIO</a>
             </div>
 
         </div>
     </div>
-
 </body>
 </html>
