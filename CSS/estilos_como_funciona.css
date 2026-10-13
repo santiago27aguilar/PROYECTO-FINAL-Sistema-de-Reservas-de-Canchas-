@@ -84,9 +84,8 @@ body {
     color: white;
     padding: 6px 16px;
     border-radius: 20px;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: bold;
-    text-transform: uppercase;
     display: inline-block;
     margin-bottom: 15px;
 }
@@ -128,20 +127,20 @@ body {
 
 .imagen-paso-container {
     width: 100%;
-    height: auto; /* Dejamos que la altura se adapte automáticamente a la foto */
-    padding: 0; /* ACÁ ESTÁ LA CLAVE: Sacamos el espacio interno */
-    background-color: transparent; /* Sacamos el fondo gris para que quede limpio */
+    height: auto; 
+    padding: 0; 
+    background-color: transparent; 
     border-radius: 6px;
     overflow: hidden;
     margin-bottom: 25px;
-    border: 1px solid #ddd; /* Dejamos solo un borde sutil */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Sombra suave a la foto */
+    border: 1px solid #ddd; 
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05); 
 }
 
 .img-paso-guia {
     width: 100%;
     height: auto;
-    display: block; /* Esto evita pequeños espacios en blanco debajo de la imagen */
+    display: block; 
     object-fit: contain;
 }
 
@@ -322,7 +321,7 @@ body {
         gap: 0;
         max-height: 0;
         overflow: hidden;
-        transition: max-height 0.3s ease-in-out;
+        transition: max-height 0.5s ease-in-out;
     }
 
     .botones-auth.active {
@@ -350,7 +349,7 @@ body {
     }
 
     .imagen-paso-container {
-        height: auto; /* Así se adapta justo al tamaño de la foto sin sobrar espacio */
+        height: auto; 
         padding: 0;
     }
 
