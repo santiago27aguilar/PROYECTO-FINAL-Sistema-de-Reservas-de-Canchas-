@@ -21,7 +21,8 @@ if (!$valido) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nueva Contraseña - Gestión de Canchas</title>
+    <title>Nueva Contraseña - Planeta de Futbol</title>
+    <?php include 'head_comun.php'; ?>
     <link rel="stylesheet" href="../css/estilos_nuevo_password_usuario.css">
 </head>
 <body>
