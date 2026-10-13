@@ -84,7 +84,6 @@ body {
     font-weight: bold;
 }
 
-/* ================= DISEÑO UNIFICADO ================= */
 .card-blanca {
     background-color: #fff;
     padding: 40px;
@@ -100,7 +99,6 @@ body {
     font-weight: bold;
 }
 
-/* ================= CONTROLES (TABS Y FECHA) ================= */
 .controles-calendario {
     display: flex;
     flex-direction: column;
@@ -167,7 +165,6 @@ body {
     border-color: #2b1b54;
 }
 
-/* ================= TABLA ================= */
 .table-responsive-wrapper {
     width: 100%;
     overflow-x: auto; 
@@ -251,7 +248,6 @@ body {
     color: #721c24;
 }
 
-/* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
     .navbar {
         justify-content: flex-start; 
