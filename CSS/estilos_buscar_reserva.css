@@ -6,7 +6,7 @@
 }
 
 body {
-    background-color: #d9d9d9;
+    background: radial-gradient(circle, #036a19 0%, #020720 100%);
     padding: 20px;
     display: flex;
     justify-content: center;
@@ -30,6 +30,103 @@ h2 {
     text-transform: uppercase;
 }
 
+.oculto {
+    display: none;
+}
+
+.tabs-canchas {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.tab-btn {
+    padding: 8px 18px;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #000000;
+    cursor: pointer;
+    transition: all 0.5s ease;
+}
+
+.tab-btn:hover {
+    background-color: #e2e2e2;
+}
+
+.tab-btn.activo {
+    background-color: #2b1b54;
+    color: white;
+    border-color: #2b1b54;
+}
+
+.contenedor-lista-turnos {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.mini-tarjeta-turno {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    border: 4px solid blue;
+    padding: 25px 35px;
+    border-radius: 8px;
+    transition: all 0.5s ease;
+}
+
+.mini-tarjeta-turno:hover {
+    border-color: #11ac35;
+}
+
+.mini-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.mini-info strong {
+    font-size: 18px;
+    color: #000000;
+    text-transform: uppercase;
+}
+
+.mini-info span {
+    font-size: 15px;
+    color: #666;
+    font-weight: 600;
+}
+
+.btn-ver-detalle {
+    background-color: #11ac35;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    text-transform: uppercase;
+    font-size: 14px;
+}
+
+.btn-ver-detalle:hover {
+    background-color: #0d7223;
+}
+
+.btn-como-link {
+    background: none;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+}
 
 .contenedor-detalle {
     display: flex;
@@ -87,7 +184,6 @@ h2 {
     color: #000;
 }
 
-
 .footer-acciones {
     display: flex;
     flex-direction: column;
@@ -114,17 +210,15 @@ h2 {
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.5s ease;
-    text-transform: uppercase;
 }
 
 .btn-cancelar:hover {
     background-color: #6f0e0e; 
-    box-shadow: 0 6px 15px rgba(101, 5, 5, 0.4); 
 }
 
 .link-volver {
     margin-top: 25px;
-    color: #b0b0b0;
+    color: #707070;
     text-decoration: none;
     font-size: 16px;
     font-weight: bold;
@@ -135,13 +229,6 @@ h2 {
     color: #11ac35;
     text-decoration: none;
 }
-
-/* MENSAJE DE ERROR SIN ESTILO EN LÍNEA */
-/*.error-msg {
-    margin-bottom: 20px;
-    color: #666;
-    text-align: center;
-}*/
 
 .cuadro-img-error {
     background-color: #cc0000; 
@@ -169,14 +256,12 @@ h2 {
     margin-right: 100px;    
 }
 
-
 .dato-error {
     font-size: 18px;
     font-weight: bold;
     color: #cc0000; 
     text-align: center;
 }
-
 
 .error-msg-sub {
     margin-top: 10px;
@@ -188,34 +273,28 @@ h2 {
     max-width: 450px;
 }
 
+.mensaje-filtro-vacio {
+    text-align: center;
+    color: #666;
+    margin: 20px 0;
+    font-weight: 600;
+}
 
 @media (max-width: 768px) {
     .reserva-card { 
         padding: 30px 25px; 
     }
 
-    .info-texto { 
+    .info-texto, .info-texto-error { 
         margin-right: 80px; 
     }
 
-    .info-texto-error { 
-        margin-right: 80px;
-    }
-
-    .cuadro-img { 
+    .cuadro-img, .cuadro-img-error { 
         width: 80px; 
     }
 
-    .cuadro-img-error {
-        width: 80px;
-    }
-
-    .dato { 
+    .dato, .dato-error { 
         font-size: 20px; 
-    }
-
-    .dato-error { 
-        font-size: 20px;
     }
 }
 
@@ -224,7 +303,7 @@ h2 {
         height: 85px; 
     }
 
-    .cuadro-img { 
+    .cuadro-img, .cuadro-img-error { 
         width: 65px; 
     }
 
@@ -232,20 +311,11 @@ h2 {
         width: 35px; 
     }
 
-    .cuadro-img-error {
-        width: 65px; 
-    }
-
     .cuadro-img-error img { 
         width: 65px;
     }
 
-    .info-texto-error { 
-        margin-right: 65px; 
-        padding: 0 10px;
-    }
-
-    .info-texto { 
+    .info-texto, .info-texto-error { 
         margin-right: 65px; 
         padding: 0 10px; 
     }
@@ -254,12 +324,8 @@ h2 {
         font-size: 12px; 
     }
 
-    .dato { 
+    .dato, .dato-error { 
         font-size: 17px; 
-    }
-
-    .dato-error {
-        font-size: 17px;
     }
 
     .btn-cancelar { 
@@ -267,4 +333,14 @@ h2 {
         font-size: 16px; 
     }
 
+    .mini-tarjeta-turno {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .btn-ver-detalle {
+        width: 100%;
+        text-align: center;
+    }
 }
