@@ -33,7 +33,8 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actualizar Contraseña - Pampa Fútbol</title>
+    <title>Actualizar Contraseña - Planeta de Futbol</title>
+    <?php include 'head_comun.php'; ?>
     <!-- Vinculamos el nuevo CSS limpio -->
     <link rel="stylesheet" href="../css/estilos_nuevo_password_cliente.css">
 </head>
