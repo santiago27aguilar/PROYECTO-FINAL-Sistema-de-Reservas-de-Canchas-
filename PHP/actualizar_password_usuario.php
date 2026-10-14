@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     try {
         // 1. Buscamos el correo asociado al token
-        $stmt = $conexion->prepare("SELECT correo FROM recuperacion_de_clave WHERE token = :token");
+        $stmt = $conexion->prepare("SELECT correo FROM recuperacion_de_clave_usuario WHERE token = :token");
         $stmt->execute([':token' => $token]);
         $registro = $stmt->fetch();
 
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->execute([':pass' => $pass_hash, ':correo' => $correo]);
 
             // 4. Borramos el token
-            $stmt_delete = $conexion->prepare("DELETE FROM recuperacion_de_clave WHERE token = :token");
+            $stmt_delete = $conexion->prepare("DELETE FROM recuperacion_de_clave_usuario WHERE token = :token");
             $stmt_delete->execute([':token' => $token]);
 
             header("Location: ../html/login.php?cambio=exito");
