@@ -10,7 +10,6 @@ body {
     color: #000;
 }
 
-/* --- HEADER --- */
 .navbar-landing {
     display: flex;
     justify-content: space-between;
@@ -66,7 +65,6 @@ body {
     background-color: #004400;
 }
 
-/* --- BANNER (HERO) --- */
 .contenedor-banner {
     margin: 50px 50px; 
     border-radius: 8px; 
@@ -138,7 +136,6 @@ body {
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
 }
 
-/* --- MAPA E INFO (ANCHO ORIGINAL TOTAL, SIN ACHICAR) --- */
 .info-complejo {
     padding: 20px 50px 60px 50px;
 }
@@ -200,7 +197,6 @@ body {
     font-weight: 500;
 }
 
-/* --- FOOTER MODERNO (Centrado) --- */
 .footer-landing {
     background-color: #02200d; 
     color: #fff;
@@ -287,7 +283,6 @@ body {
     color: #888888;
 }
 
-/* --- BOTÓN FLOTANTE WHATSAPP --- */
 .btn-whatsapp-flotante {
     position: fixed; 
     width: 60px;
@@ -312,9 +307,6 @@ body {
     transform: scale(1.1); 
 }
 
-/* =========================================
-   RESPONSIVE (Para Celulares y Tablets)
-   ========================================= */
 @media (max-width: 850px) {
     .navbar-landing {
         padding: 15px 20px;
