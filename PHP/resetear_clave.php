@@ -18,5 +18,5 @@ if (isset($_GET['id'])) {
         header("Location: ../html/personal.php?error=fallo_db");
         exit();
     }
-}
+} 
 ?>
