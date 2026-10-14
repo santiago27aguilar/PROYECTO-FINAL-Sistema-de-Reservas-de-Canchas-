@@ -6,7 +6,7 @@ $busqueda = isset($_GET['buscar']) ? $_GET['buscar'] : '';
 
 header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 header("Content-Disposition: attachment; filename=Reporte_Clientes_" . date('Y-m-d') . ".xls");
-
+ 
 echo $bom . $estilo_unico;
 ?>
 <table border="1">
