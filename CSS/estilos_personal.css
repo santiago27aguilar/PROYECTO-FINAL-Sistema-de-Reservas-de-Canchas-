@@ -94,9 +94,10 @@ h1 {
 
 .bienvenida { 
     text-align: center; 
-    font-size: 14px; 
+    font-size: 15px; 
     margin-bottom: 40px; 
-    color: #444;
+    color: #888;
+    font-weight: 600;
 }
 
 .card-blanca {
@@ -104,7 +105,6 @@ h1 {
     padding: 40px;
     border-radius: 4px;
     margin-bottom: 40px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 h2 { 
@@ -151,11 +151,11 @@ h2 {
 }
 
 label { 
-    display: block; 
+    display: block;  
     font-weight: 600; 
     margin-bottom: 8px; 
     font-size: 15px; 
-    color: #555;
+    color: #000000;
 }
 
 .input-form {
@@ -166,7 +166,6 @@ label {
     border-radius: 2px;
     font-size: 15px;
     font-family: inherit;
-    transition: all 0.5s ease;
 }
 
 .input-form:focus {
@@ -188,7 +187,6 @@ label {
 
 .btn-guardar:hover { 
     background-color: #0d7223; 
-    box-shadow: 0 6px 15px rgba(17, 172, 53, 0.3); 
 }
 
 .btn-full { 
@@ -196,10 +194,7 @@ label {
     display: block; 
     margin: 40px auto 0 auto;
 }
-
-/* =========================================
-   SECCIÓN DE LISTADO Y BOTONES
-   ========================================= */
+ 
 .seccion-clientes { 
     margin-top: 40px; 
 }
@@ -218,7 +213,6 @@ label {
     text-align: center;
 }
 
-/* LA CONFIGURACIÓN COMO LA FOTO DE PAGOS */
 .herramientas-tabla {
     display: flex;
     justify-content: space-between;
@@ -244,7 +238,6 @@ input[type="text"].buscador-moderno:focus {
     outline: 2px solid #28a745;
 }
 
-/* ESTILOS EXACTOS DE LOS BOTONES DE PAGOS + TRANSICIÓN DE 5S */
 .btn-exportar {
     padding: 14px 35px;
     border-radius: 4px;
@@ -255,19 +248,27 @@ input[type="text"].buscador-moderno:focus {
     text-transform: uppercase;
     text-align: center;
     min-width: 120px;
-    transition: all 0.5s ease; /* Transición de 5 segundos solicitada */
+    transition: all 0.5s ease;
     border: none;
     cursor: pointer;
 }
 
-.btn-excel { background-color: #28a745; }
-.btn-excel:hover { background-color: #0d7223; }
-.btn-pdf { background-color: #e60b0b; }
-.btn-pdf:hover { background-color: #6f0e0e; }
+.btn-excel { 
+    background-color: #28a745; 
+}
 
-/* =========================================
-   ESTILOS PARA LA BARRA DE FILTROS 
-   ========================================= */
+.btn-excel:hover { 
+    background-color: #0d7223; 
+}
+
+.btn-pdf { 
+    background-color: #e60b0b; 
+}
+
+.btn-pdf:hover { 
+    background-color: #6f0e0e; 
+}
+
 .barra-filtros {
     background: #ffffff;
     border: 1px solid #dee2e6;
@@ -333,8 +334,6 @@ input[type="text"].buscador-moderno:focus {
 .btn-limpiar:hover { background-color: #9b1b1b; }
 
 .btn-limpiar i { margin-right: 8px; }
-
-/* ========================================= */
 
 .table-responsive-wrapper { 
     width: 100%; 
@@ -421,9 +420,6 @@ input[type="text"].buscador-moderno:focus {
     font-weight: bold;
 }
 
-/* =========================================
-   PAGINACIÓN
-   ========================================= */
 .paginacion-wrapper { 
     text-align: center; 
     margin-top: 25px; 
@@ -452,8 +448,6 @@ input[type="text"].buscador-moderno:focus {
     color: white; 
     border-color: #28a745; 
 }
-
-/* ========================================= */
 
 .modal {
     display: none; 
@@ -491,7 +485,7 @@ input[type="text"].buscador-moderno:focus {
 
 .modal h2 { 
     margin-top: 0; 
-    color: #333; 
+    color: #000000; 
     border-bottom: none;
 }
 
@@ -516,11 +510,14 @@ input[type="text"].buscador-moderno:focus {
 }
 
 .sin-correo { 
-    color: #999; font-style: italic; 
+    color: #999; 
+    font-style: italic; 
 }
 
 .btn-accion-editar { 
-    background-color: #17a2b8; border: none; cursor: pointer; 
+    background-color: #17a2b8; 
+    border: none; 
+    cursor: pointer; 
 }
 
 .btn-accion-editar:hover { 
