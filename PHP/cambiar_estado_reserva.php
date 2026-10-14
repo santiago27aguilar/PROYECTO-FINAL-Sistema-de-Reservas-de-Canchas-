@@ -69,7 +69,7 @@ if (isset($_GET['id']) && isset($_GET['accion'])) {
 
         // Volvemos a la pantalla de reservas
         header("Location: ../html/reservas.php?mensaje=actualizado");
-        exit();
+        exit(); 
 
     } catch (PDOException $e) {
         // SI ALGO FALLA, DESHACEMOS TODO (ROLLBACK) para no dejar datos a medias
