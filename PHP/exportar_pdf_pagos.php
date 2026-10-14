@@ -21,7 +21,7 @@ class PDF extends FPDF {
         $this->Cell(45, 10, 'Fecha Pago', 1, 1, 'C', true);
     }
 }
-
+ 
 $pdf = new PDF();
 $pdf->AddPage();
 $pdf->SetFont('Arial','',10);
