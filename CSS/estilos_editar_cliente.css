@@ -46,7 +46,6 @@ body {
     display: inline-block;
 }
 
-
 .grid-editar-top {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -60,27 +59,26 @@ body {
 }
 
 label {
+    display: block;
+    font-weight: bold;
     font-size: 14px;
-    font-weight: 600;
+    color: #000000;
     margin-bottom: 10px;
-    color: #000;
 }
 
 input {
     width: 100%;
-    padding: 16px;
-    background-color: #e0e0e0;
-    border: none;
-    font-size: 15px;
-    color: #333;
-    outline: none;
-    transition: box-shadow 0.3s ease;
+    padding: 14px;
+    border: none; 
+    background-color: #e8e8e8; 
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 14px;
 }
 
 input:focus {
-    box-shadow: inset 0 0 0 2px #28a745;
+    outline: 2px solid #28a745; 
 }
-
 
 .izq label {
     text-align: left; 
@@ -94,12 +92,10 @@ input:focus {
     text-align: center; 
 }
 
-
 .correo-container {
     width: 60%;
     margin: 0 auto 50px auto;
 }
-
 
 .acciones-container {
     display: flex;
@@ -123,7 +119,6 @@ input:focus {
 
 .btn-actualizar:hover {
     background-color: #0d7223;
-    box-shadow: 0 6px 15px rgba(21, 104, 40, 0.4);
 }
 
 .link-volver {
@@ -136,7 +131,7 @@ input:focus {
 }
 
 .link-volver:hover {
-    color: #666;
+    color: #11ac35;
 }
 
 .asterisco {
@@ -145,24 +140,36 @@ input:focus {
     margin-left: 3px;
 }
 
-
-@media (max-width: 768px) {
-    .card-blanca {
-        padding: 30px 20px;
+@media (max-width: 850px) {
+    body {
+        display: block; 
     }
+    .card-blanca { 
+        margin: 0 auto 40px auto;
+        padding: 40px 30px;
+    }
+}
 
+@media (max-width: 600px) {
     .header-editar {
-        flex-direction: column; 
+        flex-direction: column;
+        gap: 15px;
         text-align: center;
+    }
+    
+    .header-editar h2 {
+        font-size: 24px;
     }
 
     .grid-editar-top {
-        grid-template-columns: 1fr; 
-        gap: 25px;
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
 
-    .der label { text-align: left; }
-    
+    .izq label, .der label, .centro label {
+        text-align: left;
+    }
+
     .correo-container {
         width: 100%;
     }
