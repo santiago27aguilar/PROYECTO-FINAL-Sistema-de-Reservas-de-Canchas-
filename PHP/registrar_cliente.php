@@ -38,7 +38,7 @@
                 // Si hubo un error (ej: DNI duplicado)
                 header("Location: ../html/inicio.php?error=registro_fallido");
                 exit();
-            }
+            } 
 
             $stmt = $conexion->prepare($sql);
 
