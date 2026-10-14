@@ -19,7 +19,7 @@ try {
     $stmt = $conexion->prepare($sql);
     $stmt->execute([$id_cancha, $fecha]);
     $reservas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+ 
     $ocupados = [];
 
     // 3. Procesamos cada reserva para sacar TODAS las horas que ocupa
