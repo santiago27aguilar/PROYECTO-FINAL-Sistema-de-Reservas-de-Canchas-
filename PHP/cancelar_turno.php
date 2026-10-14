@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['id_reserva'])) {
             // Si hubo un error raro, lo devolvemos con error
             header("Location: ../html/mis_reservas.php?error=1");
             exit();
-        }
+        } 
         
     } catch (Exception $e) {
         die("Error en la base de datos al cancelar: " . $e->getMessage());
