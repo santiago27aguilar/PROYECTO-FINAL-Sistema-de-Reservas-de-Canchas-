@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             // --- ACÁ PONÉS TUS DATOS ---
             $mail->Username = 'santiagaguilardecano@gmail.com'; 
-            $mail->Password = 'jnwqlswjeofwzkmk'; 
+            $mail->Password = 'cbvn rpkh gdnj fgpq'; 
             // ---------------------------
 
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                               <a href="http://localhost/Gestion de Reservas de Canchas/html/nuevo_password_usuario.php?token='.$token.'">Recuperar cuenta</a>';
 
             $mail->send();
-            
+             
             // NUEVO: Guardamos el éxito en la sesión y redireccionamos limpio
             $_SESSION['exito_recuperacion'] = "Revisa tu bandeja de entrada. Te enviamos un enlace.";
             header("Location: ../html/recuperar_password_usuario.php");
