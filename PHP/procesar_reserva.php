@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             ':id_can' => $id_cancha,
             ':id_cli' => $id_cliente
         ]);
-        
+         
         // ¡Se cierra la transacción!
         $conexion->commit();
         
