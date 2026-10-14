@@ -1,8 +1,23 @@
 <?php
-// 1. Llamamos a tu conexión
+// 1. Iniciamos sesión y ponemos el candado de seguridad
+session_start();
+
+if (!isset($_SESSION['usuario_rol'])) {
+    header("Location: ../html/login.php");
+    exit();
+}
+
+$rol_actual = strtolower($_SESSION['usuario_rol']);
+if (!in_array($rol_actual, ['duenio', 'dueño'])) {
+    // Si no es el dueño, no puede procesar esta actualización
+    header("Location: ../html/inicio.php?error=sin_permisos");
+    exit();
+}
+
+// 2. Llamamos a tu conexión
 require_once 'conexion.php';
 
-// 2. Verificamos que los datos vengan del formulario (ventana modal)
+// 3. Verificamos que los datos vengan del formulario (ventana modal)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // Recibimos los datos y los limpiamos de espacios extra
