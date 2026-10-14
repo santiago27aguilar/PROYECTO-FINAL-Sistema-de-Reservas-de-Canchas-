@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: ../html/canchas.php?error=cancha_duplicada");
             exit();
         }
-
+ 
         $sql = "INSERT INTO cancha (tipo_cancha, precio_hora) VALUES (:tipo, :precio)";
         $stmt = $conexion->prepare($sql);
         
