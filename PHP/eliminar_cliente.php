@@ -20,7 +20,7 @@ include 'conexion.php';
 
 // 4. VERIFICAR que el ID llegue por la URL
 if (isset($_GET['id'])) {
-    $id = $_GET['id'];
+    $id = $_GET['id']; 
 
     try {
         // --- PUNTO 6: BORRADO LÓGICO ---
