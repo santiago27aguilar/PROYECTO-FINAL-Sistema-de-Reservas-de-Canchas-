@@ -6,7 +6,7 @@ include 'conexion.php';
 if (!isset($_SESSION['usuario_rol']) || !in_array(strtolower($_SESSION['usuario_rol']), ['duenio', 'dueño', 'admin', 'administrador'])) {
     header("Location: ../html/inicio.php?error=sin_permisos");
     exit();
-}
+} 
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
