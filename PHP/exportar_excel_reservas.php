@@ -6,7 +6,7 @@ header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 header("Content-Disposition: attachment; filename=Reporte_Reservas_" . date('Y-m-d') . ".xls");
 
 echo $bom . $estilo_unico;
-?>
+?> 
 <table border="1">
     <tr><th colspan="6" class="titulo-principal">LISTA DE TODAS LAS RESERVAS</th></tr>
     <tr>
