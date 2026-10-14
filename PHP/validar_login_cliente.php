@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     
                     // Tus credenciales
                     $mail->Username = 'santiagaguilardecano@gmail.com'; 
-                    $mail->Password = 'pbsp tfaw iolq wuwp'; // Volvé a poner tu contraseña de aplicación de Gmail acá
+                    $mail->Password = 'gged hdgj pcqw fivw'; // Volvé a poner tu contraseña de aplicación de Gmail acá
                     
                     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                     $mail->Port = 587;
@@ -63,6 +63,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     $mail->send();
                 } catch (Exception $e) {
+                    /*echo "Error al enviar el correo: {$mail->ErrorInfo}";
+                    exit();*/
+                    
                     // Si el mail falla (por ej, sin internet), el catch vacío permite que 
                     // el cliente inicie sesión de todas formas sin ver un error feo en pantalla.
                 }
@@ -75,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("Location: ../html/login_cliente.php?error=datos_incorrectos");
                 exit();
             }
-        } else {
+        } else { 
             header("Location: ../html/login_cliente.php?error=datos_incorrectos");
             exit();
         }
