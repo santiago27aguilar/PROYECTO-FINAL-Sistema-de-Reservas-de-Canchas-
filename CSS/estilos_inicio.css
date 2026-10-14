@@ -45,7 +45,7 @@ body {
 }
 
 .navbar .nav-links a.link-activo {
-    color: #00ff3c !important;
+    color: #00ff3c;
     font-weight: bold;
 }
 
@@ -68,7 +68,6 @@ body {
     cursor: pointer;
 }
 
-/* Identidad del Usuario en PC */
 .user-info {
     color: #fff;
     font-size: 14px;
@@ -85,8 +84,6 @@ body {
     font-size: 12px;
     font-weight: bold;
 }
-
-/* ------------------ */
 
 .card-blanca {
     background-color: #fff;
@@ -111,12 +108,12 @@ h2 {
 
 label { 
     display: block; 
-    font-weight: 500; 
+    font-weight: 600; 
     margin-bottom: 8px; 
     font-size: 15px; 
+    color: #000000;
 }
 
-/* Estilos de los inputs del formulario de registro */
 .input-form {
     width: 100%;
     padding: 14px; 
@@ -157,9 +154,6 @@ label {
     margin-top: 40px; 
 }
 
-/* =========================================
-   NUEVO LAYOUT: TITULO Y BOTONES EXPORTAR JUNTOS
-   ========================================= */
 .header-lista {
     display: flex;
     justify-content: space-between;
@@ -168,8 +162,8 @@ label {
 }
 
 .header-lista h2 {
-    margin-bottom: 0; /* Quitamos el margen inferior porque ahora está en línea */
-    flex: 1; /* Permite que el título se mantenga en el centro */
+    margin-bottom: 0; 
+    flex: 1; 
     text-align: center;
 }
 
@@ -193,10 +187,6 @@ label {
 .btn-pdf { background-color: #e60b0b; }
 .btn-pdf:hover { background-color: #6f0e0e; }
 
-
-/* =========================================
-   ESTILOS PARA LA BARRA DE FILTROS (TIPO RESERVAS UNIFICADO)
-   ========================================= */
 .barra-filtros {
     background: #ffffff;
     border: 1px solid #dee2e6;
@@ -217,7 +207,7 @@ label {
 }
 
 .filtro-largo {
-    flex: 2; /* El buscador ocupa más espacio visual */
+    flex: 2; 
 }
 
 .grupo-filtro label {
@@ -227,7 +217,6 @@ label {
     color: #495057;
 }
 
-/* El buscador de texto y el select ahora comparten el mismo estilo plano */
 .grupo-filtro input[type="text"], 
 .grupo-filtro select {
     padding: 11px 10px;
@@ -237,7 +226,7 @@ label {
     border-radius: 2px;
     font-size: 14px;
     color: #333;
-    cursor: text; /* El select tiene su cursor pointer default de navegador, acá forzamos para texto */
+    cursor: text; 
     outline: none;
 }
 
@@ -253,7 +242,7 @@ label {
 .grupo-botones-filtro {
     display: flex;
     gap: 10px;
-    margin-bottom: 2px; /* Alineación fina con los inputs */
+    margin-bottom: 2px; 
 }
 
 .btn-limpiar {
@@ -273,8 +262,6 @@ label {
 .btn-limpiar:hover { background-color: #9b1b1b; }
 
 .btn-limpiar i { margin-right: 8px; }
-
-/* ========================================= */
 
 .table-responsive-wrapper { 
     width: 100%; 
@@ -483,19 +470,17 @@ label {
         grid-template-columns: 1fr; 
     }
 
-    /* Adaptación del Título y Botones en celular */
     .header-lista { 
         flex-direction: column; 
         gap: 15px;
     }
     .header-lista h2 {
-        order: -1; /* Forzamos a que el título quede arriba de los botones en el celular */
+        order: -1; 
     }
     .btn-exportar { 
         width: 100%; 
     }
 
-    /* Adaptación de la barra de filtros a celular */
     .barra-filtros {
         flex-direction: column;
         align-items: stretch;
