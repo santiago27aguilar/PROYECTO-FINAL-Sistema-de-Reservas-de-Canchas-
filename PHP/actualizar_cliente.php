@@ -20,7 +20,7 @@
         ]);
 
             // Redirigimos con mensaje de éxito
-            header("Location: ../html/inicio.php?mensaje=actualizado");
+            header("Location: ../html/inicio.php?mensaje=modificado");
             exit();
 
         } catch (PDOException $e) {
