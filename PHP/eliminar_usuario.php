@@ -1,9 +1,15 @@
 <?php
+// 1. Iniciamos sesión y ponemos el candado de seguridad
 session_start();
 include 'conexion.php';
 
-// Verificamos permisos
-if (!isset($_SESSION['usuario_rol']) || !in_array(strtolower($_SESSION['usuario_rol']), ['duenio', 'dueño'])) {
+if (!isset($_SESSION['usuario_rol'])) {
+    header("Location: ../html/login.php");
+    exit();
+}
+
+$rol_actual = strtolower($_SESSION['usuario_rol']);
+if (!in_array($rol_actual, ['duenio', 'dueño'])) {
     header("Location: ../html/inicio.php?error=sin_permisos");
     exit();
 }
@@ -27,6 +33,7 @@ if (isset($_GET['id'])) {
 
         header("Location: ../html/personal.php?mensaje=eliminado");
         exit();
+        
     } catch (PDOException $e) {
         header("Location: ../html/personal.php?error=fallo_db");
         exit();
