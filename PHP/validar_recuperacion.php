@@ -1,7 +1,7 @@
 <?php
 session_start();
 include 'conexion.php'; 
-
+ 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nombre_usuario = trim($_POST['nombre']);
 
