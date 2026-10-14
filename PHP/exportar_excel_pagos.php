@@ -19,7 +19,7 @@ echo $bom . $estilo_unico;
             <th class="cabecera-tabla">Método de Pago</th>
             <th class="cabecera-tabla">Cliente</th>
             <th class="cabecera-tabla">Cancha Reservada</th>
-        </tr>
+        </tr> 
     </thead>
     <tbody>
         <?php
