@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt_delete->execute([':correo' => $correo]);
 
             $conexion->commit();
-
+ 
             sleep(4);
 
             // Éxito completo, lo mandamos al login avisando que ya cambió
