@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function(){
             }
         });
     }
-
+ 
     const metodoSelect = document.getElementById('metodo');
     if(metodoSelect){
         metodoSelect.addEventListener('change', mostrarOpciones);
