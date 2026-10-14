@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
                 $mail->Username = 'santiagaguilardecano@gmail.com'; 
-                $mail->Password = 'TU_PASSWORD_AQUI'; 
+                $mail->Password = 'cbvn rpkh gdnj fgpq'; 
                 $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit();
             } catch (Exception $e) {
                 die("Error al enviar el correo: " . $mail->ErrorInfo);
-            }
+            } 
         } else {
             // NUEVO: Guardamos el error en la sesión y redirigimos limpio
             $_SESSION['error_rec_cliente'] = "El correo no está registrado en el sistema.";
