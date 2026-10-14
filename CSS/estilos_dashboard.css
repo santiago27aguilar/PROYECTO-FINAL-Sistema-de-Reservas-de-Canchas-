@@ -82,10 +82,10 @@ body {
 
 .header-titulo {
     display: flex;
-    flex-direction: column; /* Pone el título arriba y el filtro abajo */
-    align-items: center;    /* Centra ambos horizontalmente */
+    flex-direction: column; 
+    align-items: center;   
     justify-content: center;
-    gap: 20px;              /* Espacio entre el título y la barra de filtros */
+    gap: 20px;              
     margin-bottom: 35px;
     text-align: center;
 }
@@ -97,7 +97,6 @@ h1 {
     font-weight: bold; 
 }
 
-/* ESTILOS: Filtro por Rango (Desde/Hasta) */
 .filtro-periodo {
     display: flex;
     align-items: center;
@@ -136,7 +135,7 @@ h1 {
 }
 
 .grupo-fecha input[type="date"] {
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
     padding: 6px 10px;
     border-radius: 4px;
     font-size: 14px;
@@ -145,8 +144,7 @@ h1 {
     outline: none;
     cursor: pointer;
     background-color: #f8f9fa;
-    color: #333;
-    transition: all 0.3s ease;
+    color: #000000;
     width: auto;
 }
 
@@ -178,7 +176,6 @@ h1 {
     background-color: #260970;
 }
 
-/* NUEVA CLASE: Estilos limpios para el botón Historial Completo */
 .btn-historico-estilo {
     padding: 8px 12px;
     border: none;
@@ -340,18 +337,48 @@ input:focus{ outline: 2px solid #28a745; }
 .tabla-chica th, .tabla-chica td { padding: 12px 10px; font-size: 14px; }
 .navbar .nav-links a.link-activo { color: #00ff3c !important; font-weight: bold; }
 
+.btn-pdf-estilo {
+    background-color: #d32f2f; /* Rojo oscuro característico de PDF */
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    margin-left: 5px;
+    text-decoration: none; /* Para quitar la línea del enlace */
+    font-size: 13.3px; /* Para que quede similar a los otros botones */
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.5s ease;
+}
+
+.btn-pdf-estilo:hover {
+    background-color: #9a0007; /* Rojo más oscuro al pasar el mouse */
+}
+
 @media (max-width: 950px) {
-    .dashboard-grid { grid-template-columns: repeat(2, 1fr); }
+    .dashboard-grid { 
+        grid-template-columns: repeat(2, 1fr); 
+    }
 }
 
 @media (max-width: 800px) {
-    .dashboard-row-2 { grid-template-columns: 1fr; }
+    .dashboard-row-2 { 
+        grid-template-columns: 1fr; 
+    }
 }
 
 @media (max-width: 768px) {
-    .navbar { justify-content: flex-start; padding: 15px 20px; }
-    .menu-toggle { display: block; }
+    .navbar { 
+        justify-content: flex-start; 
+        padding: 15px 20px; 
+    }
 
+    .menu-toggle { 
+        display: block; 
+    }
+ 
     .nav-links {
         display: flex; 
         flex-direction: column;
@@ -370,8 +397,18 @@ input:focus{ outline: 2px solid #28a745; }
         transition: all 0.4s ease-in-out; 
     }
 
-    .nav-links.active { max-height: 600px; padding-top: 20px; padding-bottom: 30px; opacity: 1; }
-    .nav-links a { padding: 10px 0; width: 100%; text-align: center; }
+    .nav-links.active { 
+        max-height: 600px; 
+        padding-top: 20px; 
+        padding-bottom: 30px; 
+        opacity: 1; 
+    }
+
+    .nav-links a { 
+        padding: 10px 0; 
+        width: 100%; 
+        text-align: center; 
+    }
 
     .user-info {
         margin: 5px 0 10px 0;
@@ -383,7 +420,10 @@ input:focus{ outline: 2px solid #28a745; }
         width: 100%;
     }
 
-    .nav-links .btn-salir { width: 50%; margin: 10px auto 0 auto; }
+    .nav-links .btn-salir { 
+        width: 50%; 
+        margin: 10px auto 0 auto; 
+    }
 }
 
 @media (max-width: 600px) {
@@ -403,4 +443,11 @@ input:focus{ outline: 2px solid #28a745; }
     .card-blanca { padding: 20px 15px; }
     .item-estadistica { flex-direction: row; justify-content: space-between; padding: 12px 15px; }
     .valor-stat { font-size: 14px; }
+
+    .btn-pdf-estilo {
+        width: 100%;
+        margin-top: 5px;
+        margin-left: 0;
+        justify-content: center;
+    }
 }
