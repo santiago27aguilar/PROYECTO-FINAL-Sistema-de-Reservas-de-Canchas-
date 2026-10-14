@@ -4,7 +4,7 @@ ini_set('display_errors', 0);
 require('../lib/fpdf/fpdf.php');
 include 'conexion.php';
 
-class PDF extends FPDF {
+class PDF extends FPDF { 
     function Header() {
         $this->SetFont('Arial','B',18);
         $this->SetTextColor(43, 27, 84); 
