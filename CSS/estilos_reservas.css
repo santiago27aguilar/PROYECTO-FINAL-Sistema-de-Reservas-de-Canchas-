@@ -117,7 +117,7 @@ body {
 
 label {
     display: block;
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 8px;
     font-size: 15px;
 }
@@ -243,7 +243,6 @@ input:focus, select:focus{
     border-bottom: 1px solid #ccc; 
 }
 
-/* COLORES DE ESTADOS DE RESERVA */
 .estado-pendiente {
     color: #ef6c00;
     font-weight: bold;
@@ -299,7 +298,6 @@ input:focus, select:focus{
     background-color: #c27d0c; 
 }
 
-/* NUEVO BOTON PARA COBRAR */
 .btn-cobrar {
     background-color: #1976d2; 
     color: white;
@@ -315,7 +313,6 @@ input:focus, select:focus{
     background-color: #115293;
 }
 
-/* NUEVO TEXTO CUANDO ESTÁ PAGADO */
 .texto-pagado {
     font-size: 13px;
     font-weight: bold;
@@ -394,10 +391,6 @@ input:focus, select:focus{
     background-color: #28a745; color: white; border-color: #28a745; 
 }
 
-
-/* =========================================
-   ESTILOS PARA LA BARRA DE FILTROS (DROP DOWNS)
-   ========================================= */
 .barra-filtros {
     background: #ffffff;
     border: 1px solid #dee2e6;
@@ -471,16 +464,11 @@ input:focus, select:focus{
 }
 .btn-limpiar:hover { background-color: #9b1b1b; }
 
-/* ACÁ ESTÁ LA CORRECCIÓN: Separación del ícono respecto a la palabra */
 .btn-filtrar i,
 .btn-limpiar i {
     margin-right: 8px;
 }
 
-
-/* =========================================
-   MEDIA QUERIES (RESPONSIVE)
-   ========================================= */
 @media (max-width: 768px) {
     .navbar {
         justify-content: flex-start; 
@@ -550,7 +538,6 @@ input:focus, select:focus{
         text-align: center; 
     }
     
-    /* Adaptación de los filtros para celulares */
     .barra-filtros {
         flex-direction: column;
         align-items: stretch;
