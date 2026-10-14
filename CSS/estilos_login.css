@@ -1,44 +1,43 @@
 * { 
     box-sizing: border-box; 
+    margin: 0;
+    padding: 0;
 }
 
-body, html {
-    height: 100%;
-    margin: 0;
+body {
     font-family: 'Segoe UI', sans-serif;
     background: radial-gradient(circle, #083464 0%, #020720 100%);
     background-attachment: fixed;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 20px;
 }
 
 .login-container {
-    width: 95%;
+    width: 100%;
     max-width: 900px; 
-    padding: 20px;
+    margin: auto;
 }
 
 .login-card {
     background: white;
     border-radius: 15px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
     display: flex; 
     overflow: hidden; 
     min-height: 500px;
 }
 
-/* Columna Izquierda con un solo logo centrado */
 .left-side {
     flex: 1;
     display: flex;
-    justify-content: center; /* Centra horizontalmente */
-    align-items: center;     /* Centra verticalmente */
+    justify-content: center; 
+    align-items: center;     
     padding: 20px;
-    background-color: #fcfcfc; /* Fondo suave para resaltar el logo */
+    background-color: white; 
 }
 
-/* Contenedor del logo */
 .img-wrapper {
     width: 100%;
     display: flex;
@@ -46,10 +45,9 @@ body, html {
     align-items: center;
 }
 
-/* Logo adaptado y más grande para que no quede espacio en blanco */
 .img-wrapper img {
-    width: 95%;
-    max-width: 450px; 
+    width: 90%;
+    max-width: 380px; 
     height: auto;
     object-fit: contain;
 }
@@ -63,18 +61,30 @@ body, html {
     justify-content: center;
 }
 
+.header-admin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 5px;
+}
+
 h1 {
     color: #000;
-    font-size: 30px;
-    margin-bottom: 5px;
+    font-size: 40px;
     font-weight: 700;
+    margin-bottom: 0; 
+}
+
+.logo-admin-mobile {
+    display: none; 
 }
 
 p {
     color: #666;
-    font-size: 13px;
-    margin-bottom: 30px;
-    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 40px;
+    font-weight: 500;
 }
 
 .form-group {
@@ -86,28 +96,29 @@ label {
     display: block;
     font-weight: 700;
     font-size: 14px;
-    color: #333;
+    color: #000000;
     margin-bottom: 8px;
 }
 
 input {
     width: 100%;
-    padding: 14px;
-    border: none;
+    padding: 14px 15px;
+    border: 2px solid transparent;
     background-color: #e8e8e8; 
     border-radius: 5px;
     font-size: 14px;
+    outline: none;
 }
 
 input:focus {
-    outline: 2px solid #28a745;
+    border: 2px solid #11ac35;
 }
 
 .btn-login {
     background-color: #11ac35;
     color: white;
     border: none;
-    padding: 18px;
+    padding: 16px;
     width: 100%;
     border-radius: 8px;
     font-weight: bold;
@@ -119,7 +130,6 @@ input:focus {
 
 .btn-login:hover {
     background-color: #0d7223;
-    box-shadow: 0 6px 15px rgba(21, 104, 40, 0.4); 
 }
 
 .error-msg {
@@ -136,27 +146,50 @@ input:focus {
     margin-top: 25px;
 }
 
-.forgot-link a {
+.link-forgot {
     text-decoration: none;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: bold;
     cursor: pointer;
     color: #666;
     transition: all 0.5s ease;
 }
-
-.forgot-link a:hover{
+ 
+.link-forgot:hover {
     color: #11ac35;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 850px) {
     .login-card {
         flex-direction: column; 
     }
+    
     .left-side {
         display: none; 
     }
+    
+    .logo-admin-mobile {
+        display: block; 
+        height: 45px;
+        width: auto;
+        object-fit: contain;
+        transform: scale(1.3);
+    }
+
+    p{
+        display: none;
+    }
+    
     .right-side {
         padding: 40px 20px;
+    }
+    
+    .header-admin {
+        flex-direction: column; 
+        gap: 15px;
+    }
+
+    h1 {
+        font-size: 28px;
     }
 }
