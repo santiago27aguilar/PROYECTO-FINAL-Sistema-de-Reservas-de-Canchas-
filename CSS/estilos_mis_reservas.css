@@ -6,7 +6,7 @@
 }
 
 body {
-    background-color: #d9d9d9;
+    background: radial-gradient(circle, #036a19 0%, #020720 100%);
     display: flex;
     justify-content: center;
     align-items: flex-start; 
@@ -71,8 +71,8 @@ body {
 label {
     display: block;
     font-size: 14px;
-    font-weight: 600;
-    color: #000;
+    font-weight: 650;
+    color: #000000;
     margin-bottom: 8px;
 }
  
@@ -83,7 +83,7 @@ input {
     background-color: #e0e0e0;
     border: none;
     font-size: 15px;
-    color: #333;
+    color: #000000;
     outline: none;
 }
 
@@ -116,7 +116,7 @@ input:focus {
 }
 
 .link-gestion a {
-    color: #b0b0b0;
+    color: #707070;
     font-size: 16px;
     font-weight: bold;
     transition: all 0.5s ease;
@@ -126,18 +126,18 @@ input:focus {
 .link-gestion a:hover {
     color: #28a745;
 }
-
+ 
 .margen-top {
     margin-top: 15px;
 }
 
 .link-gestion .link-destacado {
-    color: #517ba5;
+    color: #4697ee;
     font-weight: bold;
 }
 
 .link-gestion .link-destacado:hover {
-    color: #1a252f;
+    color: #707070;
     text-decoration: none; 
 }
 
