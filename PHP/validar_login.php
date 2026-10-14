@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     } 
     catch (PDOException $e) {
-        die("ERROR TÉCNICO: " . $e->getMessage());
+        die("ERROR EN EL PROCESO: " . $e->getMessage());
     }
 } else {
     header("Location: ../html/login.php");
