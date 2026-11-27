@@ -12,61 +12,191 @@ if (!in_array($rol_actual, ['duenio', 'dueño'])) {
     exit();
 }
 
-require_once '../php/conexion.php'; 
+require_once '../php/conexion.php';
 
 try {
-    // Variables iniciales por defecto (Mes actual en curso)
-    $fechaInicioMes = date('Y-m-01');
-    $fechaFinMes = date('Y-m-t'); 
+    $hoy_str = date('Y-m-d');
+    $rapido_raw = isset($_GET['rapido']) ? trim($_GET['rapido']) : '';
+    $desde_raw = isset($_GET['desde']) ? trim($_GET['desde']) : '';
+    $hasta_raw = isset($_GET['hasta']) ? trim($_GET['hasta']) : '';
 
-    // A) Ganancias Iniciales (Del Mes actual)
-    $stmtHoy = $conexion->prepare("SELECT COALESCE(SUM(monto), 0) as total FROM pagos WHERE fecha_pago BETWEEN ? AND ?");
-    $stmtHoy->execute([$fechaInicioMes . ' 00:00:00', $fechaFinMes . ' 23:59:59']);
-    $recaudadoPeriodo = $stmtHoy->fetch(PDO::FETCH_ASSOC)['total'];
+    $ts_desde = ($desde_raw !== '') ? strtotime($desde_raw) : false;
+    $ts_hasta = ($hasta_raw !== '') ? strtotime($hasta_raw) : false;
 
-    // B) Turnos Iniciales (Del Mes actual)
-    $stmtTurnos = $conexion->prepare("SELECT COUNT(idreservas) as total FROM reservas WHERE hora_inicio BETWEEN ? AND ?");
-    $stmtTurnos->execute([$fechaInicioMes . ' 00:00:00', $fechaFinMes . ' 23:59:59']);
-    $turnosPeriodo = $stmtTurnos->fetch(PDO::FETCH_ASSOC)['total'];
+    $rapido_activo = 'mes';
 
-    // C) Recaudado Inicial (Pagos del Mes actual - idéntico al anterior o sumado por pagos)
-    $recaudadoMes = $recaudadoPeriodo;
+    if ($rapido_raw === 'hoy') {
+        $fechaInicio = $hoy_str;
+        $fechaFin = $hoy_str;
+        $rapido_activo = 'hoy';
+        $etiquetaPeriodo = 'DE HOY';
+    } elseif ($rapido_raw === 'semana') {
+        $fechaInicio = date('Y-m-d', strtotime('monday this week', strtotime($hoy_str)));
+        $fechaFin = date('Y-m-d', strtotime('sunday this week', strtotime($hoy_str)));
+        $rapido_activo = 'semana';
+        $etiquetaPeriodo = 'DE LA SEMANA';
+    } elseif ($rapido_raw === 'mes') {
+        $fechaInicio = date('Y-m-01', strtotime($hoy_str));
+        $fechaFin = date('Y-m-t', strtotime($hoy_str));
+        $rapido_activo = 'mes';
+        $etiquetaPeriodo = 'DEL MES';
+    } elseif ($rapido_raw === 'personalizado' || ($ts_desde !== false && $ts_hasta !== false)) {
+        $fechaInicio = ($ts_desde !== false) ? date('Y-m-d', $ts_desde) : date('Y-m-01', strtotime($hoy_str));
+        $fechaFin = ($ts_hasta !== false) ? date('Y-m-d', $ts_hasta) : date('Y-m-t', strtotime($hoy_str));
 
-    // D) Día más solicitado
-    $stmtDia = $conexion->prepare("SELECT DAYOFWEEK(hora_inicio) as dia, COUNT(idreservas) as cantidad FROM reservas WHERE hora_inicio BETWEEN ? AND ? GROUP BY dia ORDER BY cantidad DESC LIMIT 1");
-    $stmtDia->execute([$fechaInicioMes . ' 00:00:00', $fechaFinMes . ' 23:59:59']);
+        if ($fechaInicio > $fechaFin) {
+            $tmp = $fechaInicio;
+            $fechaInicio = $fechaFin;
+            $fechaFin = $tmp;
+        }
+        $rapido_activo = 'personalizado';
+        $etiquetaPeriodo = 'DEL PERÍODO';
+    } else {
+        $fechaInicio = date('Y-m-01', strtotime($hoy_str));
+        $fechaFin = date('Y-m-t', strtotime($hoy_str));
+        $rapido_activo = 'mes';
+        $etiquetaPeriodo = 'DEL MES';
+    }
+
+    $dtInicio = $fechaInicio . ' 00:00:00';
+    $dtFin = $fechaFin . ' 23:59:59';
+
+    // A) Ganancias filtradas por rango
+    $stmtGanancias = $conexion->prepare("
+        SELECT COALESCE(SUM(monto), 0) AS total
+        FROM pagos
+        WHERE fecha_pago BETWEEN ? AND ?
+    ");
+    $stmtGanancias->execute([$dtInicio, $dtFin]);
+    $recaudadoPeriodo = (float)($stmtGanancias->fetch(PDO::FETCH_ASSOC)['total'] ?? 0);
+
+    // B) Turnos filtrados por rango
+    $stmtTurnos = $conexion->prepare("
+        SELECT COUNT(idreservas) AS total
+        FROM reservas
+        WHERE hora_inicio BETWEEN ? AND ?
+          AND LOWER(COALESCE(estado, '')) <> 'cancelado'
+    ");
+    $stmtTurnos->execute([$dtInicio, $dtFin]);
+    $turnosPeriodo = (int)($stmtTurnos->fetch(PDO::FETCH_ASSOC)['total'] ?? 0);
+
+    // C) Ticket promedio del rango
+    $ticketPromedio = ($turnosPeriodo > 0) ? ($recaudadoPeriodo / $turnosPeriodo) : 0;
+
+    // D) Día más solicitado en el rango
+    $stmtDia = $conexion->prepare("
+        SELECT DAYOFWEEK(hora_inicio) AS dia, COUNT(idreservas) AS cantidad
+        FROM reservas
+        WHERE hora_inicio BETWEEN ? AND ?
+          AND LOWER(COALESCE(estado, '')) <> 'cancelado'
+        GROUP BY dia
+        ORDER BY cantidad DESC
+        LIMIT 1
+    ");
+    $stmtDia->execute([$dtInicio, $dtFin]);
     $rowDia = $stmtDia->fetch(PDO::FETCH_ASSOC);
-    $diasSemana = [1 => 'Domingo', 2 => 'Lunes', 3 => 'Martes', 4 => 'Miércoles', 5 => 'Jueves', 6 => 'Viernes', 7 => 'Sábado'];
-    $diaMasSolicitado = $rowDia ? $diasSemana[$rowDia['dia']] : 'Sin datos';
+    $diasSemana = [
+        1 => 'Domingo', 2 => 'Lunes', 3 => 'Martes', 4 => 'Miércoles',
+        5 => 'Jueves', 6 => 'Viernes', 7 => 'Sábado'
+    ];
+    $diaMasSolicitado = $rowDia ? ($diasSemana[(int)$rowDia['dia']] ?? 'Sin datos') : 'Sin datos';
 
-    // E) Horario pico
-    $stmtHora = $conexion->prepare("SELECT HOUR(hora_inicio) as hora, COUNT(idreservas) as cantidad FROM reservas WHERE hora_inicio BETWEEN ? AND ? GROUP BY hora ORDER BY cantidad DESC LIMIT 1");
-    $stmtHora->execute([$fechaInicioMes . ' 00:00:00', $fechaFinMes . ' 23:59:59']);
+    // E) Horario más pedido en el rango
+    $stmtHora = $conexion->prepare("
+        SELECT HOUR(hora_inicio) AS hora, COUNT(idreservas) AS cantidad
+        FROM reservas
+        WHERE hora_inicio BETWEEN ? AND ?
+          AND LOWER(COALESCE(estado, '')) <> 'cancelado'
+        GROUP BY hora
+        ORDER BY cantidad DESC
+        LIMIT 1
+    ");
+    $stmtHora->execute([$dtInicio, $dtFin]);
     $rowHora = $stmtHora->fetch(PDO::FETCH_ASSOC);
-    $horarioPico = $rowHora ? $rowHora['hora'] . ':00 hs' : 'Sin datos';
+    $horarioPico = $rowHora ? str_pad((int)$rowHora['hora'], 2, '0', STR_PAD_LEFT) . ':00 hs' : 'Sin datos';
 
-    // F) Cancha más usada
-    $stmtCancha = $conexion->prepare("SELECT c.tipo_cancha, COUNT(r.idreservas) as cantidad FROM reservas r JOIN cancha c ON r.cancha_idcancha = c.idcancha WHERE r.hora_inicio BETWEEN ? AND ? GROUP BY c.idcancha ORDER BY cantidad DESC LIMIT 1");
-    $stmtCancha->execute([$fechaInicioMes . ' 00:00:00', $fechaFinMes . ' 23:59:59']);
+    // F) Cancha más usada en el rango
+    $stmtCancha = $conexion->prepare("
+        SELECT c.tipo_cancha, COUNT(r.idreservas) AS cantidad
+        FROM reservas r
+        INNER JOIN cancha c ON r.cancha_idcancha = c.idcancha
+        WHERE r.hora_inicio BETWEEN ? AND ?
+          AND LOWER(COALESCE(r.estado, '')) <> 'cancelado'
+        GROUP BY r.cancha_idcancha, c.tipo_cancha
+        ORDER BY cantidad DESC
+        LIMIT 1
+    ");
+    $stmtCancha->execute([$dtInicio, $dtFin]);
     $rowCancha = $stmtCancha->fetch(PDO::FETCH_ASSOC);
     $canchaMasUsada = $rowCancha ? $rowCancha['tipo_cancha'] : 'Sin datos';
 
-    // G) Top Clientes
+    // G) Top Clientes filtrados por rango
     $stmtTopClientes = $conexion->prepare("
-        SELECT c.nombre, c.apellido, 
-               COUNT(r.idreservas) as total_historico, 
-               SUM(CASE WHEN r.hora_inicio BETWEEN ? AND ? THEN 1 ELSE 0 END) as total_periodo 
-        FROM reservas r 
-        JOIN clientes c ON r.clientes_idclientes = c.idclientes 
-        GROUP BY c.idclientes 
-        ORDER BY total_periodo DESC, total_historico DESC 
+        SELECT c.nombre, c.apellido,
+               COUNT(r.idreservas) AS total_periodo
+        FROM reservas r
+        INNER JOIN clientes c ON r.clientes_idclientes = c.idclientes
+        WHERE r.hora_inicio BETWEEN ? AND ?
+          AND LOWER(COALESCE(r.estado, '')) <> 'cancelado'
+        GROUP BY r.clientes_idclientes, c.nombre, c.apellido
+        ORDER BY total_periodo DESC
         LIMIT 3
     ");
-    $stmtTopClientes->execute([$fechaInicioMes . ' 00:00:00', $fechaFinMes . ' 23:59:59']);
+    $stmtTopClientes->execute([$dtInicio, $dtFin]);
     $topClientes = $stmtTopClientes->fetchAll(PDO::FETCH_ASSOC);
 
-} catch(PDOException $e) {
-    die("Error al cargar los datos del tablero: " . $e->getMessage());
+    // H) Gráfica de Torta 1: Participación por cancha en el rango
+    $stmtTortaCanchas = $conexion->prepare("
+        SELECT c.tipo_cancha, COUNT(r.idreservas) AS cant_turnos
+        FROM reservas r
+        INNER JOIN cancha c ON r.cancha_idcancha = c.idcancha
+        WHERE r.hora_inicio BETWEEN ? AND ?
+          AND LOWER(COALESCE(r.estado, '')) <> 'cancelado'
+        GROUP BY r.cancha_idcancha, c.tipo_cancha
+        ORDER BY cant_turnos DESC
+    ");
+    $stmtTortaCanchas->execute([$dtInicio, $dtFin]);
+    $filasTortaCanchas = $stmtTortaCanchas->fetchAll(PDO::FETCH_ASSOC);
+
+    $labelsTortaCanchas = [];
+    $valoresTortaCanchas = [];
+    foreach ($filasTortaCanchas as $ftc) {
+        $labelsTortaCanchas[] = $ftc['tipo_cancha'];
+        $valoresTortaCanchas[] = (int)$ftc['cant_turnos'];
+    }
+
+    // I) Gráfica de Torta 2: Turnos por franja horaria en el rango
+    $stmtTortaFranjas = $conexion->prepare("
+        SELECT
+            CASE
+                WHEN HOUR(r.hora_inicio) BETWEEN 14 AND 18 THEN 'Turno Tarde (14-18 hs)'
+                ELSE 'Turno Noche (19-00 hs)'
+            END AS franja,
+            COUNT(r.idreservas) AS cant_turnos
+        FROM reservas r
+        WHERE r.hora_inicio BETWEEN ? AND ?
+          AND LOWER(COALESCE(r.estado, '')) <> 'cancelado'
+        GROUP BY franja
+        ORDER BY cant_turnos DESC
+    ");
+    $stmtTortaFranjas->execute([$dtInicio, $dtFin]);
+    $filasTortaFranjas = $stmtTortaFranjas->fetchAll(PDO::FETCH_ASSOC);
+
+    $labelsTortaFranjas = [];
+    $valoresTortaFranjas = [];
+    foreach ($filasTortaFranjas as $ftf) {
+        $labelsTortaFranjas[] = $ftf['franja'];
+        $valoresTortaFranjas[] = (int)$ftf['cant_turnos'];
+    }
+
+    $queryPdf = http_build_query([
+        'desde'  => $fechaInicio,
+        'hasta'  => $fechaFin,
+        'rapido' => $rapido_activo
+    ]);
+
+} catch (PDOException $e) {
+    die("Error al cargar los datos del tablero: " . htmlspecialchars($e->getMessage()));
 }
 ?>
 
@@ -77,8 +207,9 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel del Dueño - Planeta de Futbol</title>
     <?php include 'head_comun.php'; ?>
-    <link rel="stylesheet" href="../css/estilos_dashboard.css?v=10"> 
+    <link rel="stylesheet" href="../css/estilos_dashboard.css?v=18"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -113,49 +244,69 @@ try {
 <div class="container">
     
     <div class="header-titulo">
-        <h1>ESTADISTICAS GENERALES</h1>
+        <h1>ESTADÍSTICAS GENERALES</h1>
         
-        <div class="filtro-periodo">
+        <form method="GET" action="dashboard.php" id="formFiltroDashboard" class="filtro-periodo">
+            <input type="hidden" name="rapido" id="input-rapido" value="<?= htmlspecialchars($rapido_activo) ?>">
+
             <label><i class="fas fa-calendar-alt"></i> Filtrar:</label>
             
             <div class="grupo-fecha">
                 <span>Desde:</span>
-                <input type="date" id="fecha-inicio" value="<?= $fechaInicioMes ?>">
+                <input type="date" id="fecha-inicio" name="desde" value="<?= htmlspecialchars($fechaInicio) ?>">
             </div>
             
             <div class="grupo-fecha">
                 <span>Hasta:</span>
-                <input type="date" id="fecha-fin" value="<?= $fechaFinMes ?>">
+                <input type="date" id="fecha-fin" name="hasta" value="<?= htmlspecialchars($fechaFin) ?>">
             </div>
 
-            <button id="btn-filtrar" class="btn-verde-chico" title="Buscar por fechas"><i class="fas fa-search"></i> Buscar</button>
-            <button id="btn-historico" class="btn-rojo btn-historico-estilo" title="Ver Todo el Historial Completo"><i class="fas fa-globe"></i> Historial Completo</button>
+            <button type="submit" id="btn-filtrar" class="btn-verde-chico" title="Buscar por fechas">
+                <i class="fas fa-search"></i> Buscar
+            </button>
 
-            <a href="#" id="btn-pdf-dashboard" class="btn-pdf-estilo" title="Generar Reporte PDF"><i class="fas fa-file-pdf"></i> Reporte PDF</a>
+            <a href="../php/exportar_pdf_dashboard.php?<?= htmlspecialchars($queryPdf) ?>" id="btn-pdf-dashboard" class="btn-pdf-estilo" title="Generar Reporte PDF">
+                <i class="fas fa-file-pdf"></i> Reporte PDF
+            </a>
+        </form>
+
+        <div class="barra-periodo-rapido">
+            <div class="periodo-rapido-label">
+                <i class="far fa-calendar-alt"></i>
+                <span>Período rápido:</span>
+            </div>
+
+            <div class="botones-rapidos">
+                <a href="dashboard.php?rapido=hoy" class="btn-rapido <?= ($rapido_activo === 'hoy') ? 'activo' : '' ?>">Hoy</a>
+                <a href="dashboard.php?rapido=semana" class="btn-rapido <?= ($rapido_activo === 'semana') ? 'activo' : '' ?>">Esta Semana</a>
+                <a href="dashboard.php?rapido=mes" class="btn-rapido <?= ($rapido_activo === 'mes') ? 'activo' : '' ?>">Este Mes</a>
+                <button type="button" id="btn-rapido-personalizado" class="btn-rapido <?= ($rapido_activo === 'personalizado') ? 'activo' : '' ?>">Personalizado</button>
+            </div>
         </div>
     </div>
 
-    <!-- Tarjetas superiores con IDs dinámicos para JavaScript -->
     <div class="dashboard-grid">
         <div class="card-blanca card-dashboard borde-verde">
             <div class="icono-dash texto-verde"><i class="fas fa-dollar-sign"></i></div>
             <div class="info-dash">
-                <span class="titulo-dash" id="titulo-tarjeta-ganancias">GANANCIAS DEL MES</span>
+                <span class="titulo-dash" id="titulo-tarjeta-ganancias">GANANCIAS <?= htmlspecialchars($etiquetaPeriodo) ?></span>
                 <span class="valor-dash" id="val-ganancias">$<?= number_format($recaudadoPeriodo, 0, ',', '.') ?></span>
             </div>
         </div>
+
         <div class="card-blanca card-dashboard borde-verde">
             <div class="icono-dash texto-verde"><i class="fas fa-futbol"></i></div>
             <div class="info-dash">
-                <span class="titulo-dash" id="titulo-tarjeta-turnos">TURNOS DEL MES</span>
+                <span class="titulo-dash" id="titulo-tarjeta-turnos">TURNOS <?= htmlspecialchars($etiquetaPeriodo) ?></span>
                 <span class="valor-dash" id="val-turnos"><?= $turnosPeriodo ?> turnos</span>
             </div>
         </div>
+
         <div class="card-blanca card-dashboard borde-verde">
-            <div class="icono-dash texto-verde"><i class="fas fa-calendar-alt"></i></div>
+            <div class="icono-dash texto-verde"><i class="fas fa-receipt"></i></div>
             <div class="info-dash">
-                <span class="titulo-dash" id="titulo-tarjeta-recaudado">TOTAL RECAUDADO</span>
-                <span class="valor-dash" id="val-recaudado">$<?= number_format($recaudadoMes, 0, ',', '.') ?></span>
+                <span class="titulo-dash" id="titulo-tarjeta-promedio">TICKET PROMEDIO</span>
+                <span class="valor-dash" id="val-promedio">$<?= number_format($ticketPromedio, 0, ',', '.') ?></span>
             </div>
         </div>
     </div>
@@ -169,7 +320,7 @@ try {
                     <span class="valor-stat" id="stat-dia"><?= htmlspecialchars($diaMasSolicitado) ?></span>
                 </div>
                 <div class="item-estadistica">
-                    <span class="etiqueta-stat">Horario mas pedido:</span>
+                    <span class="etiqueta-stat">Horario más pedido:</span>
                     <span class="valor-stat" id="stat-hora"><?= htmlspecialchars($horarioPico) ?></span>
                 </div>
                 <div class="item-estadistica">
@@ -186,19 +337,17 @@ try {
                     <thead>
                         <tr>
                             <th>Cliente</th>
-                            <th>En el mes</th>
-                            <th>Histórico</th>
+                            <th>Turnos en rango</th>
                         </tr>
                     </thead>
                     <tbody id="tabla-clientes-body">
                         <?php if (empty($topClientes)): ?>
-                            <tr><td colspan="3">Aún no hay reservas registradas</td></tr>
+                            <tr><td colspan="2">Sin turnos en el rango seleccionado</td></tr>
                         <?php else: ?>
                             <?php foreach ($topClientes as $cliente): ?>
                                 <tr>
-                                    <td><?= htmlspecialchars($cliente['nombre'] . ' ' . $cliente['apellido']) ?></td>
-                                    <td><?= $cliente['total_periodo'] ?? 0 ?> turnos</td>
-                                    <td><?= $cliente['total_historico'] ?> turnos</td>
+                                    <td><?= htmlspecialchars(trim($cliente['nombre'] . ' ' . $cliente['apellido'])) ?></td>
+                                    <td><?= (int)($cliente['total_periodo'] ?? 0) ?> turnos</td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php endif; ?>
@@ -208,9 +357,30 @@ try {
         </div>
     </div>
 
+    <div class="dashboard-row-2">
+        <div class="card-blanca card-grafico">
+            <h3 class="titulo-seccion"><i class="fas fa-chart-pie"></i> Participación por Cancha</h3>
+            <div class="grafico-canvas-box">
+                <canvas id="tortaCanchas"
+                        data-labels='<?= htmlspecialchars(json_encode($labelsTortaCanchas, JSON_UNESCAPED_UNICODE), ENT_QUOTES, "UTF-8") ?>'
+                        data-valores='<?= htmlspecialchars(json_encode($valoresTortaCanchas), ENT_QUOTES, "UTF-8") ?>'></canvas>
+            </div>
+        </div>
+
+        <div class="card-blanca card-grafico">
+            <h3 class="titulo-seccion"><i class="fas fa-clock"></i> Turnos por Franja Horaria</h3>
+            <div class="grafico-canvas-box">
+                <canvas id="tortaFranjas"
+                        data-labels='<?= htmlspecialchars(json_encode($labelsTortaFranjas, JSON_UNESCAPED_UNICODE), ENT_QUOTES, "UTF-8") ?>'
+                        data-valores='<?= htmlspecialchars(json_encode($valoresTortaFranjas), ENT_QUOTES, "UTF-8") ?>'></canvas>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <script src="../js/menu_desplegable.js"></script>
-<script src="../js/filtro_dashboard.js"></script>
+<script src="../js/graficos_dashboard.js"></script>
+
 </body>
 </html>
